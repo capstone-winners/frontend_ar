@@ -6,4 +6,91 @@
 //  Copyright © 2020 Andrew Tu. All rights reserved.
 //
 
-import Foundation
+import Vision
+import ARKit
+
+class QRDetector {
+  
+  var processingQr: Bool = false
+  var qrRequests: [VNRequest] = []
+  var detectedDataAnchor: QRAnchor?
+  var latestFrame: ARFrame?
+  
+  var sceneView: ARSCNView!
+  
+  func startQrCodeDetection(view sceneView: ARSCNView) {
+    print("starting detection")
+    
+    // View
+    self.sceneView = sceneView
+    
+    // Create a Barcode Detection Request
+    let request = VNDetectBarcodesRequest(completionHandler: self.requestHandler)
+    // Set it to recognize QR code only
+    request.symbologies = [.QR]
+    self.qrRequests = [request]
+  }
+  
+  func processFrame(_ frame: ARFrame) {
+    // On each frame, get the frame image and attempt to find qr codes.
+    DispatchQueue.global(qos: .userInitiated).async {
+      do {
+        if self.processingQr {
+          return
+        }
+        self.processingQr = true
+        self.latestFrame = frame
+        // Create a request handler using the captured image from the ARFrame
+        let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage,
+                                                        options: [:])
+        // Process the request
+        try imageRequestHandler.perform(self.qrRequests)
+      } catch {
+      }
+    }
+  }
+  
+  func requestHandler(request: VNRequest, error: Error?) {
+    // Get the first result out of the results, if there are any
+    if let results = request.results, let result = results.first as? VNBarcodeObservation {
+      guard let payload = result.payloadStringValue else {return}
+      
+      print("Payload: " + payload)
+      
+      // Get the bounding box for the bar code and find the center
+      var rect = result.boundingBox
+      // Flip coordinates
+      rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
+      rect = rect.applying(CGAffineTransform(translationX: 0, y: 1))
+      // Get center
+      let center = CGPoint(x: rect.midX, y: rect.midY)
+      
+      DispatchQueue.main.async {
+        self.hitTestQrCode(center: center, text: payload)
+        self.processingQr = false
+      }
+    } else {
+      self.processingQr = false
+    }
+  }
+  
+  func hitTestQrCode(center: CGPoint, text: String) {
+    if let hitTestResults = self.latestFrame?.hitTest(center, types: [.featurePoint] ),
+      let hitTestResult = hitTestResults.first {
+      
+      if let detectedDataAnchor = self.detectedDataAnchor,
+        let node = self.sceneView.node(for: detectedDataAnchor) {
+        // let previousQrPosition = node.position
+        node.transform = SCNMatrix4(hitTestResult.worldTransform)
+        print("found old node")
+      } else {
+        print("found new node")
+        // Create an anchor. The node will be created in delegate methods
+        self.detectedDataAnchor = QRAnchor(transform: hitTestResult.worldTransform, labeled: text)
+        self.sceneView.session.add(anchor: self.detectedDataAnchor!)
+      }
+    } else {
+      print("hit test failed")
+    }
+  }
+}
