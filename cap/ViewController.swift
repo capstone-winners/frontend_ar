@@ -13,68 +13,17 @@ import Vision
 
 class ViewController: UIViewController{
   
-  @IBOutlet var sceneView: ARSCNView!
-  @IBOutlet weak var label: UILabel!
-  var remoteView = RemoteView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+  let sceneView: ARSCNView = ARSCNView()
+  let label: UILabel = UILabel()
+  let remoteViewController = RemoteViewController()
+  
   
   var qrDetector: QRDetector = QRDetector()
   
-  //MARK: - Layout Variables
-  var remoteViewSmallHeight : CGFloat {
-      get {
-          return 60
-      }
-  }
-  var topConstraintForAlbumsTableView : NSLayoutConstraint?
-  var remoteViewHeightWithoutSafeBottom: CGFloat {
-      get {
-          return remoteViewSmallHeight - bottomSafeAreaHeight
-      }
-  }
-
-  var topSafeAreaHeight : CGFloat {
-      get {
-          if let window = UIApplication.shared.keyWindow , #available(iOS 11.0, *) {
-              return window.safeAreaInsets.top
-          } else {
-              return 0
-          }
-      }
-  }
-  var bottomSafeAreaHeight : CGFloat  {
-      get {
-          if let window = UIApplication.shared.keyWindow , #available(iOS 11.0, *) {
-              return window.safeAreaInsets.bottom
-          } else {
-              return 0
-          }
-      }
-  }
-  
-   //distance to take it to full screen
-  var distanceToFullScreen: CGFloat {
-      get {
-          return topSafeAreaHeight - view.frame.height
-      }
-  }
-  
-  var remoteOriginalCenter: CGPoint!
-  var remoteOffset: CGFloat!
-  var remoteUp: CGPoint!
-  var remoteDown: CGPoint!
-
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  override func loadView() {
+    super.loadView()
     
-    // Set the view's delegate
-    sceneView.delegate = self
-    
-    // Set the session delegate
-    sceneView.session.delegate = self
-    
-    // Show statistics such as fps and timing information
-    sceneView.showsStatistics = true
+    SetupArView()
     
     // Prevent the screen from being dimmed after a while as users will likely
     // have long periods of interaction without touching the screen or buttons.
@@ -86,8 +35,25 @@ class ViewController: UIViewController{
     label.lineBreakMode = .byWordWrapping
     label.isHidden = true
     
-    setupRemoteView()
-    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureMakeFullScreen(gesture:)))
+    sceneView.addGestureRecognizer(tapGesture)
+    //addController(remoteViewController)
+    //configureRemoteView()
+  }
+  
+  @objc func tapGestureMakeFullScreen(gesture: UITapGestureRecognizer) {
+    remoteViewController.state = Date()
+    print(remoteViewController.state.description)
+    self.present(remoteViewController, animated: true, completion: nil)
+  }
+  
+  func configureRemoteView() {
+    NSLayoutConstraint.activate([
+      remoteViewController.remoteView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      remoteViewController.remoteView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      remoteViewController.remoteView.heightAnchor.constraint(equalToConstant: 60),
+      remoteViewController.remoteView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60)
+    ])
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -125,6 +91,24 @@ extension ViewController : ARSCNViewDelegate {
    return node
    }
    */
+  
+  func SetupArView() {
+    // Set the view's delegate
+    sceneView.delegate = self
+    
+    // Set the session delegate
+    sceneView.session.delegate = self
+    
+    // Show statistics such as fps and timing information
+    sceneView.showsStatistics = true
+    view.addSubview(sceneView)
+
+    sceneView.translatesAutoresizingMaskIntoConstraints = false
+    sceneView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+    sceneView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+    sceneView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    sceneView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+  }
   
   /// - Tag: PlaceARContent
   func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
@@ -202,92 +186,5 @@ extension ViewController : ARSessionDelegate {
   }
 }
 
-// MARK: - RemoteView
-extension ViewController {
-  
-  func setupRemoteView() {
-    
-    
-    remoteOffset = 160
-    remoteUp = remoteView.center
-    remoteDown = CGPoint(x: remoteView.center.x ,y: remoteView.center.y + remoteOffset)
 
-    remoteView.isUserInteractionEnabled = true
-    sceneView.isUserInteractionEnabled = true
-    remoteView.deviceInfoLabel.isUserInteractionEnabled=true
-
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureMakeFullScreen(gesture:)))
-    //let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGesture(gesture:)))
-    //remoteView.addGestureRecognizer(panGesture)
-    sceneView.addGestureRecognizer(tapGesture)
-    
-    sceneView.addSubview(remoteView)
-    remoteView.bottomAnchor.constraint(equalTo: sceneView.bottomAnchor).isActive = true
-    remoteView.leftAnchor.constraint(equalTo: sceneView.leftAnchor).isActive = true
-    remoteView.rightAnchor.constraint(equalTo: sceneView.rightAnchor).isActive = true
-
-  }
-  
-  @objc func tapGestureMakeFullScreen(gesture: UITapGestureRecognizer) {
-    print("make full screen!")
-    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    let controller = storyboard.instantiateViewController(withIdentifier: "LoginVC")
-    self.present(controller, animated: true, completion: nil)
-
-    // Safe Present
-    /*if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginVC") as? RemoteViewController
-    {
-        present(vc, animated: true, completion: nil)
-    }*/
-    
-    if gesture.state == .ended {
-      remoteView.isSmall = false
-      remoteViewFullScreenAnimation()
-    }
-  }
-  
-  @objc func panGesture(gesture: UIPanGestureRecognizer) {
-    let translation = gesture.translation(in: view)
-    let velocity = gesture.velocity(in: view)
-    
-    print("translation \(translation)")
-    print("velocity \(velocity)")
-
-    
-    if gesture.state == UIGestureRecognizer.State.began {
-      remoteOriginalCenter = remoteView.center
-    } else if gesture.state == UIGestureRecognizer.State.changed {
-      remoteView.center = CGPoint(x: remoteOriginalCenter.x, y: remoteOriginalCenter.y + translation.y)
-      
-    } else if gesture.state == UIGestureRecognizer.State.ended {
-      if velocity.y > 0 {
-        UIView.animate(withDuration: 0.3, animations: { () -> Void in
-          self.remoteView.center = self.remoteDown
-         })
-      } else {
-        UIView.animate(withDuration: 0.3, animations: { () -> Void in
-          self.remoteView.center = self.remoteUp
-         })
-      }
-    }
-    
-  }
-  
-  func remoteViewFullScreenAnimation() {
-      UIView.animate(withDuration: 0.2) {
-          // value is small when trying to get full screen (0 is top)
-          self.topConstraintForAlbumsTableView?.constant = self.distanceToFullScreen
-          self.view.layoutIfNeeded()
-      }
-      
-  }
-  
-  func remoteViewSmallScreenAnimation() {
-      UIView.animate(withDuration: 0.2) {
-          self.topConstraintForAlbumsTableView?.constant = -self.remoteViewHeightWithoutSafeBottom
-          self.view.layoutIfNeeded()
-      }
-      
-  }
-}
 

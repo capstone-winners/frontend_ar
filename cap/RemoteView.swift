@@ -13,9 +13,9 @@ class RemoteView: UIView {
   // MARK: - Setup
   override init(frame: CGRect) {
     super.init(frame: frame)
-    backgroundColor = .cyan
     translatesAutoresizingMaskIntoConstraints = false
     
+    setBackground()
     setViews()
     setupStackViews()
   }
@@ -23,11 +23,25 @@ class RemoteView: UIView {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  override func tintColorDidChange() {
-    print("color changed amina kodumun yerinde")
-  }
   
   //MARK: - Layout
+  func setBackground() {
+    backgroundColor = .clear
+
+    let blurEffect = UIBlurEffect(style: .dark)
+    let blurEffectView = UIVisualEffectView(effect: blurEffect)
+    //always fill the view
+    insertSubview(blurEffectView, at: 0)
+    
+    blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      blurEffectView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+      blurEffectView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+      blurEffectView.topAnchor.constraint(equalTo: self.topAnchor),
+      blurEffectView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+    ])
+  }
+  
   func setViews() {
     //addSubview(timeUpdaterDisplay)
     //addSubview(avaibleDevicesButton)
@@ -57,6 +71,10 @@ class RemoteView: UIView {
     //child.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     child.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.95).isActive = true
     child.heightAnchor.constraint(equalToConstant: 33).isActive = true
+    
+    addSubview(magicButton)
+    magicButton.bottomAnchor.constraint(equalTo: child.topAnchor, constant: -10).isActive = true
+    magicButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
   }
   
   func layoutViews() {
@@ -139,5 +157,12 @@ class RemoteView: UIView {
     label.font = .systemFont(ofSize: 13)
     
     return label
+  }()
+  
+  var magicButton : UIButton = {
+    let image = UIImage(systemName: "hare")?.withRenderingMode(.alwaysTemplate)
+    let button = UIButton(type: .custom, backgroundColor: nil, image: image, imageTintColor: .white)
+
+    return button
   }()
 }
