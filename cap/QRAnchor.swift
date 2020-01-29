@@ -8,13 +8,16 @@
 
 import Foundation
 import ARKit
+import Vision
 
 class QRAnchor : ARAnchor {
   
+  var observation: VNBarcodeObservation
   var label: String
   
   required init(anchor: ARAnchor) {
     if let tempAnchor = anchor as? QRAnchor {
+      self.observation = tempAnchor.observation
       self.label = tempAnchor.label
       super.init(anchor: anchor)
     } else {
@@ -23,8 +26,10 @@ class QRAnchor : ARAnchor {
     
   }
   
-  init(transform: simd_float4x4, labeled label: String) {
-    self.label = label
+  init(transform: simd_float4x4, _ observation: VNBarcodeObservation) {
+    self.observation = observation
+    self.label = observation.payloadStringValue!
+
     super.init(transform: transform)
    }
   
