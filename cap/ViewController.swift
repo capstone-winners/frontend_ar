@@ -49,10 +49,10 @@ class ViewController: UIViewController{
   
   func configureRemoteView() {
     NSLayoutConstraint.activate([
-      remoteViewController.remoteView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      remoteViewController.remoteView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      remoteViewController.remoteView.heightAnchor.constraint(equalToConstant: 60),
-      remoteViewController.remoteView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60)
+      remoteViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      remoteViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      remoteViewController.view.heightAnchor.constraint(equalToConstant: 60),
+      remoteViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60)
     ])
   }
   

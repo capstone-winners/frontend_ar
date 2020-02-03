@@ -23,6 +23,8 @@
 		499C514523DB48E400FF9CBB /* RemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514423DB48E300FF9CBB /* RemoteView.swift */; };
 		499C514723E0F48D00FF9CBB /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514623E0F48D00FF9CBB /* RemoteViewController.swift */; };
 		499C514A23E10A5300FF9CBB /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 499C514923E10A5300FF9CBB /* PanModal */; };
+		499C515023E236F000FF9CBB /* ClimateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514F23E236F000FF9CBB /* ClimateView.swift */; };
+		49FBA97F23E4B80E001BA3F1 /* AbstractRemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA97E23E4B80E001BA3F1 /* AbstractRemoteView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,19 @@
 			remoteInfo = cap;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		499C517023E4113F00FF9CBB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4992C24923D04BB4002C712F /* cap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cap.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,6 +79,9 @@
 		499C514023D2BB3700FF9CBB /* QRAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAnchor.swift; sourceTree = "<group>"; };
 		499C514423DB48E300FF9CBB /* RemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteView.swift; sourceTree = "<group>"; };
 		499C514623E0F48D00FF9CBB /* RemoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
+		499C514F23E236F000FF9CBB /* ClimateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimateView.swift; sourceTree = "<group>"; };
+		499C518B23E4159300FF9CBB /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = "../../../Library/Autosave Information/MyPlayground.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		49FBA97E23E4B80E001BA3F1 /* AbstractRemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractRemoteView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +113,7 @@
 		4992C24023D04BB4002C712F = {
 			isa = PBXGroup;
 			children = (
+				499C518B23E4159300FF9CBB /* MyPlayground.playground */,
 				4992C24B23D04BB4002C712F /* cap */,
 				4992C26223D04BB7002C712F /* capTests */,
 				4992C26D23D04BB8002C712F /* capUITests */,
@@ -115,16 +134,12 @@
 		4992C24B23D04BB4002C712F /* cap */ = {
 			isa = PBXGroup;
 			children = (
-				4992C24C23D04BB4002C712F /* AppDelegate.swift */,
 				4992C24E23D04BB4002C712F /* art.scnassets */,
+				4992C24C23D04BB4002C712F /* AppDelegate.swift */,
 				4992C25023D04BB4002C712F /* ViewController.swift */,
-				499C513E23D0EF8800FF9CBB /* QRAnchorDetector.swift */,
-				499C514423DB48E300FF9CBB /* RemoteView.swift */,
-				499C514623E0F48D00FF9CBB /* RemoteViewController.swift */,
+				49FBA97D23E4B7AE001BA3F1 /* AR */,
+				49FBA97C23E4B77A001BA3F1 /* RemoteViews */,
 				4992C27E23D0C47C002C712F /* Utilities.swift */,
-				4992C27C23D0BF40002C712F /* QRPlane.swift */,
-				499C514023D2BB3700FF9CBB /* QRAnchor.swift */,
-				499C513C23D0ED6500FF9CBB /* Plane.swift */,
 				4992C25523D04BB7002C712F /* Assets.xcassets */,
 				4992C28623D0E9D3002C712F /* Assets.scnassets */,
 				4992C25723D04BB7002C712F /* LaunchScreen.storyboard */,
@@ -151,6 +166,28 @@
 			path = capUITests;
 			sourceTree = "<group>";
 		};
+		49FBA97C23E4B77A001BA3F1 /* RemoteViews */ = {
+			isa = PBXGroup;
+			children = (
+				499C514623E0F48D00FF9CBB /* RemoteViewController.swift */,
+				49FBA97E23E4B80E001BA3F1 /* AbstractRemoteView.swift */,
+				499C514423DB48E300FF9CBB /* RemoteView.swift */,
+				499C514F23E236F000FF9CBB /* ClimateView.swift */,
+			);
+			path = RemoteViews;
+			sourceTree = "<group>";
+		};
+		49FBA97D23E4B7AE001BA3F1 /* AR */ = {
+			isa = PBXGroup;
+			children = (
+				499C513E23D0EF8800FF9CBB /* QRAnchorDetector.swift */,
+				4992C27C23D0BF40002C712F /* QRPlane.swift */,
+				499C514023D2BB3700FF9CBB /* QRAnchor.swift */,
+				499C513C23D0ED6500FF9CBB /* Plane.swift */,
+			);
+			path = AR;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -161,6 +198,7 @@
 				4992C24523D04BB4002C712F /* Sources */,
 				4992C24623D04BB4002C712F /* Frameworks */,
 				4992C24723D04BB4002C712F /* Resources */,
+				499C517023E4113F00FF9CBB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -291,10 +329,12 @@
 			files = (
 				4992C25123D04BB4002C712F /* ViewController.swift in Sources */,
 				499C514723E0F48D00FF9CBB /* RemoteViewController.swift in Sources */,
+				499C515023E236F000FF9CBB /* ClimateView.swift in Sources */,
 				499C514123D2BB3700FF9CBB /* QRAnchor.swift in Sources */,
 				499C514523DB48E400FF9CBB /* RemoteView.swift in Sources */,
 				4992C27D23D0BF40002C712F /* QRPlane.swift in Sources */,
 				499C513D23D0ED6500FF9CBB /* Plane.swift in Sources */,
+				49FBA97F23E4B80E001BA3F1 /* AbstractRemoteView.swift in Sources */,
 				4992C27F23D0C47C002C712F /* Utilities.swift in Sources */,
 				4992C24D23D04BB4002C712F /* AppDelegate.swift in Sources */,
 				499C513F23D0EF8800FF9CBB /* QRAnchorDetector.swift in Sources */,
@@ -461,6 +501,7 @@
 		4992C27423D04BB8002C712F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6C7WSDTC88;
@@ -479,6 +520,7 @@
 		4992C27523D04BB8002C712F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6C7WSDTC88;
