@@ -87,7 +87,7 @@ class QRPlane: SCNNode {
     
     let textNode = SCNNode(geometry: textGeometry)
     // scale down the size of the text
-    textNode.simdScale = SIMD3<Float>(0.0005)
+    textNode.simdScale = SIMD3<Float>(repeating: 0.0005)
     
     return textNode
   }
@@ -97,13 +97,13 @@ extension QRPlane {
   
   func runHighlight(on node: SCNNode, width qrWidth: CGFloat, height qrHeight: CGFloat) {
     self.highlightDetection(on: node, width: qrWidth, height: qrHeight, completionHandler: {
-
-        // Introduce virtual content
-        self.displayDetailView(on: node, xOffset: qrWidth)
-
-        // Animate the WebView to the right
-        self.displayWebView(on: node, xOffset: qrWidth)
-
+      
+      // Introduce virtual content
+      self.displayDetailView(on: node, xOffset: qrWidth)
+      
+      // Animate the WebView to the right
+      self.displayWebView(on: node, xOffset: qrWidth)
+      
     })
   }
   
@@ -140,31 +140,31 @@ extension QRPlane {
   }
   
   func highlightDetection(on rootNode: SCNNode, width: CGFloat, height: CGFloat, completionHandler block: @escaping (() -> Void)) {
-      let planeNode = SCNNode(geometry: SCNPlane(width: width, height: height))
-      planeNode.geometry?.firstMaterial?.diffuse.contents = UIColor.qrColor
-      planeNode.position.z += 0.1
-      planeNode.opacity = 0
-      
-      rootNode.addChildNode(planeNode)
-      planeNode.runAction(self.imageHighlightAction) {
-          block()
-      }
-      planeNode.opacity = 1
+    let planeNode = SCNNode(geometry: SCNPlane(width: width, height: height))
+    planeNode.geometry?.firstMaterial?.diffuse.contents = UIColor.qrColor
+    planeNode.position.z += 0.1
+    planeNode.opacity = 0
+    
+    rootNode.addChildNode(planeNode)
+    planeNode.runAction(self.imageHighlightAction) {
+      block()
+    }
+    planeNode.opacity = 1
   }
   
   var imageHighlightAction: SCNAction {
-      return .sequence([
-          .wait(duration: 0.25),
-          .fadeOpacity(to: 0.85, duration: 0.25),
-          .fadeOpacity(to: 0.15, duration: 0.25),
-          .fadeOpacity(to: 0.85, duration: 0.25),
-          .fadeOpacity(to: 0.15, duration: 0.25),
-          .fadeOpacity(to: 0.85, duration: 0.25),
-          .fadeOpacity(to: 0.15, duration: 0.25),
-          .fadeOpacity(to: 0.85, duration: 0.25),
-          .fadeOpacity(to: 0.15, duration: 0.25),
-          .fadeOut(duration: 0.5)//,
-          //.removeFromParentNode()
-          ])
+    return .sequence([
+      .wait(duration: 0.25),
+      .fadeOpacity(to: 0.85, duration: 0.25),
+      .fadeOpacity(to: 0.15, duration: 0.25),
+      .fadeOpacity(to: 0.85, duration: 0.25),
+      .fadeOpacity(to: 0.15, duration: 0.25),
+      .fadeOpacity(to: 0.85, duration: 0.25),
+      .fadeOpacity(to: 0.15, duration: 0.25),
+      .fadeOpacity(to: 0.85, duration: 0.25),
+      .fadeOpacity(to: 0.15, duration: 0.25),
+      .fadeOut(duration: 0.5)//,
+      //.removeFromParentNode()
+    ])
   }
 }

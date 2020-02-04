@@ -11,13 +11,13 @@ import UIKit
 
 class AbstractRemoteView: UIView {
   var titleStackView : UIStackView!
-  var deviceName: String!
+  var data: DeviceData!
   
   // MARK: - Setup
-  override init(frame: CGRect) {
+  init(frame: CGRect, data: DeviceData) {
     super.init(frame: frame)
     translatesAutoresizingMaskIntoConstraints = false
-    deviceName = "Abstract Remote"
+    self.data = data
     
     setBackground()
     setViews()
@@ -31,7 +31,7 @@ class AbstractRemoteView: UIView {
   //MARK: - Layout
   func setBackground() {
     backgroundColor = .clear
-
+    
     let blurEffect = UIBlurEffect(style: .dark)
     let blurEffectView = UIVisualEffectView(effect: blurEffect)
     //always fill the view
@@ -54,7 +54,7 @@ class AbstractRemoteView: UIView {
   private func setupStackViews() {
     // Set the Title
     titleStackView = UIStackView(arrangedSubviews: [titleImage, titleLabel])
-    titleLabel.text = deviceName
+    titleLabel.text = data.deviceId
     titleStackView.distribution = .equalSpacing
     titleStackView.axis = .horizontal
     titleStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +65,7 @@ class AbstractRemoteView: UIView {
       titleStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
       titleStackView.topAnchor.constraint(equalTo: topAnchor, constant: 20)
     ])
-        
+    
     specializeView()
   }
   
@@ -102,6 +102,6 @@ class AbstractRemoteView: UIView {
   }
   
   func specializeView() {
-   preconditionFailure("This method must be overridden")
+    preconditionFailure("This method must be overridden")
   }
 }

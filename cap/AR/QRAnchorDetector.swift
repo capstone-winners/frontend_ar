@@ -64,7 +64,7 @@ class QRDetector {
   func requestHandler(request: VNRequest, error: Error?) {
     // Get the first result out of the results, if there are any
     if let results = request.results, let result = results.first as? VNBarcodeObservation {
-      guard let payload = result.payloadStringValue else {return}
+      guard result.payloadStringValue != nil else {return}
       
       // Get the bounding box for the bar code and find the center
       var rect = result.boundingBox

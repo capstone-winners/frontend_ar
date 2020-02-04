@@ -102,7 +102,7 @@ extension ViewController : ARSCNViewDelegate {
     // Show statistics such as fps and timing information
     sceneView.showsStatistics = true
     view.addSubview(sceneView)
-
+    
     sceneView.translatesAutoresizingMaskIntoConstraints = false
     sceneView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
     sceneView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true

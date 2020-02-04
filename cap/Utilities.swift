@@ -110,3 +110,32 @@ extension UIImage {
     removeFromParent()
   }
 }
+
+func getStringField(labeled label: String, withData data: String) -> UIStackView{
+  let fieldLabel = UILabel()
+  fieldLabel.translatesAutoresizingMaskIntoConstraints = false
+  fieldLabel.text = label
+  fieldLabel.textColor = .white
+  fieldLabel.backgroundColor = .clear
+  fieldLabel.sizeToFit()
+  fieldLabel.textAlignment = .justified
+  fieldLabel.numberOfLines = 1
+  fieldLabel.font = .systemFont(ofSize: 13)
+  
+  let fieldData = UILabel()
+  fieldData.translatesAutoresizingMaskIntoConstraints = false
+  fieldData.text = data
+  fieldData.textColor = .white
+  fieldData.backgroundColor = .clear
+  fieldData.sizeToFit()
+  fieldData.textAlignment = .justified
+  fieldData.numberOfLines = 1
+  fieldData.font = .systemFont(ofSize: 13)
+  
+  let field = UIStackView(arrangedSubviews: [fieldLabel, fieldData])
+  field.distribution = .equalSpacing
+  field.axis = .horizontal
+  field.translatesAutoresizingMaskIntoConstraints = false
+  
+  return field
+}

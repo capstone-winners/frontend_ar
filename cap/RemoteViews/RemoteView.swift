@@ -5,10 +5,19 @@
 //  Created by Andrew Tu on 1/24/20.
 //  Copyright © 2020 Andrew Tu. All rights reserved.
 //
-import Foundation
 import UIKit
 
 class RemoteView : AbstractRemoteView {
+  init() {
+    let data = DeviceData(deviceId: "Abstract Device", deviceType: DeviceType.abstract, icon: UIImage(systemName: "device"), status: DeviceStatus.ok)
+    
+    super.init(frame: CGRect.zero, data: data)
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func specializeView() {
     let topStackView = UIStackView(arrangedSubviews:[deviceButton, deviceInfoLabel]) ///TODO
     topStackView.distribution = .equalSpacing

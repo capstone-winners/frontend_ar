@@ -6,14 +6,27 @@
 //  Copyright © 2020 Andrew Tu. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 class ClimateView : AbstractRemoteView {
+  var customData : ClimateData {
+    get{
+      return data as! ClimateData
+    } set {
+      data = newValue
+    }
+  }
+  
+  
   // MARK: - Setup
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    deviceName = "Climate Chip"
+  convenience init() {
+    self.init(data: dummyClimateData())
+  }
+  
+  init(data: ClimateData) {
+    super.init(frame: CGRect.zero, data: data)
+    self.titleImage.image = customData.icon
+    
     specializeView()
   }
   
@@ -44,45 +57,31 @@ class ClimateView : AbstractRemoteView {
     ])
   }
   
-  private static func getField(labeled label: String, withData data: String) -> UIStackView{
-    let fieldLabel = UILabel()
-    fieldLabel.translatesAutoresizingMaskIntoConstraints = false
-    fieldLabel.text = label
-    fieldLabel.textColor = .white
-    fieldLabel.backgroundColor = .clear
-    fieldLabel.sizeToFit()
-    fieldLabel.textAlignment = .justified
-    fieldLabel.numberOfLines = 1
-    fieldLabel.font = .systemFont(ofSize: 13)
+  func reloadView() {
+    if let view = temperatureStackView.arrangedSubviews[1] as? UILabel {
+      view.text  = "\(customData.pressure) degrees"
+    }
     
-    let fieldData = UILabel()
-    fieldData.translatesAutoresizingMaskIntoConstraints = false
-    fieldData.text = data
-    fieldData.textColor = .white
-    fieldData.backgroundColor = .clear
-    fieldData.sizeToFit()
-    fieldData.textAlignment = .justified
-    fieldData.numberOfLines = 1
-    fieldData.font = .systemFont(ofSize: 13)
+    if let view = humidityStackView.arrangedSubviews[1] as? UILabel {
+      view.text  = "\(customData.humidity) units"
+    }
     
-    let field = UIStackView(arrangedSubviews: [fieldLabel, fieldData])
-    field.distribution = .equalSpacing
-    field.axis = .horizontal
-    field.translatesAutoresizingMaskIntoConstraints = false
-    
-    return field
+    if let view = pressureStackView.arrangedSubviews[1] as? UILabel {
+      view.text  = "\(customData.pressure) units"
+    }
   }
   
-  var temperatureStackView : UIStackView = {
-    let field =  getField(labeled: "Temperature", withData:"fucking hot")
+  lazy var temperatureStackView : UIStackView = {
+    let data = customData
+    let field =  getStringField(labeled: "Temperature", withData:"fucking hot")
     return field;
   }()
   
-  var humidityStackView : UIStackView = {
-    return getField(labeled: "Humidity", withData:"fucking wet")
+  lazy var humidityStackView : UIStackView = {
+    return getStringField(labeled: "Humidity", withData:"fucking wet")
   }()
   
-  var pressureStackView : UIStackView = {
-    return getField(labeled: "Pressure", withData: "fucking high")
+  lazy var pressureStackView : UIStackView = {
+    return getStringField(labeled: "Pressure", withData: "fucking high")
   }()
 }

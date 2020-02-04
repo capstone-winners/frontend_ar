@@ -5,8 +5,6 @@
 //  Created by Andrew Tu on 1/17/20.
 //  Copyright © 2020 Andrew Tu. All rights reserved.
 //
-
-import Foundation
 import ARKit
 import Vision
 
@@ -29,9 +27,9 @@ class QRAnchor : ARAnchor {
   init(transform: simd_float4x4, _ observation: VNBarcodeObservation) {
     self.observation = observation
     self.label = observation.payloadStringValue!
-
+    
     super.init(transform: transform)
-   }
+  }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
