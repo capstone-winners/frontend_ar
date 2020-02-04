@@ -16,7 +16,6 @@ class RemoteViewController: UIViewController {
     view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
     
-    
     contentView = RemoteView()
     view.addSubview(contentView)
     setupRemoteView()

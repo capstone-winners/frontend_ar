@@ -145,6 +145,7 @@
 				4992C25023D04BB4002C712F /* ViewController.swift */,
 				49FBA97D23E4B7AE001BA3F1 /* AR */,
 				49FBA97C23E4B77A001BA3F1 /* RemoteViews */,
+				49FBA98623E952C1001BA3F1 /* Model */,
 				4992C27E23D0C47C002C712F /* Utilities.swift */,
 				4992C25523D04BB7002C712F /* Assets.xcassets */,
 				4992C28623D0E9D3002C712F /* Assets.scnassets */,
@@ -180,8 +181,6 @@
 				499C514423DB48E300FF9CBB /* RemoteView.swift */,
 				499C514F23E236F000FF9CBB /* ClimateView.swift */,
 				49FBA98023E8A40A001BA3F1 /* LightView.swift */,
-				49FBA98223E8A915001BA3F1 /* IoTDataModel.swift */,
-				49FBA98423E91C58001BA3F1 /* DummyData.swift */,
 			);
 			path = RemoteViews;
 			sourceTree = "<group>";
@@ -195,6 +194,15 @@
 				499C513C23D0ED6500FF9CBB /* Plane.swift */,
 			);
 			path = AR;
+			sourceTree = "<group>";
+		};
+		49FBA98623E952C1001BA3F1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				49FBA98223E8A915001BA3F1 /* IoTDataModel.swift */,
+				49FBA98423E91C58001BA3F1 /* DummyData.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
