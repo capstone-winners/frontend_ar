@@ -17,7 +17,6 @@ class ViewController: UIViewController{
   let label: UILabel = UILabel()
   let remoteViewController = RemoteViewController()
   
-  
   var qrDetector: QRDetector = QRDetector()
   
   override func loadView() {
@@ -36,14 +35,14 @@ class ViewController: UIViewController{
     label.isHidden = true
     
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureMakeFullScreen(gesture:)))
+    tapGesture.numberOfTapsRequired = 3
     sceneView.addGestureRecognizer(tapGesture)
     //addController(remoteViewController)
     //configureRemoteView()
   }
   
   @objc func tapGestureMakeFullScreen(gesture: UITapGestureRecognizer) {
-    remoteViewController.state = Date()
-    print(remoteViewController.state.description)
+    remoteViewController.updateView(state: nil)
     self.present(remoteViewController, animated: true, completion: nil)
   }
   
@@ -77,6 +76,11 @@ class ViewController: UIViewController{
   @IBAction func clearCodes(_ sender: UIButton) {
     qrDetector.clear()
     label.isHidden = true
+  }
+  
+  func launchRemoteView(anchor: QRAnchor){
+    remoteViewController.updateView(state: anchor)
+    self.present(remoteViewController, animated: true, completion: nil)
   }
   
 }
@@ -124,6 +128,7 @@ extension ViewController : ARSCNViewDelegate {
         self.label.text = "Last detected: " + qrAnchor.label
         self.label.sizeToFit()
         self.label.isHidden = false
+        self.launchRemoteView(anchor: qrAnchor)
       }
     }
   }

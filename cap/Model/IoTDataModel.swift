@@ -9,13 +9,13 @@
 import UIKit
 
 // MARK: General Device Types
-enum DeviceStatus {
+enum DeviceStatus : String, Codable {
   case ok
   case noConnection
   case error
 }
 
-enum DeviceType {
+enum DeviceType : String, Codable {
     case light
     case climate
     case lock
@@ -23,15 +23,15 @@ enum DeviceType {
     case abstract
 }
 
-class DeviceData {
+class DeviceData : Codable {
   // MARK: Properties
-  var deviceId: String // Interchangeable as a name.
+  var deviceId: String            // Interchangeable as a name.
   var deviceType: DeviceType
-  var icon: UIImage?
+  var icon: String
   var status: DeviceStatus
   
   // MARK: Initialization
-  init(deviceId: String, deviceType: DeviceType, icon: UIImage?, status: DeviceStatus) {
+  init(deviceId: String, deviceType: DeviceType, icon: String, status: DeviceStatus) {
     self.deviceId = deviceId
     self.deviceType = deviceType
     self.icon = icon
@@ -49,12 +49,16 @@ class ClimateData: DeviceData {
   var humidity: Float
   var pressure: Float
   
-  init?(deviceId: String, deviceType: DeviceType, icon: UIImage?, status: DeviceStatus, temperature: Float, humidity: Float, pressure: Float) {
+  init?(deviceId: String, deviceType: DeviceType, icon: String, status: DeviceStatus, temperature: Float, humidity: Float, pressure: Float) {
     self.temperature = temperature
     self.humidity = humidity
     self.pressure = pressure
     
     super.init(deviceId: deviceId, deviceType: deviceType, icon: icon, status: status)
+  }
+  
+  required init(from decoder: Decoder) throws {
+    fatalError("init(from:) has not been implemented")
   }
 }
 
@@ -63,7 +67,7 @@ class LightData: DeviceData {
   var color: UIColor
   var brightness: Float
   
-  init?(deviceId: String, deviceType: DeviceType, icon: UIImage?, status: DeviceStatus, color: UIColor, brightness: Float) {
+  init?(deviceId: String, deviceType: DeviceType, icon: String, status: DeviceStatus, color: UIColor, brightness: Float) {
     
     guard(brightness <= 1.0 && brightness >= 0) else {
       return nil
@@ -74,15 +78,47 @@ class LightData: DeviceData {
     
     super.init(deviceId: deviceId, deviceType: deviceType, icon: icon, status: status)
   }
+  
+  required init(from decoder: Decoder) throws {
+    fatalError("init(from:) has not been implemented")
+  }
 }
 
 // MARK: Lock Data
 class LockData: DeviceData {
   var isLocked: Bool
   
-  init?(deviceId: String, deviceType: DeviceType, icon: UIImage?, status: DeviceStatus, isLocked: Bool) {
+  init?(deviceId: String, deviceType: DeviceType, icon: String, status: DeviceStatus, isLocked: Bool) {
     self.isLocked = isLocked
     
     super.init(deviceId: deviceId, deviceType: deviceType, icon: icon, status: status)
+  }
+  
+  required init(from decoder: Decoder) throws {
+    fatalError("init(from:) has not been implemented")
+  }
+}
+
+enum MusicPlayerState : String, Codable {
+  case playing
+  case paused
+  case stopped
+}
+
+class MusicData: DeviceData {
+  var playerState : MusicPlayerState
+  var volume: Float
+  var song: String
+  
+  init?(deviceId: String, deviceType: DeviceType, icon: String, status: DeviceStatus, playerState: MusicPlayerState, volume: Float, song: String) {
+    self.playerState = playerState
+    self.volume = volume
+    self.song = song
+    
+    super.init(deviceId: deviceId, deviceType: deviceType, icon: icon, status: status)
+  }
+  
+  required init(from decoder: Decoder) throws {
+    fatalError("init(from:) has not been implemented")
   }
 }

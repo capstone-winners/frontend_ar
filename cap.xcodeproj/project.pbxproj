@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -22,12 +22,12 @@
 		499C514123D2BB3700FF9CBB /* QRAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514023D2BB3700FF9CBB /* QRAnchor.swift */; };
 		499C514523DB48E400FF9CBB /* RemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514423DB48E300FF9CBB /* RemoteView.swift */; };
 		499C514723E0F48D00FF9CBB /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514623E0F48D00FF9CBB /* RemoteViewController.swift */; };
-		499C514A23E10A5300FF9CBB /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 499C514923E10A5300FF9CBB /* PanModal */; };
 		499C515023E236F000FF9CBB /* ClimateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514F23E236F000FF9CBB /* ClimateView.swift */; };
 		49FBA97F23E4B80E001BA3F1 /* AbstractRemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA97E23E4B80E001BA3F1 /* AbstractRemoteView.swift */; };
 		49FBA98123E8A40A001BA3F1 /* LightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA98023E8A40A001BA3F1 /* LightView.swift */; };
 		49FBA98323E8A915001BA3F1 /* IoTDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA98223E8A915001BA3F1 /* IoTDataModel.swift */; };
 		49FBA98523E91C58001BA3F1 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA98423E91C58001BA3F1 /* DummyData.swift */; };
+		49FBA98823E9CC4C001BA3F1 /* IoTDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA98723E9CC4C001BA3F1 /* IoTDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +88,7 @@
 		49FBA98023E8A40A001BA3F1 /* LightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightView.swift; sourceTree = "<group>"; };
 		49FBA98223E8A915001BA3F1 /* IoTDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoTDataModel.swift; sourceTree = "<group>"; };
 		49FBA98423E91C58001BA3F1 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
+		49FBA98723E9CC4C001BA3F1 /* IoTDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoTDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +96,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				499C514A23E10A5300FF9CBB /* PanModal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				49FBA98223E8A915001BA3F1 /* IoTDataModel.swift */,
+				49FBA98723E9CC4C001BA3F1 /* IoTDataManager.swift */,
 				49FBA98423E91C58001BA3F1 /* DummyData.swift */,
 			);
 			path = Model;
@@ -223,7 +224,6 @@
 			);
 			name = cap;
 			packageProductDependencies = (
-				499C514923E10A5300FF9CBB /* PanModal */,
 			);
 			productName = cap;
 			productReference = 4992C24923D04BB4002C712F /* cap.app */;
@@ -298,7 +298,6 @@
 			);
 			mainGroup = 4992C24023D04BB4002C712F;
 			packageReferences = (
-				499C514823E10A5300FF9CBB /* XCRemoteSwiftPackageReference "PanModal" */,
 			);
 			productRefGroup = 4992C24A23D04BB4002C712F /* Products */;
 			projectDirPath = "";
@@ -358,6 +357,7 @@
 				4992C27F23D0C47C002C712F /* Utilities.swift in Sources */,
 				4992C24D23D04BB4002C712F /* AppDelegate.swift in Sources */,
 				499C513F23D0EF8800FF9CBB /* QRAnchorDetector.swift in Sources */,
+				49FBA98823E9CC4C001BA3F1 /* IoTDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -680,25 +680,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		499C514823E10A5300FF9CBB /* XCRemoteSwiftPackageReference "PanModal" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/slackhq/PanModal.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.6;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		499C514923E10A5300FF9CBB /* PanModal */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 499C514823E10A5300FF9CBB /* XCRemoteSwiftPackageReference "PanModal" */;
-			productName = PanModal;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4992C24123D04BB4002C712F /* Project object */;
 }

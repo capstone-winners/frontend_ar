@@ -9,7 +9,7 @@ import UIKit
 
 class RemoteView : AbstractRemoteView {
   init() {
-    let data = DeviceData(deviceId: "Abstract Device", deviceType: DeviceType.abstract, icon: UIImage(systemName: "device"), status: DeviceStatus.ok)
+    let data = dummyAbstractData()
     
     super.init(frame: CGRect.zero, data: data)
   }
@@ -32,16 +32,6 @@ class RemoteView : AbstractRemoteView {
       topStackView.heightAnchor.constraint(equalToConstant: 100)
     ])
     
-    let child = UILabel()
-    child.text = "hello world"
-    child.translatesAutoresizingMaskIntoConstraints = false
-    child.backgroundColor = .red
-    addSubview(child)
-    child.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-    child.bottomAnchor.constraint(equalTo: topStackView.topAnchor, constant: 0).isActive = true
-    //child.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-    child.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.95).isActive = true
-    child.heightAnchor.constraint(equalToConstant: 33).isActive = true
     
     let buttonStackView = UIStackView(arrangedSubviews:[climateButton, lightButton, musicButton, lockButton])
     buttonStackView.distribution = .equalCentering
@@ -52,10 +42,10 @@ class RemoteView : AbstractRemoteView {
     addSubview(buttonStackView)
     
     NSLayoutConstraint.activate([
-      buttonStackView.bottomAnchor.constraint(equalTo: child.topAnchor, constant: -10),
+      buttonStackView.bottomAnchor.constraint(equalTo: topStackView.topAnchor, constant: -10),
       buttonStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-      buttonStackView.leadingAnchor.constraint(equalTo: child.leadingAnchor),
-      buttonStackView.trailingAnchor.constraint(equalTo: child.trailingAnchor)
+      buttonStackView.leadingAnchor.constraint(equalTo: topStackView.leadingAnchor),
+      buttonStackView.trailingAnchor.constraint(equalTo: topStackView.trailingAnchor)
     ])
   }
   

@@ -25,7 +25,7 @@ class ClimateView : AbstractRemoteView {
   
   init(data: ClimateData) {
     super.init(frame: CGRect.zero, data: data)
-    self.titleImage.image = customData.icon
+    self.titleImage.image = UIImage(systemName: customData.icon)
     
     specializeView()
   }
@@ -72,16 +72,15 @@ class ClimateView : AbstractRemoteView {
   }
   
   lazy var temperatureStackView : UIStackView = {
-    let data = customData
-    let field =  getStringField(labeled: "Temperature", withData:"fucking hot")
+    let field =  getStringField(labeled: "Temperature", withData: "\(customData.temperature) degrees")
     return field;
   }()
   
   lazy var humidityStackView : UIStackView = {
-    return getStringField(labeled: "Humidity", withData:"fucking wet")
+    return getStringField(labeled: "Humidity", withData: "\(customData.humidity) units")
   }()
   
   lazy var pressureStackView : UIStackView = {
-    return getStringField(labeled: "Pressure", withData: "fucking high")
+    return getStringField(labeled: "Pressure", withData: "\(customData.pressure) units")
   }()
 }

@@ -23,7 +23,7 @@ class LightView : AbstractRemoteView {
   
   init(data: LightData) {
     super.init(frame: CGRect.zero, data: data)
-    self.titleImage.image = customData.icon
+    self.titleImage.image = UIImage(systemName: customData.icon)
   }
   
   required init?(coder aDecoder: NSCoder) {

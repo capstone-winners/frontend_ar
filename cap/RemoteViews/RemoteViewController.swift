@@ -8,44 +8,82 @@
 import UIKit
 
 class RemoteViewController: UIViewController {
-  var state : Date = Date()
-  var contentView: UIView!
+  // MARK: - Properties
+  var state : QRAnchor?
+  var contentView: UIView = RemoteView()
+  #warning("replace this with the real version")
+  var iotDecoder : IotDataManager = DummyIotDataManager()
+  var deviceState : DeviceData? {
+    get {
+      return iotDecoder.decode(anchor: state)
+    }
+  }
+  
+  // MARK: - Downcast Content Views
+   var abstractRemoteView : AbstractRemoteView {
+     return contentView as! AbstractRemoteView
+   }
+   
+   var remoteView: RemoteView {
+     return contentView as! RemoteView
+   }
+   
+   var lightView: LightView {
+     return contentView as! LightView
+   }
   
   // MARK: - View controller code
   override func loadView() {
-    view = UIView()
-    view.translatesAutoresizingMaskIntoConstraints = false
+    view = UIView()                                           // Initialize view.
+    view.translatesAutoresizingMaskIntoConstraints = false    // Necessary for auto-layout.
     
     contentView = RemoteView()
     view.addSubview(contentView)
+    
     setupRemoteView()
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    if contentView is RemoteView {
-      print("loading remote view")
+    
+    switch contentView {
+    case is RemoteView:
+      print("did appear: remote view")
       setupRemoteView()
-    } else if contentView is LightView {
-      print("loading light view")
+    case is LightView:
+      print("did appear: light view")
+    case is ClimateView:
+      print("did appear: climate view")
+    default:
+      print("wut the fuk u tryna do m8?")
     }
   }
   
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    print("disappearing current view")
-    viewFadeIn(currentView: abstractRemoteView, newView: RemoteView())
+    
+    // Check if we need to convert the view back to a normal RemoteView.
+    if !(contentView is RemoteView) {
+      viewFadeIn(currentView: abstractRemoteView, newView: RemoteView())
+    }
   }
   
-  // MARK: - Downcast Content Views
-  var abstractRemoteView : AbstractRemoteView {
-    return contentView as! AbstractRemoteView
-  }
-  var remoteView: RemoteView {
-      return contentView as! RemoteView
-  }
-  var lightView: LightView {
-      return contentView as! LightView
+  // MARK: -
+  func updateView(state: QRAnchor?) {
+    self.state = state
+    
+    switch deviceState!.deviceType {
+    case DeviceType.light:
+      launchLightView()
+    case DeviceType.climate:
+      launchClimateView()
+    case DeviceType.lock:
+      launchLockView()
+    case DeviceType.music:
+      launchMusicView()
+    case DeviceType.abstract:
+      print("do nothing")
+    }
   }
   
   // MARK: - RemoteView
@@ -56,24 +94,37 @@ class RemoteViewController: UIViewController {
       return
     }
     
+    if deviceState != nil {
+      remoteView.deviceInfoLabel.text = deviceState!.deviceId
+    }
+    
     // Update view size.
     remoteView.fillView(view)
     remoteView.isUserInteractionEnabled = true
     
     // Setup buttons.
-    remoteView.climateButton.addTarget(self, action: #selector(climateButtonAction), for: .touchUpInside)
-    remoteView.lightButton.addTarget(self, action: #selector(lightButtonAction), for: .touchUpInside)
-    remoteView.lockButton.addTarget(self, action: #selector(lockButtonAction), for: .touchUpInside)
-    remoteView.musicButton.addTarget(self, action: #selector(musicButtonAction), for: .touchUpInside)
+    remoteView.climateButton.addTarget(self, action: #selector(launchClimateView), for: .touchUpInside)
+    remoteView.lightButton.addTarget(self, action: #selector(launchLightView), for: .touchUpInside)
+    remoteView.lockButton.addTarget(self, action: #selector(launchLockView), for: .touchUpInside)
+    remoteView.musicButton.addTarget(self, action: #selector(launchMusicView), for: .touchUpInside)
     
     // Add gestures.
     addGestures(view: contentView, singleTapSelector: #selector(tapGestureMakeFullScreen(gesture:)),
     doubleTapSelector: nil)
   }
   
-  @objc func climateButtonAction() {
+  // MARK: - Launchers
+  @objc func launchClimateView() {
     print("Climate button pushed!")
-    let view = ClimateView()
+    safeDeviceInfoLabel("Climate")
+    
+    var view : ClimateView!
+    if let climateData = deviceState as? ClimateData {
+      view = ClimateView(data: climateData)
+    } else {
+      view = ClimateView()
+    }
+    
     view.isUserInteractionEnabled = true
     
     // Add Gestures
@@ -81,13 +132,19 @@ class RemoteViewController: UIViewController {
     doubleTapSelector: #selector(tapGestureReturnHome(gesture:)))
     
     viewFadeIn(currentView: contentView, newView: view)
-    remoteView.deviceInfoLabel.text = "Climate"
   }
-  @objc func lightButtonAction() {
+  
+  @objc func launchLightView() {
     print("Light button pushed!")
-    remoteView.deviceInfoLabel.text = "Light"
+    safeDeviceInfoLabel("Light")
     
-    let view = LightView()
+    var view : LightView!
+    if let lightData = deviceState as? LightData {
+      view = LightView(data: lightData)
+    } else {
+      view = LightView()
+    }
+    
     view.isUserInteractionEnabled = true
     addGestures(view: view, singleTapSelector: #selector(tapGestureLightView(gesture:)),
                 doubleTapSelector: #selector(tapGestureReturnHome(gesture:)))
@@ -95,24 +152,28 @@ class RemoteViewController: UIViewController {
     // Transform View
     viewFadeIn(currentView: contentView, newView: view)
   }
-  @objc func lockButtonAction() {
+  
+  @objc func launchLockView() {
     print("Lock button pushed!")
-    remoteView.deviceInfoLabel.text = "Lock"
-    //viewFadeIn(currentView: remoteView, newView: ClimateView())
-  }
-  @objc func musicButtonAction() {
-    print("Music button pushed!")
-    remoteView.deviceInfoLabel.text = "Music"
+    safeDeviceInfoLabel("Lock")
     //viewFadeIn(currentView: remoteView, newView: ClimateView())
   }
   
+  @objc func launchMusicView() {
+    print("Music button pushed!")
+    safeDeviceInfoLabel("Music")
+    //viewFadeIn(currentView: remoteView, newView: ClimateView())
+  }
+  
+  // MARK: - Tap Gestures
   @objc func tapGestureMakeFullScreen(gesture: UITapGestureRecognizer) {
     print("make full screen!")
-    remoteView.deviceInfoLabel.text = state.description
+    if state != nil {
+      safeDeviceInfoLabel(state!.label)
+    }
   }
   
   @objc func tapGestureLightView(gesture: UITapGestureRecognizer) {
-    print("recognized")
     lightView.customData.brightness = lightView.customData.brightness - 0.05
     lightView.reloadView()
   }
@@ -121,7 +182,8 @@ class RemoteViewController: UIViewController {
     viewFadeIn(currentView: contentView, newView: RemoteView())
   }
   
-  func viewFadeIn(currentView: UIView, newView: AbstractRemoteView) {
+  // MARK: - Helpers
+  private func viewFadeIn(currentView: UIView, newView: AbstractRemoteView) {
     newView.alpha = 0.0
     view.insertSubview(newView, aboveSubview: currentView)
     newView.fillView(self.view)
@@ -135,7 +197,7 @@ class RemoteViewController: UIViewController {
     })
   }
   
-  func addGestures(view: UIView, singleTapSelector: Selector?, doubleTapSelector: Selector?) {
+  private func addGestures(view: UIView, singleTapSelector: Selector?, doubleTapSelector: Selector?) {
       let singleTapGesture = UITapGestureRecognizer(target: self, action: singleTapSelector)
       singleTapGesture.numberOfTapsRequired = 1
       view.addGestureRecognizer(singleTapGesture)
@@ -146,4 +208,11 @@ class RemoteViewController: UIViewController {
 
     singleTapGesture.require(toFail: doubleTapGesture)
   }
+  
+  private func safeDeviceInfoLabel(_ message: String) {
+    guard (contentView as? RemoteView != nil) else {return}
+      
+    remoteView.deviceInfoLabel.text = message
+  }
+  
 }
