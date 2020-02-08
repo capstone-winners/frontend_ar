@@ -92,7 +92,25 @@ class LightView : AbstractRemoteView {
     return field;
   }()
   
+  lazy var submitColorButton : UIButton = {
+    return makeButton(systemName: "eyedropper.full", title: "Color")
+  }()
+  
+  lazy var submitBrightnessButton : UIButton = {
+    return makeButton(systemName: "sun.max.fill", title: "Brightness")
+  }()
+  
+  lazy var submitOnButton : UIButton = {
+    return makeButton(systemName: "power", title: "Power")
+  }()
+  
   lazy var buttonsStackView : UIStackView = {
-    return getStringField(labeled: "Buttons", withData: "fucking buttons")
+    let buttonView = UIStackView(arrangedSubviews:[submitOnButton, submitBrightnessButton, submitColorButton]) ///TODO
+    buttonView.distribution = .equalSpacing
+    buttonView.axis = .horizontal
+    buttonView.translatesAutoresizingMaskIntoConstraints = false
+    buttonView.alignment = .center
+    buttonView.backgroundColor = .clear
+    return buttonView
   }()
 }

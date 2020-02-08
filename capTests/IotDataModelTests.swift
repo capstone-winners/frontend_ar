@@ -48,6 +48,27 @@ class IotDataManagerTests: XCTestCase {
     XCTAssert(obj == nil)
   }
   
+  func testDecodeBadDeviceType() {
+    let badJson = """
+    {\"isOn\":true,\"brightness\":0.01999,\"color\":{\"r\":0,\"g\":0,\"b\":0,\"a\":1},\"super\":{\"status\":\"ok\",\"deviceId\":\"Vibe Check \",\"deviceType\":\"lightbulb\",\"location\":\"Trap House\",\"group\":\"Toms Room\"}}
+
+    """
+    
+    let obj = manager.decode(jsonString: badJson)
+    XCTAssert(obj == nil)
+  }
+  
+  func testDecodeBadSuperType() {
+    let badJson = """
+
+    {\"isOn\":true,\"brightness\":0.01999,\"color\":{\"r\":0,\"g\":0,\"b\":0,\"a\":1},\"super\":10}
+
+    """
+    
+    let obj = manager.decode(jsonString: badJson)
+    XCTAssert(obj == nil)
+  }
+  
   func testPrint(){
     print(dummyLockData().toJSONString())
     print(dummyLightData().toJSONString())

@@ -59,14 +59,18 @@ class IotDataManager {
    */
   func getType(jsonDict: String) -> DeviceType? {
     do {
+      print(jsonDict)
       // make sure this JSON is in the format we expect
       if let json = try JSONSerialization.jsonObject(with: Data(jsonDict.utf8), options: []) as? [String: Any] {
         // try to read out a string array
         if let deviceType = json[DeviceData.DeviceCodingKeys.deviceType.rawValue] as? String{
           return DeviceType(rawValue: deviceType)!
         } else if let superType = json["super"] as? [String: Any] {
-
-          return DeviceType(rawValue: superType[DeviceData.DeviceCodingKeys.deviceType.rawValue] as! String )!
+          guard let raw = superType[DeviceData.DeviceCodingKeys.deviceType.rawValue] as? String else {
+            return nil
+          }
+          
+          return DeviceType(rawValue: raw)
         }
       }
     } catch let error as NSError {
