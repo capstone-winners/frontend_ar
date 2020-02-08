@@ -128,21 +128,23 @@ class ClimateData: DeviceData {
 }
 
 struct CodableColor : Codable {
-  var red : CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0, alpha: CGFloat = 0.0
+  var hue : CGFloat = 0.0, saturation: CGFloat = 0.0, brightness: CGFloat = 0.0, alpha: CGFloat = 0.0, kelvin: CGFloat = 3500
   
   enum CodingKeys : String, CodingKey {
-    case red = "r"
-    case blue = "b"
-    case green = "g"
+    case hue = "h"
+    case saturation = "s"
+    case brightness = "b"
     case alpha = "a"
+    case kelvin = "k"
   }
   
   var uiColor : UIColor {
-    return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+    return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
   }
   
   init(uiColor : UIColor) {
-    uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+    kelvin = 3500
+    uiColor.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
   }
 }
 

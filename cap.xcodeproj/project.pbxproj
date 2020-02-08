@@ -13,6 +13,7 @@
 		4957CE6923EF28D30004E528 /* ActionUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE6823EF28D30004E528 /* ActionUtilities.swift */; };
 		4957CE6B23EF38660004E528 /* ActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE6A23EF38660004E528 /* ActionManager.swift */; };
 		4957CE6D23EF506E0004E528 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE6C23EF506E0004E528 /* Constants.swift */; };
+		4957CE6F23EF61490004E528 /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE6E23EF61490004E528 /* ColorExtensions.swift */; };
 		4992C24D23D04BB4002C712F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4992C24C23D04BB4002C712F /* AppDelegate.swift */; };
 		4992C24F23D04BB4002C712F /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 4992C24E23D04BB4002C712F /* art.scnassets */; };
 		4992C25123D04BB4002C712F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4992C25023D04BB4002C712F /* ViewController.swift */; };
@@ -73,6 +74,7 @@
 		4957CE6823EF28D30004E528 /* ActionUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionUtilities.swift; sourceTree = "<group>"; };
 		4957CE6A23EF38660004E528 /* ActionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionManager.swift; sourceTree = "<group>"; };
 		4957CE6C23EF506E0004E528 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		4957CE6E23EF61490004E528 /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		4992C24923D04BB4002C712F /* cap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4992C24C23D04BB4002C712F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4992C24E23D04BB4002C712F /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				49FBA97D23E4B7AE001BA3F1 /* AR */,
 				49FBA97C23E4B77A001BA3F1 /* RemoteViews */,
 				49FBA98623E952C1001BA3F1 /* Model */,
+				4957CE6E23EF61490004E528 /* ColorExtensions.swift */,
 				4992C27E23D0C47C002C712F /* Utilities.swift */,
 				4992C25523D04BB7002C712F /* Assets.xcassets */,
 				4992C28623D0E9D3002C712F /* Assets.scnassets */,
@@ -381,6 +384,7 @@
 				4992C24D23D04BB4002C712F /* AppDelegate.swift in Sources */,
 				499C513F23D0EF8800FF9CBB /* QRAnchorDetector.swift in Sources */,
 				49FBA98823E9CC4C001BA3F1 /* IoTDataManager.swift in Sources */,
+				4957CE6F23EF61490004E528 /* ColorExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
