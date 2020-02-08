@@ -37,30 +37,32 @@ class DummyIotDataManager : IotDataManager {
 }
 
 func dummyAbstractData() -> DeviceData {
-  let dummy = DeviceData(deviceId: "Abstract Device", deviceType: DeviceType.abstract, icon: "device", status: DeviceStatus.ok)
+  let dummy = DeviceData(deviceId: "Abstract Device", deviceType: DeviceType.abstract, icon: "device", status: DeviceStatus.ok, group: ["g1", "g2"], location: "Trap house")
   
   return dummy
 }
 
+func dummyAbstractDataJson() -> String {
+  return String(data: dummyAbstractData().toJSONData()!, encoding: .utf8)!
+}
+
 func dummyLightData() -> LightData {
-  let dummy = LightData(deviceId: "dummy light", deviceType: DeviceType.light, icon: "lightbulb", status: DeviceStatus.ok, color: .cyan, brightness: 0.88)
+  let dummy = LightData(deviceId: "dummy light", deviceType: DeviceType.light, icon: "lightbulb", status: DeviceStatus.ok, group: ["g1", "g2"], location: "Trap house", isOn: true, color: .cyan, brightness: 0.88)
   return dummy!
 }
 
 func dummyLightDataJson() -> String {
-  let dummy = dummyLightData()
-  let jsonData = try! JSONEncoder().encode(dummy)
-  return String(data: jsonData, encoding: .utf8)!
+  return String(data: dummyLightData().toJSONData()!, encoding: .utf8)!
 }
 
 func dummyClimateData() -> ClimateData {
-  let dummy = ClimateData(deviceId: "dummy climate", deviceType: DeviceType.climate, icon: "cloud", status: DeviceStatus.ok, temperature: 70.0, humidity: 1.0, pressure: 2.0)
+  let dummy = ClimateData(deviceId: "dummy climate", deviceType: DeviceType.climate, icon: "cloud", status: DeviceStatus.ok, group: ["g1", "g2"], location: "Trap house", temperature: 70.0, humidity: 1.0, pressure: 2.0)
   
   return dummy!
 }
 
 func dummyLockData() -> LockData {
-  let dummy = LockData(deviceId: "dummy light", deviceType: DeviceType.light, icon: "lightbulb", status: DeviceStatus.ok, isLocked: false)
+  let dummy = LockData(deviceId: "dummy lock", deviceType: DeviceType.lock, icon: "lock", status: DeviceStatus.ok, group: ["g1", "g2"], location: "Trap house", isLocked: false)
   
   return dummy!
 }

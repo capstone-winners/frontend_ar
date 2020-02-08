@@ -71,7 +71,7 @@ class AbstractRemoteView: UIView {
   
   //MARK: - Top
   var titleImage : UIImageView = {
-    let image = UIImage(systemName: "desktopcomputer")!.withRenderingMode(.alwaysTemplate)
+    let image = UIImage(systemName: "desktopcomputer")?.withRenderingMode(.alwaysTemplate)
     let imageView = UIImageView(image: image)
     imageView.contentMode = .scaleAspectFit // fit based on width, might cause bands on top/bottom
     

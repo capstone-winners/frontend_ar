@@ -11,18 +11,26 @@ import SceneKit
 import ARKit
 import Vision
 
-class ViewController: UIViewController{
+class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate {
   
   let sceneView: ARSCNView = ARSCNView()
-  let label: UILabel = UILabel()
-  let remoteViewController = RemoteViewController()
+  let debugView: DebugView = DebugView()
   
-  var qrDetector: QRDetector = QRDetector()
+  let remoteViewController = RemoteViewController()
+  let qrDetector: QRDetector = QRDetector()
+  
+  //#warning("replace this with the real version")
+  //var iotDecoder : IotDataManager = DummyIotDataManager()
+  let iotDecoder = IotDataManager()
+  
+  var shouldProcessFramesForQr : Bool = true
+  var isRemoteViewActive : Bool = false
   
   override func loadView() {
     super.loadView()
     
     SetupArView()
+    SetupDebugView()
     
     // Prevent the screen from being dimmed after a while as users will likely
     // have long periods of interaction without touching the screen or buttons.
@@ -30,9 +38,6 @@ class ViewController: UIViewController{
     
     // Start QR Detection
     self.qrDetector.startQrCodeDetection(view: sceneView)
-    
-    label.lineBreakMode = .byWordWrapping
-    label.isHidden = true
     
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureMakeFullScreen(gesture:)))
     tapGesture.numberOfTapsRequired = 3
@@ -42,8 +47,7 @@ class ViewController: UIViewController{
   }
   
   @objc func tapGestureMakeFullScreen(gesture: UITapGestureRecognizer) {
-    remoteViewController.updateView(state: nil)
-    self.present(remoteViewController, animated: true, completion: nil)
+    self.launchRemoteView(anchor: nil)
   }
   
   func configureRemoteView() {
@@ -73,15 +77,40 @@ class ViewController: UIViewController{
     sceneView.session.pause()
   }
   
-  @IBAction func clearCodes(_ sender: UIButton) {
+  @objc func clearCodes() {
     qrDetector.clear()
-    label.isHidden = true
+    debugView.debugLabel.text = "Saved codes cleared!"
+    
+    UIView.animate(withDuration: 0, delay: 5.0, options: [], animations: {
+      self.debugView.debugLabel.alpha = 0
+    }, completion: nil)
   }
   
-  func launchRemoteView(anchor: QRAnchor){
-    remoteViewController.updateView(state: anchor)
-    self.present(remoteViewController, animated: true, completion: nil)
+  func launchRemoteView(anchor: QRAnchor?){
+    remoteViewController.updateView(state: iotDecoder.decode(anchor: anchor))
+    remoteViewController.presentationController?.delegate = self
+    shouldProcessFramesForQr = false
+    
+    if !isRemoteViewActive {
+      isRemoteViewActive = true
+      self.present(remoteViewController, animated: true, completion: nil)
+    } else {
+      print("Remote view is being presented already!")
+    }
+    
   }
+  
+  public func presentationControllerDidDismiss(_ presentationController: UIPresentationController)
+  {
+    // Only called when the sheet is dismissed by DRAGGING.
+    // You'll need something extra if you call .dismiss() on the child.
+    // (I found that overriding dismiss in the child and calling
+    // presentationController.delegate?.presentationControllerDidDismiss
+    // works well).
+    shouldProcessFramesForQr = true
+    isRemoteViewActive = false
+  }
+
   
 }
 
@@ -114,6 +143,20 @@ extension ViewController : ARSCNViewDelegate {
     sceneView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
   }
   
+  func SetupDebugView() {
+    view.addSubview(debugView)
+    debugView.isUserInteractionEnabled = true
+    
+    NSLayoutConstraint.activate([
+      debugView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      debugView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      debugView.heightAnchor.constraint(equalToConstant: 100),
+      debugView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
+    ])
+    
+    debugView.clearButton.addTarget(self, action: #selector(clearCodes), for: .touchUpInside)
+  }
+  
   /// - Tag: PlaceARContent
   func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
     if let planeAnchor = anchor as? ARPlaneAnchor {
@@ -123,11 +166,14 @@ extension ViewController : ARSCNViewDelegate {
     } else if let qrAnchor = anchor as? QRAnchor {
       // Place content only for anchors found by QR Detection.
       let plane = QRPlane(anchor: qrAnchor, in: sceneView)
-      sceneView.scene.rootNode.addChildNode(plane)
+      //sceneView.scene.rootNode.addChildNode(plane)
+      node.addChildNode(plane)
       DispatchQueue.main.async {
-        self.label.text = "Last detected: " + qrAnchor.label
-        self.label.sizeToFit()
-        self.label.isHidden = false
+        let deviceData = self.iotDecoder.decode(anchor: qrAnchor)
+        self.debugView.debugLabel.text = "Last detected: " + (deviceData?.deviceId ?? qrAnchor.label)
+        
+        self.debugView.debugLabel.sizeToFit()
+        self.debugView.debugLabel.alpha = 1.0
         self.launchRemoteView(anchor: qrAnchor)
       }
     }
@@ -139,9 +185,13 @@ extension ViewController : ARSCNViewDelegate {
     guard let planeAnchor = anchor as? ARPlaneAnchor,
       let plane = node.childNodes.first as? Plane
       else {
-        print("anchor as? ARAnchor: " + String(anchor is QRAnchor))
+        //print("anchor as? ARAnchor: " + String(anchor is QRAnchor))
         return }
     
+    updatePlaneAnchor(planeAnchor, plane)
+  }
+  
+  func updatePlaneAnchor(_ planeAnchor : ARPlaneAnchor, _ plane : Plane) {
     // Update ARSCNPlaneGeometry to the anchor's new estimated shape.
     if let planeGeometry = plane.meshNode.geometry as? ARSCNPlaneGeometry {
       planeGeometry.update(from: planeAnchor.geometry)
@@ -164,15 +214,16 @@ extension ViewController : ARSCNViewDelegate {
         classificationNode.centerAlign()
       }
     }
-    
   }
 }
 
 // MARK: - ARSessionDelegate
 extension ViewController : ARSessionDelegate {
   func session(_ session: ARSession, didUpdate frame: ARFrame) {
-    // Pass frame to the QRDetector to figure out if we need to do anything with the frame.
-    qrDetector.processFrame(frame)
+    if(shouldProcessFramesForQr) {
+      // Pass frame to the QRDetector to figure out if we need to do anything with the frame.
+      qrDetector.processFrame(frame)
+    }
   }
   
   func session(_ session: ARSession, didFailWithError error: Error) {

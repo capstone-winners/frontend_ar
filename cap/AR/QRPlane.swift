@@ -84,6 +84,8 @@ class QRPlane: SCNNode {
   private func makeTextNode(_ text: String) -> SCNNode {
     let textGeometry = SCNText(string: text, extrusionDepth: 1)
     textGeometry.font = UIFont(name: "Futura", size: 50)
+    textGeometry.isWrapped = true
+    // textGeometry.containerFrame = qrNode.frame // TODO: SOMETHING????
     
     let textNode = SCNNode(geometry: textGeometry)
     // scale down the size of the text

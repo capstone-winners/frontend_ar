@@ -9,15 +9,9 @@ import UIKit
 
 class RemoteViewController: UIViewController {
   // MARK: - Properties
-  var state : QRAnchor?
+  var state : DeviceData?
   var contentView: UIView = RemoteView()
-  #warning("replace this with the real version")
-  var iotDecoder : IotDataManager = DummyIotDataManager()
-  var deviceState : DeviceData? {
-    get {
-      return iotDecoder.decode(anchor: state)
-    }
-  }
+  var iotDecoder : IotDataManager = IotDataManager()
   
   // MARK: - Downcast Content Views
    var abstractRemoteView : AbstractRemoteView {
@@ -48,7 +42,6 @@ class RemoteViewController: UIViewController {
     
     switch contentView {
     case is RemoteView:
-      print("did appear: remote view")
       setupRemoteView()
     case is LightView:
       print("did appear: light view")
@@ -69,10 +62,15 @@ class RemoteViewController: UIViewController {
   }
   
   // MARK: -
-  func updateView(state: QRAnchor?) {
+  func updateView(state: DeviceData?) {
     self.state = state
     
-    switch deviceState!.deviceType {
+    if(self.state == nil) {
+      print("Nil state - do nothing....")
+      return
+    }
+    
+    switch state!.deviceType {
     case DeviceType.light:
       launchLightView()
     case DeviceType.climate:
@@ -82,20 +80,22 @@ class RemoteViewController: UIViewController {
     case DeviceType.music:
       launchMusicView()
     case DeviceType.abstract:
-      print("do nothing")
+      print("RemoteViewController: update abstract view - do nothing...")
     }
   }
   
   // MARK: - RemoteView
   func setupRemoteView() {
     guard (contentView as? RemoteView) != nil else {
-      print("error in setting up! ")
+      print("RemoteViewController: error in setting up remote view! ")
       print(type(of: contentView))
       return
     }
     
-    if deviceState != nil {
-      remoteView.deviceInfoLabel.text = deviceState!.deviceId
+    if state != nil {
+      remoteView.deviceInfoLabel.text = state!.deviceId
+    } else {
+      remoteView.deviceInfoLabel.text = "No device information..."
     }
     
     // Update view size.
@@ -115,11 +115,10 @@ class RemoteViewController: UIViewController {
   
   // MARK: - Launchers
   @objc func launchClimateView() {
-    print("Climate button pushed!")
     safeDeviceInfoLabel("Climate")
     
     var view : ClimateView!
-    if let climateData = deviceState as? ClimateData {
+    if let climateData = state as? ClimateData {
       view = ClimateView(data: climateData)
     } else {
       view = ClimateView()
@@ -135,11 +134,10 @@ class RemoteViewController: UIViewController {
   }
   
   @objc func launchLightView() {
-    print("Light button pushed!")
     safeDeviceInfoLabel("Light")
     
     var view : LightView!
-    if let lightData = deviceState as? LightData {
+    if let lightData = state as? LightData {
       view = LightView(data: lightData)
     } else {
       view = LightView()
@@ -154,22 +152,21 @@ class RemoteViewController: UIViewController {
   }
   
   @objc func launchLockView() {
-    print("Lock button pushed!")
     safeDeviceInfoLabel("Lock")
     //viewFadeIn(currentView: remoteView, newView: ClimateView())
   }
   
   @objc func launchMusicView() {
-    print("Music button pushed!")
     safeDeviceInfoLabel("Music")
     //viewFadeIn(currentView: remoteView, newView: ClimateView())
   }
   
   // MARK: - Tap Gestures
   @objc func tapGestureMakeFullScreen(gesture: UITapGestureRecognizer) {
-    print("make full screen!")
     if state != nil {
-      safeDeviceInfoLabel(state!.label)
+      safeDeviceInfoLabel(state!.deviceId)
+    } else {
+      safeDeviceInfoLabel("Tap detected!")
     }
   }
   
