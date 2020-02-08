@@ -147,7 +147,7 @@ extension IotAction {
 }
 
 struct Action : Codable {
-  var deviceType : String
+  var deviceType : DeviceType
   var deviceId : String
   var action : IotAction
 }

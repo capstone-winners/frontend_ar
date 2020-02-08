@@ -12,6 +12,7 @@ class RemoteViewController: UIViewController {
   var state : DeviceData?
   var contentView: UIView = RemoteView()
   var iotDecoder : IotDataManager = IotDataManager()
+  var actionManager : ActionManager = ActionManager()
   
   // MARK: - Downcast Content Views
    var abstractRemoteView : AbstractRemoteView {
@@ -45,6 +46,7 @@ class RemoteViewController: UIViewController {
       setupRemoteView()
     case is LightView:
       print("did appear: light view")
+      setupLightView()
     case is ClimateView:
       print("did appear: climate view")
     default:
@@ -113,6 +115,12 @@ class RemoteViewController: UIViewController {
     doubleTapSelector: nil)
   }
   
+  func setupLightView() {
+    lightView.submitBrightnessButton.addTarget(self, action: #selector(submitBrightness), for: .touchUpInside)
+    lightView.submitOnButton.addTarget(self, action: #selector(submitPower), for: .touchUpInside)
+    lightView.submitColorButton.addTarget(self, action: #selector(submitColor), for: .touchUpInside)
+  }
+  
   // MARK: - Launchers
   @objc func launchClimateView() {
     safeDeviceInfoLabel("Climate")
@@ -177,6 +185,24 @@ class RemoteViewController: UIViewController {
   
   @objc func tapGestureReturnHome(gesture: UITapGestureRecognizer) {
     viewFadeIn(currentView: contentView, newView: RemoteView())
+  }
+  
+  @objc func submitPower() {
+    let powerAction = createSetLightOn(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? "unkown" , on: true)
+    print(powerAction)
+    actionManager.publish(powerAction)
+  }
+  
+  @objc func submitBrightness() {
+    let brightnessAction = createSetBrightnessAction(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? "unkown", brightness: 0.75)
+    print(brightnessAction)
+    actionManager.publish(brightnessAction)
+  }
+  
+  @objc func submitColor() {
+    let colorAction = createSetColorAction(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? "unkown" , color: .cyan)
+    print(colorAction)
+    actionManager.publish(colorAction)
   }
   
   // MARK: - Helpers

@@ -9,23 +9,23 @@
 import UIKit
 
 // MARK: Light Action Helpers
-func createSetColorAction(deviceType: String, deviceId: String, color: UIColor) -> Action {
+func createSetColorAction(deviceType: DeviceType, deviceId: String, color: UIColor) -> Action {
   let colorAction = LightAction.setColor(SetColorAction(color: CodableColor(uiColor: color)))
   return Action(deviceType: deviceType, deviceId: deviceId, action: IotAction.lightAction(colorAction))
 }
 
-func createSetBrightnessAction(deviceType: String, deviceId: String, brightness: Float) -> Action {
+func createSetBrightnessAction(deviceType: DeviceType, deviceId: String, brightness: Float) -> Action {
   let brightnessAction = LightAction.setBrightness(SetBrightnessAction(brightness: brightness))
   return Action(deviceType: deviceType, deviceId: deviceId, action: IotAction.lightAction(brightnessAction))
 }
 
-func createSetLightOn(deviceType: String, deviceId: String, on: Bool) -> Action {
+func createSetLightOn(deviceType: DeviceType, deviceId: String, on: Bool) -> Action {
   let onAction = LightAction.setIsOn(SetIsOnAction(isOn: on))
   return Action(deviceType: deviceType, deviceId: deviceId, action: IotAction.lightAction(onAction))
 }
 
 // MARK: Lock Action Helpers
-func createSetLocked(deviceType: String, deviceId: String, locked: Bool) -> Action {
+func createSetLocked(deviceType: DeviceType, deviceId: String, locked: Bool) -> Action {
   let lockAction = LockAction.setLock(SetLockAction(isLocked: locked))
   return Action(deviceType: deviceType, deviceId: deviceId, action: IotAction.lockAction(lockAction))
 }
