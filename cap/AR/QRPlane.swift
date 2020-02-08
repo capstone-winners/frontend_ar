@@ -23,9 +23,9 @@ class QRPlane: SCNNode {
   /// - Tag: VisualizePlane
   init(anchor: QRAnchor, in sceneView: ARSCNView) {
     
-    #if targetEnvironment(simulator)
-    #error("ARKit is not supported in iOS Simulator. Connect a physical iOS device and select it as your Xcode run destination, or select Generic iOS Device as a build-only destination.")
-    #else
+//    #if targetEnvironment(simulator)
+//    #error("ARKit is not supported in iOS Simulator. Connect a physical iOS device and select it as your Xcode run destination, or select Generic iOS Device as a build-only destination.")
+//    #else
     
     super.init()
     
@@ -38,7 +38,7 @@ class QRPlane: SCNNode {
     self.configureTextNode(anchor: anchor)
     qrNode.addChildNode(classificationNode)
     
-    #endif
+//    #endif
   }
   
   required init?(coder aDecoder: NSCoder) {
