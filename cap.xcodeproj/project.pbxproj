@@ -32,6 +32,7 @@
 		49FBA98323E8A915001BA3F1 /* IoTDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA98223E8A915001BA3F1 /* IoTDataModel.swift */; };
 		49FBA98523E91C58001BA3F1 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA98423E91C58001BA3F1 /* DummyData.swift */; };
 		49FBA98823E9CC4C001BA3F1 /* IoTDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA98723E9CC4C001BA3F1 /* IoTDataManager.swift */; };
+		E9EEC39323EF4DAF005CE6DA /* ViewControllerNoAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9EEC39223EF4DAF005CE6DA /* ViewControllerNoAR.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,7 @@
 		49FBA98223E8A915001BA3F1 /* IoTDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoTDataModel.swift; sourceTree = "<group>"; };
 		49FBA98423E91C58001BA3F1 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		49FBA98723E9CC4C001BA3F1 /* IoTDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoTDataManager.swift; sourceTree = "<group>"; };
+		E9EEC39223EF4DAF005CE6DA /* ViewControllerNoAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerNoAR.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +152,7 @@
 			children = (
 				4992C24E23D04BB4002C712F /* art.scnassets */,
 				4992C24C23D04BB4002C712F /* AppDelegate.swift */,
+				E9EEC39223EF4DAF005CE6DA /* ViewControllerNoAR.swift */,
 				4992C25023D04BB4002C712F /* ViewController.swift */,
 				49FBA97D23E4B7AE001BA3F1 /* AR */,
 				49FBA97C23E4B77A001BA3F1 /* RemoteViews */,
@@ -362,6 +365,7 @@
 				49FBA98323E8A915001BA3F1 /* IoTDataModel.swift in Sources */,
 				499C514723E0F48D00FF9CBB /* RemoteViewController.swift in Sources */,
 				499C515023E236F000FF9CBB /* ClimateView.swift in Sources */,
+				E9EEC39323EF4DAF005CE6DA /* ViewControllerNoAR.swift in Sources */,
 				499C514123D2BB3700FF9CBB /* QRAnchor.swift in Sources */,
 				499C514523DB48E400FF9CBB /* RemoteView.swift in Sources */,
 				4992C27D23D0BF40002C712F /* QRPlane.swift in Sources */,

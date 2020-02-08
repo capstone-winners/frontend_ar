@@ -19,8 +19,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // (1)
     window = UIWindow(frame: UIScreen.main.bounds)
     
-    // (2)
-    let viewController = ViewController()
+    let AROn: Bool = false
+    
+    let viewController: UIViewController
+    if AROn {
+        viewController = ViewController()
+    } else {
+        viewController = ViewControllerNoAR()
+    }
+    
     window?.rootViewController = viewController
     
     // (3)
