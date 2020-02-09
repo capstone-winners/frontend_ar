@@ -75,10 +75,16 @@ class IotDataManagerTests: XCTestCase {
     
   }
   
+  func testDummyMusicData() {
+    let obj = manager.decode(jsonString: dummyMusicData().toJSONString())
+    XCTAssertEqual(obj?.toJSONString(), dummyMusicData().toJSONString())
+  }
+  
   func testPrint(){
     print(dummyLockData().toJSONString())
     print(dummyLightData().toJSONString())
     print(dummyClimateData().toJSONString())
+    print(dummyMusicData().toJSONString())
     print(dummyAbstractData().toJSONString())
   }
 }

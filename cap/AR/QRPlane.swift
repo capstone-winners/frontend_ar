@@ -40,7 +40,7 @@ class QRPlane: SCNNode {
     // self.configureTextNode(anchor: anchor)
     // qrNode.addChildNode(classificationNode)
     
-    let rotateXAction = SCNAction.rotateBy(x: 0, y: 30, z: 0, duration: 30)
+    let rotateXAction = SCNAction.rotateBy(x: 0, y: -30, z: 0, duration: 30)
     qrNode.runAction(SCNAction.repeatForever(rotateXAction))
   }
   

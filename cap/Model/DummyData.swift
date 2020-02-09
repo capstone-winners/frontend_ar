@@ -28,8 +28,7 @@ class DummyIotDataManager : IotDataManager {
     case "lock":
       return dummyLockData()
     case "music":
-      #warning("Implement this")
-      return dummyAbstractData()
+      return dummyMusicData()
     default:
       return dummyAbstractData()
     }
@@ -65,4 +64,8 @@ func dummyLockData() -> LockData {
   let dummy = LockData(deviceId: "dummy lock", deviceType: DeviceType.lock, icon: "lock", status: DeviceStatus.ok, group: ["g1", "g2"], location: "Trap house", isLocked: false)
   
   return dummy!
+}
+
+func dummyMusicData() -> MusicData {
+  return MusicData(deviceId: "dummy music", deviceType: DeviceType.music, icon: "music.note", status: DeviceStatus.ok, group: ["g1"], location: "Trap House", playerState: MusicPlayerState.playing, volume: 1, song: "YoLo")!
 }

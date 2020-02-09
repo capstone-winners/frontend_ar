@@ -52,6 +52,8 @@ class RemoteViewController: UIViewController {
       setupLightView()
     case is ClimateView:
       print("did appear: climate view")
+    case is MusicView:
+      setupMusicView()
     default:
       print("wut the fuk u tryna do m8?")
     }
@@ -137,6 +139,15 @@ class RemoteViewController: UIViewController {
       colorPickerController.view.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor, multiplier: 0.75)
     ])
   }
+  
+  func setupMusicView() {
+      NSLayoutConstraint.activate([
+        contentView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+        contentView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+        contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+        contentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+      ])
+    }
   
   // MARK: - Launchers
   @objc func launchClimateView() {
