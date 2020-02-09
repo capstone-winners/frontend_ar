@@ -19,14 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // (1)
     window = UIWindow(frame: UIScreen.main.bounds)
     
-    let AROn: Bool = false
-    
-    let viewController: UIViewController
-    if AROn {
-        viewController = ViewController()
-    } else {
-        viewController = ViewControllerNoAR()
-    }
+    #if targetEnvironment(simulator)
+      let viewController = ViewControllerNoAR()
+    #else
+      let viewController = ViewController()
+    #endif
     
     window?.rootViewController = viewController
     

@@ -90,11 +90,11 @@ extension UIImage {
   //
   // add(childController)
   //
-  func addController(_ child: UIViewController, frame: CGRect? = nil) {
+  func addChildController(_ child: UIViewController, frame: CGRect? = nil) {
     addChild(child)
     
-    if let frame = frame {
-      child.view.frame = frame
+    if frame != nil {
+      child.view.frame = frame!
     }
     
     view.addSubview(child.view)

@@ -6,6 +6,7 @@
 //  Copyright © 2020 Andrew Tu. All rights reserved.
 //
 import UIKit
+import FlexColorPicker
 
 class RemoteViewController: UIViewController {
   // MARK: - Properties
@@ -13,6 +14,8 @@ class RemoteViewController: UIViewController {
   var contentView: UIView = RemoteView()
   var iotDecoder : IotDataManager = IotDataManager()
   var actionManager : ActionManager = ActionManager()
+  
+  let colorPickerController = ColorController()
   
   // MARK: - Downcast Content Views
    var abstractRemoteView : AbstractRemoteView {
@@ -56,11 +59,14 @@ class RemoteViewController: UIViewController {
   
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
+    colorPickerController.remove()
     
     // Check if we need to convert the view back to a normal RemoteView.
     if !(contentView is RemoteView) {
       viewFadeIn(currentView: abstractRemoteView, newView: RemoteView())
     }
+    
+    
   }
   
   // MARK: -
@@ -116,9 +122,20 @@ class RemoteViewController: UIViewController {
   }
   
   func setupLightView() {
-    lightView.submitBrightnessButton.addTarget(self, action: #selector(submitBrightness), for: .touchUpInside)
     lightView.submitOnButton.addTarget(self, action: #selector(submitPower), for: .touchUpInside)
-    lightView.submitColorButton.addTarget(self, action: #selector(submitColor), for: .touchUpInside)
+//    lightView.submitBrightnessButton.addTarget(self, action: #selector(submitBrightness), for: .touchUpInside)
+//    lightView.submitColorButton.addTarget(self, action: #selector(submitColor), for: .touchUpInside)
+    
+    colorPickerController.delegate = self
+    colorPickerController.view.translatesAutoresizingMaskIntoConstraints = false
+    addChildController(colorPickerController)
+    NSLayoutConstraint.activate([
+      colorPickerController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      colorPickerController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      colorPickerController.view.topAnchor.constraint(equalTo: lightView.titleStackView.bottomAnchor),
+      colorPickerController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      colorPickerController.view.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor, multiplier: 0.75)
+    ])
   }
   
   // MARK: - Launchers
@@ -199,7 +216,7 @@ class RemoteViewController: UIViewController {
     actionManager.publish(brightnessAction)
   }
   
-  @objc func submitColor() {
+  func submitColor(_ color: UIColor) {
     let colorAction = createSetColorAction(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? "unkown" , color: .cyan)
     print(colorAction)
     actionManager.publish(colorAction)
@@ -238,4 +255,15 @@ class RemoteViewController: UIViewController {
     remoteView.deviceInfoLabel.text = message
   }
   
+}
+
+extension RemoteViewController : ColorPickerDelegate {
+  func colorPicker(_ colorPicker: ColorPickerController, selectedColor: UIColor, usingControl: ColorControl) {
+    print("Selected: \(selectedColor)")
+  }
+  
+  func colorPicker(_ colorPicker: ColorPickerController, confirmedColor: UIColor, usingControl: ColorControl) {
+    print("Confirmed: \(confirmedColor)")
+    submitColor(confirmedColor)
+  }
 }

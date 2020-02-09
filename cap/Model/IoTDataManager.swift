@@ -80,4 +80,37 @@ class IotDataManager {
     return nil
   }
   
+  func getId(jsonString: String) -> String? {
+    do {
+      // make sure this JSON is in the format we expect
+      if let json = try JSONSerialization.jsonObject(with: Data(jsonString.utf8), options: []) as? [String: Any] {
+        // try to read out a string array
+        if let deviceId = json[DeviceData.DeviceCodingKeys.deviceId.rawValue] as? String{
+          return deviceId
+        } else if let superType = json["super"] as? [String: Any] {
+          guard let deviceId = superType[DeviceData.DeviceCodingKeys.deviceId.rawValue] as? String else {
+            return nil
+          }
+          return deviceId
+        }
+      }
+    } catch let error as NSError {
+      print("Failed to load: \(error.localizedDescription)")
+    }
+    
+    return nil
+  }
+  
+  func getUdid(_ jsonString: String) -> String? {
+    guard let deviceType = getType(jsonDict: jsonString) else {
+      return nil
+    }
+    
+    guard let deviceId = getId(jsonString: jsonString) else {
+      return nil
+    }
+    
+    return "\(deviceType.rawValue)\(deviceId)"
+  }
+  
 }

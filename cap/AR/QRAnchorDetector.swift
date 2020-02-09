@@ -17,6 +17,7 @@ class QRDetector {
   var qrRequests: [VNRequest] = []
   var detectedDataAnchors = [String: QRAnchor]()
   var latestFrame: ARFrame?
+  var iotDataManager : IotDataManager = IotDataManager()
   
   var sceneView: ARSCNView!
   
@@ -66,6 +67,9 @@ class QRDetector {
     if let results = request.results, let result = results.first as? VNBarcodeObservation {
       guard result.payloadStringValue != nil else {return}
       
+      let id = iotDataManager.getUdid(result.payloadStringValue!)
+      guard id != nil else { print("Rejecting invalid qr code!"); return}
+      
       // Get the bounding box for the bar code and find the center
       var rect = result.boundingBox
       // Flip coordinates
@@ -87,7 +91,7 @@ class QRDetector {
   func hitTestQrCode(center: CGPoint, observation: VNBarcodeObservation) {
     // Attempt to hit the QR code.
     if let hitTestResults = self.latestFrame?.hitTest(center, types: [.featurePoint] ),
-      let hitTestResult = hitTestResults.first, let text = observation.payloadStringValue {
+      let hitTestResult = hitTestResults.first, let text = iotDataManager.getUdid(observation.payloadStringValue!) {
       if let detectedDataAnchor = self.detectedDataAnchors[text],
         let node = self.sceneView.node(for: detectedDataAnchor) {
         // let previousQrPosition = node.position

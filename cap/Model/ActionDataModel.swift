@@ -17,14 +17,14 @@ struct SetBrightnessAction : Codable {
   var brightness : Float
 }
 
-struct SetIsOnAction : Codable {
+struct SetOnAction : Codable {
   var isOn : Bool
 }
 
 enum LightAction : Codable {
   case setColor(SetColorAction)
   case setBrightness(SetBrightnessAction)
-  case setIsOn(SetIsOnAction)
+  case setIsOn(SetOnAction)
 }
 
 extension LightAction {
@@ -48,7 +48,7 @@ extension LightAction {
       self = .setBrightness(value)
       return
     }
-    if let value = try? values.decode(SetIsOnAction.self, forKey: .setIsOn) {
+    if let value = try? values.decode(SetOnAction.self, forKey: .setIsOn) {
       self = .setIsOn(value)
       return
     }

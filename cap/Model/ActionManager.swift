@@ -11,10 +11,8 @@ import Foundation
 class ActionManager {
   
   func publish(_ action: Action) {
-    print("top publish!")
     switch action.action {
     case .lightAction(let value):
-      print("light publish!")
       publish(action.deviceType, action.deviceId, value)
     case .lockAction(let value):
       publish(action.deviceType, action.deviceId, value)
@@ -24,7 +22,6 @@ class ActionManager {
   }
   
   func publish(_ deviceType: DeviceType, _ deviceId: String, _ action: LightAction) {
-    print("hit publish!")
     let urlString = "\(Constants.baseUrl)/action/\(deviceType.rawValue)/\(deviceId)"
     let jsonData = try? JSONEncoder().encode(action)
     print(urlString)

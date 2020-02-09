@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,8 @@
 		4957CE6923EF28D30004E528 /* ActionUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE6823EF28D30004E528 /* ActionUtilities.swift */; };
 		4957CE6B23EF38660004E528 /* ActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE6A23EF38660004E528 /* ActionManager.swift */; };
 		4957CE6D23EF506E0004E528 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE6C23EF506E0004E528 /* Constants.swift */; };
+		4957CE7223EF693F0004E528 /* FlexColorPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4957CE7123EF693F0004E528 /* FlexColorPicker */; };
+		4957CE7423EF766C0004E528 /* ColorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE7323EF766C0004E528 /* ColorController.swift */; };
 		4992C24D23D04BB4002C712F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4992C24C23D04BB4002C712F /* AppDelegate.swift */; };
 		4992C24F23D04BB4002C712F /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 4992C24E23D04BB4002C712F /* art.scnassets */; };
 		4992C25123D04BB4002C712F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4992C25023D04BB4002C712F /* ViewController.swift */; };
@@ -74,6 +76,7 @@
 		4957CE6823EF28D30004E528 /* ActionUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionUtilities.swift; sourceTree = "<group>"; };
 		4957CE6A23EF38660004E528 /* ActionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionManager.swift; sourceTree = "<group>"; };
 		4957CE6C23EF506E0004E528 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		4957CE7323EF766C0004E528 /* ColorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorController.swift; sourceTree = "<group>"; };
 		4992C24923D04BB4002C712F /* cap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4992C24C23D04BB4002C712F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4992C24E23D04BB4002C712F /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -110,6 +113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4957CE7223EF693F0004E528 /* FlexColorPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +203,7 @@
 				499C514F23E236F000FF9CBB /* ClimateView.swift */,
 				49FBA98023E8A40A001BA3F1 /* LightView.swift */,
 				4957CE6223EE61EA0004E528 /* DebugView.swift */,
+				4957CE7323EF766C0004E528 /* ColorController.swift */,
 			);
 			path = RemoteViews;
 			sourceTree = "<group>";
@@ -245,6 +250,7 @@
 			);
 			name = cap;
 			packageProductDependencies = (
+				4957CE7123EF693F0004E528 /* FlexColorPicker */,
 			);
 			productName = cap;
 			productReference = 4992C24923D04BB4002C712F /* cap.app */;
@@ -319,6 +325,7 @@
 			);
 			mainGroup = 4992C24023D04BB4002C712F;
 			packageReferences = (
+				4957CE7023EF693F0004E528 /* XCRemoteSwiftPackageReference "FlexColorPicker" */,
 			);
 			productRefGroup = 4992C24A23D04BB4002C712F /* Products */;
 			projectDirPath = "";
@@ -379,6 +386,7 @@
 				499C513D23D0ED6500FF9CBB /* Plane.swift in Sources */,
 				49FBA97F23E4B80E001BA3F1 /* AbstractRemoteView.swift in Sources */,
 				49FBA98523E91C58001BA3F1 /* DummyData.swift in Sources */,
+				4957CE7423EF766C0004E528 /* ColorController.swift in Sources */,
 				4992C27F23D0C47C002C712F /* Utilities.swift in Sources */,
 				4957CE6D23EF506E0004E528 /* Constants.swift in Sources */,
 				4957CE6323EE61EA0004E528 /* DebugView.swift in Sources */,
@@ -708,6 +716,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4957CE7023EF693F0004E528 /* XCRemoteSwiftPackageReference "FlexColorPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RastislavMirek/FlexColorPicker";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4957CE7123EF693F0004E528 /* FlexColorPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4957CE7023EF693F0004E528 /* XCRemoteSwiftPackageReference "FlexColorPicker" */;
+			productName = FlexColorPicker;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4992C24123D04BB4002C712F /* Project object */;
 }

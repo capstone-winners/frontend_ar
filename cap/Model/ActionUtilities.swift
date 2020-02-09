@@ -20,7 +20,7 @@ func createSetBrightnessAction(deviceType: DeviceType, deviceId: String, brightn
 }
 
 func createSetLightOn(deviceType: DeviceType, deviceId: String, on: Bool) -> Action {
-  let onAction = LightAction.setIsOn(SetIsOnAction(isOn: on))
+  let onAction = LightAction.setIsOn(SetOnAction(isOn: on))
   return Action(deviceType: deviceType, deviceId: deviceId, action: IotAction.lightAction(onAction))
 }
 
