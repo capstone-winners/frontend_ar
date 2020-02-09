@@ -32,7 +32,6 @@ class RemoteView : AbstractRemoteView {
       topStackView.heightAnchor.constraint(equalToConstant: 100)
     ])
     
-    
     let buttonStackView = UIStackView(arrangedSubviews:[climateButton, lightButton, musicButton, lockButton])
     buttonStackView.distribution = .equalCentering
     buttonStackView.axis = .horizontal

@@ -183,7 +183,7 @@ class RemoteViewController: UIViewController {
   
   @objc func launchMusicView() {
     safeDeviceInfoLabel("Music")
-    //viewFadeIn(currentView: remoteView, newView: ClimateView())
+    viewFadeIn(currentView: remoteView, newView: MusicView())
   }
   
   // MARK: - Tap Gestures
