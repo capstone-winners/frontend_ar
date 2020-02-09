@@ -18,7 +18,7 @@ class IotDataManager {
       return nil
     }
     
-    return self.decode(jsonString: anchor!.label)
+    return self.decode(jsonString: anchor!.observation.payloadStringValue!)
   }
   
   /**
@@ -26,6 +26,15 @@ class IotDataManager {
    Returns `nil` if given an invalid json.
    */
   func decode(jsonString: String) -> DeviceData? {
+    
+    if jsonString == Constants.currentQrJson {
+      #warning("remove this!")
+      print("decode: returning dummy data!")
+      return dummyLightData()
+    } else {
+      print("data: \(jsonString)....")
+    }
+    
     guard let dtype = getType(jsonDict: jsonString) else {
       print("IotDataManager: Bad type in decode attempt!")
       return nil
@@ -102,6 +111,11 @@ class IotDataManager {
   }
   
   func getUdid(_ jsonString: String) -> String? {
+    if jsonString == Constants.currentQrJson {
+      #warning("remove this")
+      return getUdid(dummyLightData().toJSONString())
+    }
+    
     guard let deviceType = getType(jsonDict: jsonString) else {
       return nil
     }

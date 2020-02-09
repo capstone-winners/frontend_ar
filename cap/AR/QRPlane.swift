@@ -19,20 +19,22 @@ class QRPlane: SCNNode {
   
   var qrNode: SCNNode!
   var classificationNode: SCNNode!
+  var qrAnchor: QRAnchor!
+  var deviceType : DeviceType? {
+    get {
+      return qrAnchor.deviceType
+    }
+  }
   
   /// - Tag: VisualizePlane
   init(anchor: QRAnchor, in sceneView: ARSCNView) {
     
-//    #if targetEnvironment(simulator)
-//    #error("ARKit is not supported in iOS Simulator. Connect a physical iOS device and select it as your Xcode run destination, or select Generic iOS Device as a build-only destination.")
-//    #else
-    
     super.init()
+    qrAnchor = anchor // Store this cuz we'll need it later. 
     
     self.configureQrNode(anchor: anchor)
     // Add the sphere node so it shows up in the scene.
     addChildNode(qrNode)
-    //runHighlight(on: qrNode, width: anchor.observation.boundingBox.width, height: anchor.observation.boundingBox.height)
     
     // self.setupSphereVisualStyle()
     // self.configureTextNode(anchor: anchor)
@@ -40,8 +42,6 @@ class QRPlane: SCNNode {
     
     let rotateXAction = SCNAction.rotateBy(x: 0, y: 30, z: 0, duration: 30)
     qrNode.runAction(SCNAction.repeatForever(rotateXAction))
-
-//    #endif
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -141,81 +141,5 @@ extension QRPlane {
       return image
     }
     return nil
-  }
-}
-
-extension QRPlane {
-  
-  func runHighlight(on node: SCNNode, width qrWidth: CGFloat, height qrHeight: CGFloat) {
-    self.highlightDetection(on: node, width: qrWidth, height: qrHeight, completionHandler: {
-      
-      // Introduce virtual content
-      self.displayDetailView(on: node, xOffset: qrWidth)
-      
-      // Animate the WebView to the right
-      self.displayWebView(on: node, xOffset: qrWidth)
-      
-    })
-  }
-  
-  func displayDetailView(on node: SCNNode, xOffset offset: CGFloat) {
-    print("Ran highlight!!!")
-  }
-  
-  func displayWebView(on node: SCNNode, xOffset: CGFloat) {
-    DispatchQueue.main.async {
-      let webConfiguration = WKWebViewConfiguration()
-      let request = URLRequest(url: URL(string: "https://en.wikipedia.org/wiki/Richard_Hamming")!)
-      let webView = WKWebView(frame: CGRect(x: 0, y: 0, width: 400, height: 672), configuration: webConfiguration)
-      webView.load(request)
-      
-      let webViewPlane = SCNPlane(width: xOffset, height: xOffset * 1.4)
-      webViewPlane.cornerRadius = 0.25
-      
-      let webViewNode = SCNNode(geometry: webViewPlane)
-      
-      // Set the web view as webViewPlane's primary texture
-      webViewNode.geometry?.firstMaterial?.diffuse.contents = webView
-      webViewNode.position.z -= 0.5
-      webViewNode.opacity = 0
-      
-      node.addChildNode(webViewNode)
-      webViewNode.runAction(.sequence([
-        .wait(duration: 3.0),
-        .fadeOpacity(to: 1.0, duration: 1.5),
-        .moveBy(x: xOffset * 1.1, y: 0, z: -0.05, duration: 1.5),
-        .moveBy(x: 0, y: 0, z: -0.05, duration: 0.2)
-      ])
-      )
-    }
-  }
-  
-  func highlightDetection(on rootNode: SCNNode, width: CGFloat, height: CGFloat, completionHandler block: @escaping (() -> Void)) {
-    let planeNode = SCNNode(geometry: SCNPlane(width: width, height: height))
-    planeNode.geometry?.firstMaterial?.diffuse.contents = UIColor.qrColor
-    planeNode.position.z += 0.1
-    planeNode.opacity = 0
-    
-    rootNode.addChildNode(planeNode)
-    planeNode.runAction(self.imageHighlightAction) {
-      block()
-    }
-    planeNode.opacity = 1
-  }
-  
-  var imageHighlightAction: SCNAction {
-    return .sequence([
-      .wait(duration: 0.25),
-      .fadeOpacity(to: 0.85, duration: 0.25),
-      .fadeOpacity(to: 0.15, duration: 0.25),
-      .fadeOpacity(to: 0.85, duration: 0.25),
-      .fadeOpacity(to: 0.15, duration: 0.25),
-      .fadeOpacity(to: 0.85, duration: 0.25),
-      .fadeOpacity(to: 0.15, duration: 0.25),
-      .fadeOpacity(to: 0.85, duration: 0.25),
-      .fadeOpacity(to: 0.15, duration: 0.25),
-      .fadeOut(duration: 0.5)//,
-      //.removeFromParentNode()
-    ])
   }
 }

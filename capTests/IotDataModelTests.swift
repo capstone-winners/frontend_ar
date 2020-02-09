@@ -69,6 +69,12 @@ class IotDataManagerTests: XCTestCase {
     XCTAssert(obj == nil)
   }
   
+  func testDummyLightData() {
+    let obj = manager.decode(jsonString: dummyLightData().toJSONString())
+    XCTAssert(manager.getUdid(dummyLightData().toJSONString()) != nil)
+    
+  }
+  
   func testPrint(){
     print(dummyLockData().toJSONString())
     print(dummyLightData().toJSONString())

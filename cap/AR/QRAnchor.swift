@@ -16,6 +16,11 @@ class QRAnchor : ARAnchor {
       return iotDataManager.getUdid(observation.payloadStringValue!) ?? "unkown"
     }
   }
+  var deviceType: DeviceType? {
+    get {
+      return iotDataManager.getType(jsonDict: observation.payloadStringValue!)
+    }
+  }
   
   var iotDataManager : IotDataManager = IotDataManager()
   

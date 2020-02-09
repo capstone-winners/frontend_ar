@@ -22,10 +22,15 @@ class ActionManager {
   }
   
   func publish(_ deviceType: DeviceType, _ deviceId: String, _ action: LightAction) {
-    let urlString = "\(Constants.baseUrl)/action/\(deviceType.rawValue)/\(deviceId)"
+    #warning("fix this!!!")
+    //let urlString = "\(Constants.baseUrl)/action/\(deviceType.rawValue)/\(deviceId)"
+    let urlString = Constants.hardcodedLightUrl
     let jsonData = try? JSONEncoder().encode(action)
+    
+    
+    
     print(urlString)
-    print(String(data: jsonData!, encoding: .utf8))
+    print(String(data: jsonData!, encoding: .utf8)!)
 
     post(urlString: urlString, jsonData: jsonData)
   }

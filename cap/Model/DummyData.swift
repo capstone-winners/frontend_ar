@@ -47,7 +47,7 @@ func dummyAbstractDataJson() -> String {
 }
 
 func dummyLightData() -> LightData {
-  let dummy = LightData(deviceId: "dummy light", deviceType: DeviceType.light, icon: "lightbulb", status: DeviceStatus.ok, group: ["g1", "g2"], location: "Trap house", isOn: true, color: .cyan, brightness: 0.88)
+  let dummy = LightData(deviceId: Constants.unknownLightId, deviceType: DeviceType.light, icon: "lightbulb", status: DeviceStatus.ok, group: ["g1", "g2"], location: "Trap house", isOn: true, color: .cyan, brightness: 0.88)
   return dummy!
 }
 

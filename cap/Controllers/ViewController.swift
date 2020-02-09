@@ -39,11 +39,40 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
     // Start QR Detection
     self.qrDetector.startQrCodeDetection(view: sceneView)
     
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureMakeFullScreen(gesture:)))
-    tapGesture.numberOfTapsRequired = 3
-    sceneView.addGestureRecognizer(tapGesture)
+    //Create TapGesture Recognizer
+    let tripleTapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureMakeFullScreen(gesture:)))
+    tripleTapGesture.numberOfTapsRequired = 3
+    sceneView.addGestureRecognizer(tripleTapGesture)
+    
+    let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(rec:)))
+    singleTapGesture.shouldRequireFailure(of: tripleTapGesture)
+    sceneView.addGestureRecognizer(singleTapGesture)
+    
     //addController(remoteViewController)
     //configureRemoteView()
+  }
+  
+  //Method called when tap
+  @objc func handleSingleTap(rec: UITapGestureRecognizer){
+    if rec.state == .ended {
+      let location: CGPoint = rec.location(in: sceneView)
+      let hits = self.sceneView.hitTest(location, options: nil)
+      if !hits.isEmpty{
+        let tappedNode = hits.first?.node
+        let bounceAction = SCNAction.sequence([
+          SCNAction.move(by: SCNVector3(0,Constants.bounceDistance,0), duration: Constants.bounceTiming),
+          SCNAction.move(by: SCNVector3(0,-2*Constants.bounceDistance,0), duration: Constants.bounceTiming),
+          SCNAction.move(by: SCNVector3(0,Constants.bounceDistance,0), duration: Constants.bounceTiming),
+        ])
+        tappedNode!.runAction(bounceAction)
+        guard let parent = tappedNode?.parent as? QRPlane else {
+          print("Parent is not a QRPlane!")
+          return
+        }
+        
+        self.launchRemoteView(anchor: parent.qrAnchor)
+      }
+    }
   }
   
   @objc func tapGestureMakeFullScreen(gesture: UITapGestureRecognizer) {

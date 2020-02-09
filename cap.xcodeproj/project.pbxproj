@@ -134,6 +134,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4957CE7523EFD6C80004E528 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4957CE6223EE61EA0004E528 /* DebugView.swift */,
+				4957CE7323EF766C0004E528 /* ColorController.swift */,
+				49FBA97C23E4B77A001BA3F1 /* RemoteViews */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4957CE7623EFD6ED0004E528 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E9EEC39223EF4DAF005CE6DA /* ViewControllerNoAR.swift */,
+				4992C25023D04BB4002C712F /* ViewController.swift */,
+				499C514623E0F48D00FF9CBB /* RemoteViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		4992C24023D04BB4002C712F = {
 			isa = PBXGroup;
 			children = (
@@ -160,11 +180,10 @@
 			children = (
 				4992C24E23D04BB4002C712F /* art.scnassets */,
 				4992C24C23D04BB4002C712F /* AppDelegate.swift */,
-				E9EEC39223EF4DAF005CE6DA /* ViewControllerNoAR.swift */,
-				4992C25023D04BB4002C712F /* ViewController.swift */,
+				4957CE7623EFD6ED0004E528 /* Controllers */,
 				4957CE6C23EF506E0004E528 /* Constants.swift */,
 				49FBA97D23E4B7AE001BA3F1 /* AR */,
-				49FBA97C23E4B77A001BA3F1 /* RemoteViews */,
+				4957CE7523EFD6C80004E528 /* Views */,
 				49FBA98623E952C1001BA3F1 /* Model */,
 				4992C27E23D0C47C002C712F /* Utilities.swift */,
 				4992C25523D04BB7002C712F /* Assets.xcassets */,
@@ -197,13 +216,10 @@
 		49FBA97C23E4B77A001BA3F1 /* RemoteViews */ = {
 			isa = PBXGroup;
 			children = (
-				499C514623E0F48D00FF9CBB /* RemoteViewController.swift */,
 				49FBA97E23E4B80E001BA3F1 /* AbstractRemoteView.swift */,
 				499C514423DB48E300FF9CBB /* RemoteView.swift */,
 				499C514F23E236F000FF9CBB /* ClimateView.swift */,
 				49FBA98023E8A40A001BA3F1 /* LightView.swift */,
-				4957CE6223EE61EA0004E528 /* DebugView.swift */,
-				4957CE7323EF766C0004E528 /* ColorController.swift */,
 			);
 			path = RemoteViews;
 			sourceTree = "<group>";

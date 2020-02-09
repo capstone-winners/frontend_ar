@@ -77,7 +77,7 @@ class RemoteViewController: UIViewController {
       print("Nil state - do nothing....")
       return
     }
-    
+    print("state type: \(state!)")
     switch state!.deviceType {
     case DeviceType.light:
       launchLightView()
@@ -205,19 +205,19 @@ class RemoteViewController: UIViewController {
   }
   
   @objc func submitPower() {
-    let powerAction = createSetLightOn(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? "unkown" , on: true)
+    let powerAction = createSetLightOn(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? Constants.unknownLightId , on: true)
     print(powerAction)
     actionManager.publish(powerAction)
   }
   
   @objc func submitBrightness() {
-    let brightnessAction = createSetBrightnessAction(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? "unkown", brightness: 0.75)
+    let brightnessAction = createSetBrightnessAction(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? Constants.unknownLightId, brightness: 0.75)
     print(brightnessAction)
     actionManager.publish(brightnessAction)
   }
   
   func submitColor(_ color: UIColor) {
-    let colorAction = createSetColorAction(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? "unkown" , color: .cyan)
+    let colorAction = createSetColorAction(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? Constants.unknownLightId, color: color)
     print(colorAction)
     actionManager.publish(colorAction)
   }
@@ -260,6 +260,7 @@ class RemoteViewController: UIViewController {
 extension RemoteViewController : ColorPickerDelegate {
   func colorPicker(_ colorPicker: ColorPickerController, selectedColor: UIColor, usingControl: ColorControl) {
     print("Selected: \(selectedColor)")
+    submitColor(selectedColor)
   }
   
   func colorPicker(_ colorPicker: ColorPickerController, confirmedColor: UIColor, usingControl: ColorControl) {

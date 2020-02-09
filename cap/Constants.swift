@@ -10,6 +10,12 @@ import Foundation
 
 class Constants {
   static let baseUrl = "http://192.168.1.5:3000"
+  static let hardcodedLightUrl = "http://192.168.1.5:3000/action/light_bulb_actions/Vibe%20Check%20"
+  static let unknownLightId = "Vibe%20Check%20"
+  static let currentQrJson = "{\"isOn\":true,\"brightness\":0.01999,\"color\":{\"r\":0,\"g\":0,\"b\":0,\"a\":1},\"super\":{\"status\":\"ok\",\"deviceId\":\"Vibe Check \",\"deviceType\":\"lightbulb\",\"location\":\"Trap House\",\"group\":\"Toms Room\"}}"
+  
+  static let bounceDistance = 0.5
+  static let bounceTiming = 0.25
   
   enum UrlEndPoints : String {
     case action
