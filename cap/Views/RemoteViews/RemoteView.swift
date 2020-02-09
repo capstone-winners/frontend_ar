@@ -27,7 +27,7 @@ class RemoteView : AbstractRemoteView {
     addSubview(topStackView)
     NSLayoutConstraint.activate([
       topStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-      topStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -100),
+      topStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -100),
       topStackView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.95),
       topStackView.heightAnchor.constraint(equalToConstant: 100)
     ])
@@ -43,8 +43,8 @@ class RemoteView : AbstractRemoteView {
     NSLayoutConstraint.activate([
       buttonStackView.bottomAnchor.constraint(equalTo: topStackView.topAnchor, constant: -10),
       buttonStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-      buttonStackView.leadingAnchor.constraint(equalTo: topStackView.leadingAnchor),
-      buttonStackView.trailingAnchor.constraint(equalTo: topStackView.trailingAnchor)
+      buttonStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+      buttonStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
     ])
   }
   

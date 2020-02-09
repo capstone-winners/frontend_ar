@@ -37,22 +37,22 @@ class ClimateView : AbstractRemoteView {
   override func specializeView() {
     addSubview(temperatureStackView)
     NSLayoutConstraint.activate([
-      temperatureStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      temperatureStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      temperatureStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+      temperatureStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
       temperatureStackView.topAnchor.constraint(equalTo: titleStackView.bottomAnchor, constant: 20)
     ])
     
     addSubview(humidityStackView)
     NSLayoutConstraint.activate([
-      humidityStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      humidityStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      humidityStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+      humidityStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
       humidityStackView.topAnchor.constraint(equalTo: temperatureStackView.bottomAnchor, constant: 20)
     ])
     
     addSubview(pressureStackView)
     NSLayoutConstraint.activate([
-      pressureStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      pressureStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      pressureStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+      pressureStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
       pressureStackView.topAnchor.constraint(equalTo: self.humidityStackView.bottomAnchor, constant: 20)
     ])
   }

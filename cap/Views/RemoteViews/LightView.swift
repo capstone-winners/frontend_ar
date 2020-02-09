@@ -35,9 +35,9 @@ class LightView : AbstractRemoteView {
     buttonsStackView.isUserInteractionEnabled = true
     buttonsStackView.setContentHuggingPriority(.defaultHigh, for: .vertical)
     NSLayoutConstraint.activate([
-      buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      buttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -60)
+      buttonsStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+      buttonsStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+      buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -60)
     ])
   }
   

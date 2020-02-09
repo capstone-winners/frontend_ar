@@ -130,10 +130,10 @@ class RemoteViewController: UIViewController {
     colorPickerController.view.translatesAutoresizingMaskIntoConstraints = false
     addChildController(colorPickerController)
     NSLayoutConstraint.activate([
-      colorPickerController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      colorPickerController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      colorPickerController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      colorPickerController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
       colorPickerController.view.topAnchor.constraint(equalTo: lightView.titleStackView.bottomAnchor),
-      colorPickerController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      colorPickerController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
       colorPickerController.view.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor, multiplier: 0.75)
     ])
   }

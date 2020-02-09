@@ -81,10 +81,10 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
   
   func configureRemoteView() {
     NSLayoutConstraint.activate([
-      remoteViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      remoteViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      remoteViewController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      remoteViewController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
       remoteViewController.view.heightAnchor.constraint(equalToConstant: 60),
-      remoteViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60)
+      remoteViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60)
     ])
   }
   
@@ -139,7 +139,7 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
     shouldProcessFramesForQr = true
     isRemoteViewActive = false
   }
-
+  
   
 }
 
@@ -166,10 +166,12 @@ extension ViewController : ARSCNViewDelegate {
     view.addSubview(sceneView)
     
     sceneView.translatesAutoresizingMaskIntoConstraints = false
-    sceneView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-    sceneView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-    sceneView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-    sceneView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+    NSLayoutConstraint.activate([
+      sceneView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      sceneView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      sceneView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+      sceneView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+    ])
   }
   
   func SetupDebugView() {
@@ -177,10 +179,10 @@ extension ViewController : ARSCNViewDelegate {
     debugView.isUserInteractionEnabled = true
     
     NSLayoutConstraint.activate([
-      debugView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      debugView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      debugView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      debugView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
       debugView.heightAnchor.constraint(equalToConstant: 100),
-      debugView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
+      debugView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
     ])
     
     debugView.clearButton.addTarget(self, action: #selector(clearCodes), for: .touchUpInside)
