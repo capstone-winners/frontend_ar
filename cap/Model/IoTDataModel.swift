@@ -240,6 +240,7 @@ class LockData: DeviceData {
   }
 }
 
+// MARK: Music Data
 enum MusicPlayerState : String, Codable {
   case playing
   case paused
@@ -251,6 +252,12 @@ class MusicData: DeviceData {
   var volume: Float
   var song: String
   
+  enum MusicCodingKeys: String, CodingKey {
+    case playerState
+    case volume
+    case song
+  }
+  
   init?(deviceId: String, deviceType: DeviceType, icon: String, status: DeviceStatus, group: [String], location: String, playerState: MusicPlayerState, volume: Float, song: String) {
     self.playerState = playerState
     self.volume = volume
@@ -260,6 +267,25 @@ class MusicData: DeviceData {
   }
   
   required init(from decoder: Decoder) throws {
-    fatalError("init(from:) has not been implemented")
+    let values = try decoder.container(keyedBy: MusicCodingKeys.self)
+    
+    playerState = try values.decode(MusicPlayerState.self, forKey: .playerState)
+    volume = try values.decode(Float.self, forKey: .volume)
+    song = try values.decode(String.self, forKey: .song)
+    
+    let superDecoder = try values.superDecoder()
+    try super.init(from: superDecoder)
+    self.icon = "music.note"
+  }
+  
+  override func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: MusicCodingKeys.self)
+    
+    try container.encode(playerState, forKey: .playerState)
+    try container.encode(volume, forKey: .volume)
+    try container.encode(song, forKey: .song)
+    
+    let superencoder = container.superEncoder()
+    try super.encode(to: superencoder)
   }
 }

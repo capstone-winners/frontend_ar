@@ -132,10 +132,10 @@ extension QRPlane {
     ]
     
     // Determine the width/height of the text for the attributes
-    let textSize = text.size(withAttributes: attributes)
+    let textSize = text.size(withAttributes: attributes as [NSAttributedString.Key : Any])
     
     // Draw text in the current context
-    text.draw(at: CGPoint(x: imageSize.width/2 - textSize.width/2, y: imageSize.height/2 - textSize.height/2), withAttributes: attributes)
+    text.draw(at: CGPoint(x: imageSize.width/2 - textSize.width/2, y: imageSize.height/2 - textSize.height/2), withAttributes: attributes as [NSAttributedString.Key : Any])
     
     if let image = UIGraphicsGetImageFromCurrentImageContext() {
       return image

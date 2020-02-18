@@ -16,7 +16,6 @@ class IotDataManagerTests: XCTestCase {
   override func setUp() {
     // Put setup code here. This method is called before the invocation of each test method in the class.
     manager = IotDataManager()
-    
   }
   
   override func tearDown() {
@@ -24,30 +23,36 @@ class IotDataManagerTests: XCTestCase {
   }
   
   func testDecodeDeviceData() {
-    let obj = manager.decode(jsonString: dummyAbstractData().toJSONString())
-    XCTAssertEqual(obj?.toJSONString(), dummyAbstractData().toJSONString())
+    helperTestFullData(dummyAbstractData())
   }
   
   func testDecodeLightData() {
-    let obj = manager.decode(jsonString: dummyLightData().toJSONString())
-    XCTAssertEqual(obj?.toJSONString(), dummyLightData().toJSONString())
+    helperTestFullData(dummyLightData())
   }
   
   func testDecodeClimateData() {
-    let obj = manager.decode(jsonString: dummyClimateData().toJSONString())
-    XCTAssertEqual(obj?.toJSONString(), dummyClimateData().toJSONString())
+    helperTestFullData(dummyClimateData())
   }
   
   func testDecodeLockData() {
-    let obj = manager.decode(jsonString: dummyLockData().toJSONString())
-    XCTAssertEqual(obj?.toJSONString(), dummyLockData().toJSONString())
+    helperTestFullData(dummyLockData())
   }
   
+  func testDecodeMusicData() {
+    helperTestFullData(dummyMusicData())
+  }
+  
+  /**
+   If the manager attempts to decode a nil anchor, return a nil obj.
+   */
   func testDecodeNilData() {
     let obj = manager.decode(anchor: nil)
     XCTAssert(obj == nil)
   }
   
+  /**
+   If the manager receives a bad json file, return nil.
+   */
   func testDecodeBadDeviceType() {
     let badJson = """
     {\"isOn\":true,\"brightness\":0.01999,\"color\":{\"r\":0,\"g\":0,\"b\":0,\"a\":1},\"super\":{\"status\":\"ok\",\"deviceId\":\"Vibe Check \",\"deviceType\":\"lightbulb\",\"location\":\"Trap House\",\"group\":\"Toms Room\"}}
@@ -58,6 +63,9 @@ class IotDataManagerTests: XCTestCase {
     XCTAssert(obj == nil)
   }
   
+  /**
+   Another version of the bad json where the nested super json is bad.
+   */
   func testDecodeBadSuperType() {
     let badJson = """
 
@@ -69,22 +77,49 @@ class IotDataManagerTests: XCTestCase {
     XCTAssert(obj == nil)
   }
   
-  func testDummyLightData() {
-    let obj = manager.decode(jsonString: dummyLightData().toJSONString())
-    XCTAssert(manager.getUdid(dummyLightData().toJSONString()) != nil)
-    
-  }
-  
-  func testDummyMusicData() {
-    let obj = manager.decode(jsonString: dummyMusicData().toJSONString())
-    XCTAssertEqual(obj?.toJSONString(), dummyMusicData().toJSONString())
-  }
-  
   func testPrint(){
-    print(dummyLockData().toJSONString())
-    print(dummyLightData().toJSONString())
-    print(dummyClimateData().toJSONString())
-    print(dummyMusicData().toJSONString())
+    print("Abstract:")
     print(dummyAbstractData().toJSONString())
+    print("\n\n")
+    print("Lock:")
+    print(dummyLockData().toJSONString())
+    print("\n\n")
+    print("Light:")
+    print(dummyLightData().toJSONString())
+    print("\n\n")
+    print("Climate:")
+    print(dummyClimateData().toJSONString())
+    print("\n\n")
+    print("Music:")
+    print(dummyMusicData().toJSONString())
+  }
+}
+
+extension IotDataManagerTests {
+  func helperTestDeviceType(_ jsonString: String, expected: DeviceType?) {
+    XCTAssertEqual(manager.getType(jsonDict: jsonString), expected)
+  }
+  
+  func helperTestUdid(_ jsonString: String, expected: String?) {
+    XCTAssertEqual(manager.getUdid(jsonString), expected)
+  }
+  
+  func helperTestId(_ jsonString: String, expected: String?) {
+    XCTAssertEqual(manager.getId(jsonString: jsonString), expected)
+  }
+  
+  func helperTestDecode(_ jsonString: String, expected: String?) {
+    XCTAssertEqual(manager.decode(jsonString: jsonString)?.toJSONString(), expected)
+  }
+  
+  func helperTestFullData(_ deviceData: DeviceData) {
+    let jsonString = deviceData.toJSONString()
+    let deviceType = deviceData.deviceType
+    let deviceId = deviceData.deviceId
+    
+    helperTestDeviceType(jsonString, expected: deviceType)
+    helperTestId(jsonString, expected: deviceId)
+    helperTestUdid(jsonString, expected: "\(deviceType)\(deviceId)")
+    helperTestDecode(jsonString, expected: deviceData.toJSONString())
   }
 }

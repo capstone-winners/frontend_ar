@@ -27,13 +27,13 @@ class IotDataManager {
    */
   func decode(jsonString: String) -> DeviceData? {
     
-    if jsonString == Constants.currentQrJson {
-      #warning("remove this!")
-      print("decode: returning dummy data!")
-      return dummyLightData()
-    } else {
-      print("data: \(jsonString)....")
-    }
+//    if jsonString == Constants.currentQrJson {
+//      #warning("remove this!")
+//      print("decode: returning dummy data!")
+//      return dummyLightData()
+//    } else {
+//      print("data: \(jsonString)....")
+//    }
     
     guard let dtype = getType(jsonDict: jsonString) else {
       print("IotDataManager: Bad type in decode attempt!")
@@ -52,7 +52,7 @@ class IotDataManager {
         case .lock:
           return try decoder.decode(LockData.self, from: jsonData)
         case .music:
-          return try decoder.decode(DeviceData.self, from: jsonData)
+          return try decoder.decode(MusicData.self, from: jsonData)
         case .abstract:
           return try decoder.decode(DeviceData.self, from: jsonData)
         }
@@ -111,10 +111,10 @@ class IotDataManager {
   }
   
   func getUdid(_ jsonString: String) -> String? {
-    if jsonString == Constants.currentQrJson {
-      #warning("remove this")
-      return getUdid(dummyLightData().toJSONString())
-    }
+//    if jsonString == Constants.currentQrJson {
+//      #warning("remove this")
+//      return getUdid(dummyLightData().toJSONString())
+//    }
     
     guard let deviceType = getType(jsonDict: jsonString) else {
       return nil
