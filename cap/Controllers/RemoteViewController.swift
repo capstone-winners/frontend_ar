@@ -14,7 +14,7 @@ class RemoteViewController: UIViewController {
   var contentView: UIView = RemoteView()
   var iotDecoder : IotDataManager = IotDataManager()
   var actionManager : ActionManager = ActionManager()
-  
+  let throttler : Throttler? = Throttler(ms: Constants.colorIntervalUpdateMs)
   let colorPickerController = ColorController()
   
   // MARK: - Downcast Content Views
@@ -270,8 +270,18 @@ class RemoteViewController: UIViewController {
 
 extension RemoteViewController : ColorPickerDelegate {
   func colorPicker(_ colorPicker: ColorPickerController, selectedColor: UIColor, usingControl: ColorControl) {
-    print("Selected: \(selectedColor)")
-    submitColor(selectedColor)
+    
+    guard let throttler = self.throttler else {
+      print("Selected: \(selectedColor)")
+      submitColor(selectedColor)
+      return
+    }
+    throttler.throttle {
+      DispatchQueue.main.async {
+        print("Selected: \(selectedColor)\n\n")
+        self.submitColor(selectedColor)
+      }
+    }
   }
   
   func colorPicker(_ colorPicker: ColorPickerController, confirmedColor: UIColor, usingControl: ColorControl) {

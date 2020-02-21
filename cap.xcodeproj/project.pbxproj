@@ -33,6 +33,7 @@
 		499C514723E0F48D00FF9CBB /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514623E0F48D00FF9CBB /* RemoteViewController.swift */; };
 		499C515023E236F000FF9CBB /* ClimateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514F23E236F000FF9CBB /* ClimateView.swift */; };
 		49C4964C2400497600AE4094 /* ActionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C4964B2400497600AE4094 /* ActionManagerTests.swift */; };
+		49C4964E240066BA00AE4094 /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C4964D240066BA00AE4094 /* Throttler.swift */; };
 		49FBA97F23E4B80E001BA3F1 /* AbstractRemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA97E23E4B80E001BA3F1 /* AbstractRemoteView.swift */; };
 		49FBA98123E8A40A001BA3F1 /* LightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA98023E8A40A001BA3F1 /* LightView.swift */; };
 		49FBA98323E8A915001BA3F1 /* IoTDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA98223E8A915001BA3F1 /* IoTDataModel.swift */; };
@@ -104,6 +105,7 @@
 		499C514F23E236F000FF9CBB /* ClimateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimateView.swift; sourceTree = "<group>"; };
 		499C518B23E4159300FF9CBB /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = "../../../Library/Autosave Information/MyPlayground.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		49C4964B2400497600AE4094 /* ActionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionManagerTests.swift; sourceTree = "<group>"; };
+		49C4964D240066BA00AE4094 /* Throttler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
 		49FBA97E23E4B80E001BA3F1 /* AbstractRemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractRemoteView.swift; sourceTree = "<group>"; };
 		49FBA98023E8A40A001BA3F1 /* LightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightView.swift; sourceTree = "<group>"; };
 		49FBA98223E8A915001BA3F1 /* IoTDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoTDataModel.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				4957CE7523EFD6C80004E528 /* Views */,
 				49FBA98623E952C1001BA3F1 /* Model */,
 				4992C27E23D0C47C002C712F /* Utilities.swift */,
+				49C4964D240066BA00AE4094 /* Throttler.swift */,
 				4992C25523D04BB7002C712F /* Assets.xcassets */,
 				4992C28623D0E9D3002C712F /* Assets.scnassets */,
 				4992C25723D04BB7002C712F /* LaunchScreen.storyboard */,
@@ -403,6 +406,7 @@
 			files = (
 				4957CE6923EF28D30004E528 /* ActionUtilities.swift in Sources */,
 				4992C25123D04BB4002C712F /* ViewController.swift in Sources */,
+				49C4964E240066BA00AE4094 /* Throttler.swift in Sources */,
 				49FBA98123E8A40A001BA3F1 /* LightView.swift in Sources */,
 				4957CE6723EF1E280004E528 /* ActionDataModel.swift in Sources */,
 				4957CE6B23EF38660004E528 /* ActionManager.swift in Sources */,
