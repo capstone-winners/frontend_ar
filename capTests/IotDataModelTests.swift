@@ -64,7 +64,7 @@ class IotDataManagerTests: XCTestCase {
   }
   
   /**
-   Another version of the bad json where the nested super json is bad.
+   Another version of the bad json where the nested super json is bad. Expect nil. 
    */
   func testDecodeBadSuperType() {
     let badJson = """
@@ -95,6 +95,10 @@ class IotDataManagerTests: XCTestCase {
   }
 }
 
+
+/**
+ Helper functions used for testing.
+ */
 extension IotDataManagerTests {
   func helperTestDeviceType(_ jsonString: String, expected: DeviceType?) {
     XCTAssertEqual(manager.getType(jsonDict: jsonString), expected)

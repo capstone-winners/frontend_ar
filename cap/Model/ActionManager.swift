@@ -10,57 +10,59 @@ import Foundation
 
 class ActionManager {
   
-  func publish(_ action: Action) {
-    switch action.action {
-    case .lightAction(let value):
-      publish(action.deviceType, action.deviceId, value)
-    case .lockAction(let value):
-      publish(action.deviceType, action.deviceId, value)
-    @unknown default:
-      print("Error! don't know the type!")
-    }
+  typealias Handler = (String?) -> Void
+  
+  var session : URLSession
+  var customHandler : Handler?
+  
+  init(session: URLSession? = nil) {
+    self.session = session ?? URLSession.shared
   }
   
-  func publish(_ deviceType: DeviceType, _ deviceId: String, _ action: LightAction) {
-    #warning("Test this!!!")
-    let urlString = "\(Constants.baseUrl)/action/\(deviceType.rawValue)/\(deviceId)"
-    //let urlString = Constants.hardcodedLightUrl
-    let jsonData = try? JSONEncoder().encode(action)
+  /**
+   Main entry way to the ActionManager. Action decoded through dynamic dispatch.
+   */
+  func publish(_ action: Action, completionHandler: Handler? = nil) {
+    customHandler = completionHandler
     
-    print(urlString)
-    print(String(data: jsonData!, encoding: .utf8)!)
-
-    post(urlString: urlString, jsonData: jsonData)
-  }
-  
-  func publish(_ deviceType: DeviceType, _ deviceId: String, _ action: LockAction) {
-    let urlString = "\(Constants.baseUrl)/\(deviceType.rawValue)/\(deviceId)"
-    let jsonData = try? JSONEncoder().encode(action)
+    let jsonData = action.toJSONData()
+    let urlString = ActionManager.actionToUrlString(action)
     
     post(urlString: urlString, jsonData: jsonData)
   }
   
-  func post(urlString: String, jsonData: Data?) {
+  static func actionToUrlString(_ action: Action) -> String {
+    return "\(Constants.baseUrl)/action/\(action.deviceType.rawValue)/\(action.deviceId)"
+  }
+  
+  private func post(urlString: String, jsonData: Data?) {
     var request = URLRequest(url: URL(string: urlString)!)
     request.httpMethod = "POST"
     request.httpBody = jsonData
     request.setValue("application/json", forHTTPHeaderField: "Accept")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-    let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-      // Check for Error
-      if let error = error {
-        print("Error took place \(error)")
-        return
-      }
-      
-      // Convert HTTP Response Data to a String
-      if let data = data, let dataString = String(data: data, encoding: .utf8) {
-        print("Response data string:\n \(dataString)")
-      } else {
-        print("idk man....")
-      }
-    }
+    let task = session.dataTask(with: request, completionHandler: postCompletionHandlerFunc)
     task.resume()
   }
+  
+  /**
+   This is what we do when we receive a response from the POST action.
+   */
+  private func postCompletionHandlerFunc(data: Data?, response: URLResponse?, error: Error?) -> Void {
+    // Check for Error
+    if let error = error {
+      print("[ActionManager]: Error took place \(error)")
+      return
+    }
+    
+    // Convert HTTP Response Data to a String
+    if let data = data, let dataString = String(data: data, encoding: .utf8) {
+      print("[ActionManager]: Response data string:\n \(dataString)")
+      customHandler?(dataString)
+    } else {
+      print("[ActionManager]: idk man....")
+    }
+  }
+
 }

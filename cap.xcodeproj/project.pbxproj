@@ -32,6 +32,7 @@
 		499C514523DB48E400FF9CBB /* RemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514423DB48E300FF9CBB /* RemoteView.swift */; };
 		499C514723E0F48D00FF9CBB /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514623E0F48D00FF9CBB /* RemoteViewController.swift */; };
 		499C515023E236F000FF9CBB /* ClimateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514F23E236F000FF9CBB /* ClimateView.swift */; };
+		49C4964C2400497600AE4094 /* ActionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C4964B2400497600AE4094 /* ActionManagerTests.swift */; };
 		49FBA97F23E4B80E001BA3F1 /* AbstractRemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA97E23E4B80E001BA3F1 /* AbstractRemoteView.swift */; };
 		49FBA98123E8A40A001BA3F1 /* LightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA98023E8A40A001BA3F1 /* LightView.swift */; };
 		49FBA98323E8A915001BA3F1 /* IoTDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA98223E8A915001BA3F1 /* IoTDataModel.swift */; };
@@ -102,6 +103,7 @@
 		499C514623E0F48D00FF9CBB /* RemoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
 		499C514F23E236F000FF9CBB /* ClimateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimateView.swift; sourceTree = "<group>"; };
 		499C518B23E4159300FF9CBB /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = "../../../Library/Autosave Information/MyPlayground.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		49C4964B2400497600AE4094 /* ActionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionManagerTests.swift; sourceTree = "<group>"; };
 		49FBA97E23E4B80E001BA3F1 /* AbstractRemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractRemoteView.swift; sourceTree = "<group>"; };
 		49FBA98023E8A40A001BA3F1 /* LightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightView.swift; sourceTree = "<group>"; };
 		49FBA98223E8A915001BA3F1 /* IoTDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoTDataModel.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 				4992C26523D04BB7002C712F /* Info.plist */,
 				4992C26323D04BB7002C712F /* capTests.swift */,
 				4957CE6423EE87BD0004E528 /* IotDataModelTests.swift */,
+				49C4964B2400497600AE4094 /* ActionManagerTests.swift */,
 			);
 			path = capTests;
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 			files = (
 				4957CE6523EE87BD0004E528 /* IotDataModelTests.swift in Sources */,
 				4992C26423D04BB7002C712F /* capTests.swift in Sources */,
+				49C4964C2400497600AE4094 /* ActionManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
