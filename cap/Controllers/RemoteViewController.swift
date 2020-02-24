@@ -124,7 +124,7 @@ class RemoteViewController: UIViewController {
   }
   
   func setupLightView() {
-    lightView.submitOnButton.addTarget(self, action: #selector(submitPower), for: .touchUpInside)
+    lightView.submitOnButton.addTarget(self, action: #selector(submitPower(_:)), for: .touchUpInside)
 //    lightView.submitBrightnessButton.addTarget(self, action: #selector(submitBrightness), for: .touchUpInside)
 //    lightView.submitColorButton.addTarget(self, action: #selector(submitColor), for: .touchUpInside)
     
@@ -135,7 +135,7 @@ class RemoteViewController: UIViewController {
       colorPickerController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
       colorPickerController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
       colorPickerController.view.topAnchor.constraint(equalTo: lightView.titleStackView.bottomAnchor),
-      colorPickerController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+      colorPickerController.view.bottomAnchor.constraint(equalTo: lightView.buttonsStackView.topAnchor),
       colorPickerController.view.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor, multiplier: 0.75)
     ])
   }
@@ -215,8 +215,8 @@ class RemoteViewController: UIViewController {
     viewFadeIn(currentView: contentView, newView: RemoteView())
   }
   
-  @objc func submitPower() {
-    let powerAction = createSetLightOn(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? Constants.unknownLightId , on: true)
+  @objc func submitPower(_ sender:UISwitch) {
+    let powerAction = createSetLightOn(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? Constants.unknownLightId , on: sender.isOn)
     print(powerAction)
     actionManager.publish(powerAction)
   }
@@ -271,11 +271,14 @@ class RemoteViewController: UIViewController {
 extension RemoteViewController : ColorPickerDelegate {
   func colorPicker(_ colorPicker: ColorPickerController, selectedColor: UIColor, usingControl: ColorControl) {
     
+    // If we didn't set up the throttler, than just submit everything.
     guard let throttler = self.throttler else {
       print("Selected: \(selectedColor)")
       submitColor(selectedColor)
       return
     }
+    
+    // Throttle commands so we're not spamming.
     throttler.throttle {
       DispatchQueue.main.async {
         print("Selected: \(selectedColor)\n\n")

@@ -9,10 +9,17 @@
 import UIKit
 
 class MusicView : AbstractRemoteView {
+  var customData : MusicData {
+    get{
+      return data as! MusicData
+    } set {
+      data = newValue
+    }
+  }
   
   // MARK: - Setup
   convenience init() {
-    self.init(data: dummyAbstractData())
+    self.init(data: dummyMusicData())
   }
   
   init(data: DeviceData) {

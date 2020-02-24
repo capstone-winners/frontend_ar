@@ -60,13 +60,28 @@ class LightView : AbstractRemoteView {
     return makeButton(systemName: "sun.max.fill", title: "Brightness")
   }()
   
-  lazy var submitOnButton : UIButton = {
-    return makeButton(systemName: "power", title: "Power")
+  lazy var submitOnButton : UISwitch = {
+    //return makeButton(systemName: "power", title: "Power")
+    return UISwitch()
+  }()
+  
+  lazy var switchLabel : UILabel = {
+    let fieldLabel = UILabel()
+    fieldLabel.translatesAutoresizingMaskIntoConstraints = false
+    fieldLabel.text = "Power"
+    fieldLabel.textColor = .white
+    fieldLabel.backgroundColor = .clear
+    fieldLabel.sizeToFit()
+    fieldLabel.textAlignment = .justified
+    fieldLabel.numberOfLines = 1
+    fieldLabel.font = .systemFont(ofSize: 13)
+    
+    return fieldLabel
   }()
   
   lazy var buttonsStackView : UIStackView = {
     //let buttonView = UIStackView(arrangedSubviews:[submitOnButton, submitBrightnessButton, submitColorButton]) ///TODO
-    let buttonView = UIStackView(arrangedSubviews:[submitOnButton]) ///TODO
+    let buttonView = UIStackView(arrangedSubviews:[switchLabel, submitOnButton]) ///TODO
     buttonView.distribution = .equalSpacing
     buttonView.axis = .horizontal
     buttonView.translatesAutoresizingMaskIntoConstraints = false

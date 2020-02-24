@@ -55,13 +55,6 @@ class ClimateView : AbstractRemoteView {
       pressureStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
       pressureStackView.topAnchor.constraint(equalTo: self.humidityStackView.bottomAnchor, constant: 20)
     ])
-    
-    addSubview(tempControl)
-    NSLayoutConstraint.activate([
-      tempControl.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-      tempControl.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-      tempControl.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 20)
-    ])
   }
   
   func reloadView() {
@@ -89,26 +82,5 @@ class ClimateView : AbstractRemoteView {
   
   lazy var pressureStackView : UIStackView = {
     return getStringField(labeled: "Pressure", withData: "\(customData.pressure) units")
-  }()
-  
-  lazy var tempControl : UIStackView = {
-    
-    let tempDown = makeButton(systemName: "minus.circle.fill", title: "Cool")
-    let tempUp = makeButton(systemName: "plus.circle.fill", title: "Heat")
-    
-    let stack = UIStackView(arrangedSubviews:[tempUp, tempDown]) ///TODO
-    stack.distribution = .equalSpacing
-    stack.axis = .vertical
-    stack.translatesAutoresizingMaskIntoConstraints = false
-    stack.alignment = .center
-    addSubview(stack)
-    NSLayoutConstraint.activate([
-      stack.centerXAnchor.constraint(equalTo: centerXAnchor),
-      stack.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -100),
-      stack.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.95),
-      stack.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.5)
-    ])
-    
-    return stack
   }()
 }
