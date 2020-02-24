@@ -18,10 +18,6 @@ class RemoteViewController: UIViewController {
   let colorPickerController = ColorController()
   
   // MARK: - Downcast Content Views
-  var abstractRemoteView : AbstractRemoteView {
-    return contentView as! AbstractRemoteView
-  }
-  
   var remoteView: RemoteView {
     return contentView as! RemoteView
   }
@@ -61,6 +57,7 @@ class RemoteViewController: UIViewController {
     
     // Check if we need to convert the view back to a normal RemoteView.
     if !(contentView is RemoteView) {
+      let abstractRemoteView = contentView as! AbstractRemoteView
       viewFadeIn(currentView: abstractRemoteView, newView: RemoteView())
     }
     
@@ -227,6 +224,43 @@ class RemoteViewController: UIViewController {
     viewFadeIn(currentView: contentView, newView: RemoteView())
   }
   
+  // MARK: - Helpers
+  private func viewFadeIn(currentView: UIView, newView: AbstractRemoteView) {
+    newView.alpha = 0.0
+    view.insertSubview(newView, aboveSubview: currentView)
+    newView.fillView(self.view)
+    
+    UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
+      newView.alpha = 1.0
+    }, completion: {_ in
+      currentView.removeFromSuperview()
+      self.contentView = newView
+      self.viewDidAppear(false)
+    })
+  }
+  
+  private func addGestures(view: UIView, singleTapSelector: Selector?, doubleTapSelector: Selector?) {
+    let singleTapGesture = UITapGestureRecognizer(target: self, action: singleTapSelector)
+    singleTapGesture.numberOfTapsRequired = 1
+    view.addGestureRecognizer(singleTapGesture)
+    
+    let doubleTapGesture = UITapGestureRecognizer(target: self, action: doubleTapSelector)
+    doubleTapGesture.numberOfTapsRequired = 2
+    view.addGestureRecognizer(doubleTapGesture)
+    
+    singleTapGesture.require(toFail: doubleTapGesture)
+  }
+  
+  private func safeDeviceInfoLabel(_ message: String) {
+    guard (contentView as? RemoteView != nil) else {return}
+    
+    remoteView.deviceInfoLabel.text = message
+  }
+  
+}
+
+// MARK: Action Submitters
+extension RemoteViewController {
   @objc func submitPower(_ sender:UISwitch) {
     let powerAction = createSetLightOn(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? Constants.unknownLightId , on: sender.isOn)
     print(powerAction)
@@ -266,42 +300,10 @@ class RemoteViewController: UIViewController {
     print(colorAction)
     actionManager.publish(colorAction)
   }
-  
-  // MARK: - Helpers
-  private func viewFadeIn(currentView: UIView, newView: AbstractRemoteView) {
-    newView.alpha = 0.0
-    view.insertSubview(newView, aboveSubview: currentView)
-    newView.fillView(self.view)
-    
-    UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
-      newView.alpha = 1.0
-    }, completion: {_ in
-      currentView.removeFromSuperview()
-      self.contentView = newView
-      self.viewDidAppear(false)
-    })
-  }
-  
-  private func addGestures(view: UIView, singleTapSelector: Selector?, doubleTapSelector: Selector?) {
-    let singleTapGesture = UITapGestureRecognizer(target: self, action: singleTapSelector)
-    singleTapGesture.numberOfTapsRequired = 1
-    view.addGestureRecognizer(singleTapGesture)
-    
-    let doubleTapGesture = UITapGestureRecognizer(target: self, action: doubleTapSelector)
-    doubleTapGesture.numberOfTapsRequired = 2
-    view.addGestureRecognizer(doubleTapGesture)
-    
-    singleTapGesture.require(toFail: doubleTapGesture)
-  }
-  
-  private func safeDeviceInfoLabel(_ message: String) {
-    guard (contentView as? RemoteView != nil) else {return}
-    
-    remoteView.deviceInfoLabel.text = message
-  }
-  
 }
 
+
+// MARK: ColorPicker Extension
 extension RemoteViewController : ColorPickerDelegate {
   func colorPicker(_ colorPicker: ColorPickerController, selectedColor: UIColor, usingControl: ColorControl) {
     

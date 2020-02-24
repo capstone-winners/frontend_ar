@@ -34,6 +34,13 @@ class ActionManager {
   static func actionToUrlString(_ action: Action) -> String {
     return "\(Constants.baseUrl)/action/\(action.deviceType.rawValue)/\(action.deviceId)"
   }
+}
+
+
+// ***********************
+// MARK: Private Helpers
+// ***********************
+extension ActionManager {
   
   private func post(urlString: String, jsonData: Data?) {
     var request = URLRequest(url: URL(string: urlString)!)
@@ -41,7 +48,7 @@ class ActionManager {
     request.httpBody = jsonData
     request.setValue("application/json", forHTTPHeaderField: "Accept")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
+    
     let task = session.dataTask(with: request, completionHandler: postCompletionHandlerFunc)
     task.resume()
   }
@@ -64,5 +71,5 @@ class ActionManager {
       print("[ActionManager]: idk man....")
     }
   }
-
+  
 }
