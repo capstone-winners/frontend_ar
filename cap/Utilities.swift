@@ -143,7 +143,9 @@ func getStringField(labeled label: String, withData data: String) -> UIStackView
 func makeButton(systemName icon: String, title: String?) -> UIButton {
   let image = UIImage(systemName: icon)?.withRenderingMode(.alwaysTemplate)
   let button = UIButton(type: .custom, backgroundColor: nil, image: image, imageTintColor: .white)
+  print(title)
   if title != nil{
+    print("setting title!")
     button.setTitle(title!, for: .normal)
   }
   return button

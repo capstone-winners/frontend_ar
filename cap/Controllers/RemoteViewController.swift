@@ -18,17 +18,13 @@ class RemoteViewController: UIViewController {
   let colorPickerController = ColorController()
   
   // MARK: - Downcast Content Views
-   var abstractRemoteView : AbstractRemoteView {
-     return contentView as! AbstractRemoteView
-   }
-   
-   var remoteView: RemoteView {
-     return contentView as! RemoteView
-   }
-   
-   var lightView: LightView {
-     return contentView as! LightView
-   }
+  var abstractRemoteView : AbstractRemoteView {
+    return contentView as! AbstractRemoteView
+  }
+  
+  var remoteView: RemoteView {
+    return contentView as! RemoteView
+  }
   
   // MARK: - View controller code
   override func loadView() {
@@ -120,13 +116,17 @@ class RemoteViewController: UIViewController {
     
     // Add gestures.
     addGestures(view: contentView, singleTapSelector: #selector(tapGestureMakeFullScreen(gesture:)),
-    doubleTapSelector: nil)
+                doubleTapSelector: nil)
   }
   
   func setupLightView() {
+    guard let lightView = contentView as? LightView else {
+      return
+    }
+    
     lightView.submitOnButton.addTarget(self, action: #selector(submitPower(_:)), for: .touchUpInside)
-//    lightView.submitBrightnessButton.addTarget(self, action: #selector(submitBrightness), for: .touchUpInside)
-//    lightView.submitColorButton.addTarget(self, action: #selector(submitColor), for: .touchUpInside)
+    //    lightView.submitBrightnessButton.addTarget(self, action: #selector(submitBrightness), for: .touchUpInside)
+    //    lightView.submitColorButton.addTarget(self, action: #selector(submitColor), for: .touchUpInside)
     
     colorPickerController.delegate = self
     colorPickerController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -141,13 +141,21 @@ class RemoteViewController: UIViewController {
   }
   
   func setupMusicView() {
-      NSLayoutConstraint.activate([
-        contentView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-        contentView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-        contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-        contentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-      ])
+    NSLayoutConstraint.activate([
+      contentView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      contentView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+      contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      //contentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+    ])
+    
+    guard let musicView = contentView as? MusicView else {
+      return
     }
+    
+    musicView.playButton.addTarget(self, action: #selector(musicViewButtons(_:)), for: .touchUpInside)
+    musicView.skipBackButton.addTarget(self, action: #selector(musicViewButtons(_:)), for: .touchUpInside)
+    musicView.skipForwardButton.addTarget(self, action: #selector(musicViewButtons(_:)), for: .touchUpInside)
+  }
   
   // MARK: - Launchers
   @objc func launchClimateView() {
@@ -164,7 +172,7 @@ class RemoteViewController: UIViewController {
     
     // Add Gestures
     addGestures(view: view, singleTapSelector: nil,
-    doubleTapSelector: #selector(tapGestureReturnHome(gesture:)))
+                doubleTapSelector: #selector(tapGestureReturnHome(gesture:)))
     
     viewFadeIn(currentView: contentView, newView: view)
   }
@@ -207,6 +215,10 @@ class RemoteViewController: UIViewController {
   }
   
   @objc func tapGestureLightView(gesture: UITapGestureRecognizer) {
+    guard let lightView = contentView as? LightView else {
+      return
+    }
+    
     lightView.customData.brightness = lightView.customData.brightness - 0.05
     lightView.reloadView()
   }
@@ -225,6 +237,28 @@ class RemoteViewController: UIViewController {
     let brightnessAction = createSetBrightnessAction(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? Constants.unknownLightId, brightness: 0.75)
     print(brightnessAction)
     actionManager.publish(brightnessAction)
+  }
+  
+  @objc func musicViewButtons(_ sender:UIButton) {
+    guard let button = MusicView.buttons(rawValue: sender.title(for: .normal)!) else {
+      return
+    }
+    
+    let devicetype = state?.deviceType ?? DeviceType.music
+    let deviceid = state?.deviceId ?? Constants.unknownLightId
+    
+    var musicAction : Action
+    switch button {
+    case .play:
+      musicAction = createPlayAction(deviceType: devicetype, deviceId: deviceid, play: true)
+    case .skip:
+      musicAction = createSkipAction(deviceType: devicetype, deviceId: deviceid, forward: true)
+    case .reverse:
+      musicAction = createSkipAction(deviceType: devicetype, deviceId: deviceid, forward: false)
+    }
+    
+    print(musicAction)
+    actionManager.publish(musicAction)
   }
   
   func submitColor(_ color: UIColor) {
@@ -249,20 +283,20 @@ class RemoteViewController: UIViewController {
   }
   
   private func addGestures(view: UIView, singleTapSelector: Selector?, doubleTapSelector: Selector?) {
-      let singleTapGesture = UITapGestureRecognizer(target: self, action: singleTapSelector)
-      singleTapGesture.numberOfTapsRequired = 1
-      view.addGestureRecognizer(singleTapGesture)
+    let singleTapGesture = UITapGestureRecognizer(target: self, action: singleTapSelector)
+    singleTapGesture.numberOfTapsRequired = 1
+    view.addGestureRecognizer(singleTapGesture)
     
     let doubleTapGesture = UITapGestureRecognizer(target: self, action: doubleTapSelector)
     doubleTapGesture.numberOfTapsRequired = 2
     view.addGestureRecognizer(doubleTapGesture)
-
+    
     singleTapGesture.require(toFail: doubleTapGesture)
   }
   
   private func safeDeviceInfoLabel(_ message: String) {
     guard (contentView as? RemoteView != nil) else {return}
-      
+    
     remoteView.deviceInfoLabel.text = message
   }
   

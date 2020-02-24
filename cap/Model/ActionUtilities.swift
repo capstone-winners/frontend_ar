@@ -29,3 +29,14 @@ func createSetLocked(deviceType: DeviceType, deviceId: String, locked: Bool) -> 
   let lockAction = LockAction.setLock(SetLockAction(isLocked: locked))
   return Action(deviceType: deviceType, deviceId: deviceId, action: IotAction.lockAction(lockAction))
 }
+
+// MARK: Muisc Action helpers
+func createPlayAction(deviceType: DeviceType, deviceId: String, play: Bool) -> Action {
+  let action = MusicAction.play(PlayAction(shouldPlay: play))
+  return Action(deviceType: deviceType, deviceId: deviceId, action: IotAction.musicAction(action))
+}
+
+func createSkipAction(deviceType: DeviceType, deviceId: String, forward: Bool) -> Action {
+  let action = MusicAction.skip(SkipAction(skipForward: forward))
+  return Action(deviceType: deviceType, deviceId: deviceId, action: IotAction.musicAction(action))
+}

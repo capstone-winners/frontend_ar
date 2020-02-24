@@ -9,6 +9,13 @@
 import UIKit
 
 class MusicView : AbstractRemoteView {
+  
+  enum buttons : String {
+    case play
+    case skip
+    case reverse
+  }
+  
   var customData : MusicData {
     get{
       return data as! MusicData
@@ -35,24 +42,23 @@ class MusicView : AbstractRemoteView {
   }
   
   override func specializeView() {
-    musicLabel.translatesAutoresizingMaskIntoConstraints = false
-    addSubview(musicLabel)
-    NSLayoutConstraint.activate([
-      musicLabel.topAnchor.constraint(equalTo: titleStackView.bottomAnchor, constant: 30),
-      musicLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-      musicLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-      musicLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
-      musicLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
-    ])
     
     albumArt.translatesAutoresizingMaskIntoConstraints = false
     addSubview(albumArt)
     NSLayoutConstraint.activate([
       albumArt.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
       albumArt.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-      albumArt.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
-      albumArt.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.5),
+      albumArt.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.3),
       albumArt.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor)
+    ])
+    
+    musicLabel.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(musicLabel)
+    NSLayoutConstraint.activate([
+      musicLabel.bottomAnchor.constraint(equalTo: albumArt.topAnchor, constant: -50),
+      musicLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+      musicLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+      musicLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
     ])
     
     let buttonStackView = UIStackView(arrangedSubviews:[skipBackButton, playButton, skipForwardButton])
@@ -64,10 +70,9 @@ class MusicView : AbstractRemoteView {
     addSubview(buttonStackView)
     
     NSLayoutConstraint.activate([
-      buttonStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -50),
-      buttonStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-      buttonStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-      buttonStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
+      buttonStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -50),
+      buttonStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      buttonStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
     ])
   }
   
@@ -77,7 +82,7 @@ class MusicView : AbstractRemoteView {
     fieldLabel.text = "Some Snazzy Music"
     fieldLabel.textColor = .white
     fieldLabel.backgroundColor = .clear
-    fieldLabel.textAlignment = .justified
+    fieldLabel.textAlignment = .center
     fieldLabel.numberOfLines = 1
     fieldLabel.font = .systemFont(ofSize: 25)
     fieldLabel.sizeToFit()
@@ -94,15 +99,15 @@ class MusicView : AbstractRemoteView {
   }()
   
   lazy var skipBackButton : UIButton = {
-    return makeButton(systemName: "backward", title: nil)
+    return makeButton(systemName: "backward", title: buttons.reverse.rawValue)
   }()
   
   lazy var skipForwardButton : UIButton = {
-    return makeButton(systemName: "forward", title: nil)
+    return makeButton(systemName: "forward", title: buttons.skip.rawValue)
   }()
   
   lazy var playButton : UIButton = {
-    return makeButton(systemName: "play", title: nil)
+    return makeButton(systemName: "play", title: buttons.play.rawValue)
   }()
   
 }

@@ -103,6 +103,54 @@ struct SetLockAction : Codable {
   var isLocked : Bool
 }
 
+// *****************************************
+// MARK: Music Action
+// *****************************************
+enum MusicAction : Codable {
+  case play(PlayAction)
+  case skip(SkipAction)
+}
+extension MusicAction {
+  private enum CodingKeys: String, CodingKey {
+    case play
+    case skip
+  }
+  
+  enum MusicActionCodingError: Error {
+    case decoding(String)
+  }
+  
+  init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    if let value = try? values.decode(PlayAction.self, forKey: .play) {
+      self = .play(value)
+      return
+    }
+    if let value = try? values.decode(SkipAction.self, forKey: .skip) {
+      self = .skip(value)
+      return
+    }
+    
+    throw MusicActionCodingError.decoding("Whoops! \(dump(values))")
+  }
+  
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    switch self {
+    case .play(let value):
+      try container.encode(value, forKey: .play)
+    case .skip(let value):
+      try container.encode(value, forKey: .skip)
+    }
+  }
+}
+
+struct PlayAction : Codable {
+  var shouldPlay : Bool
+}
+struct SkipAction : Codable {
+  var skipForward : Bool
+}
 
 // *****************************************
 // MARK: Overall Action
@@ -110,12 +158,14 @@ struct SetLockAction : Codable {
 enum IotAction : Codable {
   case lightAction(LightAction)
   case lockAction(LockAction)
+  case musicAction(MusicAction)
 }
 
 extension IotAction {
   private enum CodingKeys: String, CodingKey {
     case lightAction
     case lockAction
+    case musicAction
   }
   
   enum LockActionCodingError: Error {
@@ -142,6 +192,8 @@ extension IotAction {
       try container.encode(value, forKey: .lockAction)
     case .lightAction(let value):
       try container.encode(value, forKey: .lightAction)
+    case .musicAction(let value):
+      try container.encode(value, forKey: .musicAction)
     }
   }
 }
