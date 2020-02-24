@@ -230,6 +230,10 @@ class RemoteViewController: UIViewController {
     view.insertSubview(newView, aboveSubview: currentView)
     newView.fillView(self.view)
     
+    if currentView as? LightView != nil {
+      colorPickerController.remove()
+    }
+    
     UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
       newView.alpha = 1.0
     }, completion: {_ in
