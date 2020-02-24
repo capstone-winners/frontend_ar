@@ -335,15 +335,19 @@ extension RemoteViewController {
     var action : Action
     
     if lockButtonActive {
-      lockView.lockButton.imageView?.backgroundColor = .green
-      action = createSetLocked(deviceType: devicetype, deviceId: deviceid, locked: false)
-    } else {
       lockView.lockButton.imageView?.backgroundColor = .red
       action = createSetLocked(deviceType: devicetype, deviceId: deviceid, locked: true)
+    } else {
+      lockView.lockButton.imageView?.backgroundColor = .green
+      action = createSetLocked(deviceType: devicetype, deviceId: deviceid, locked: false)
     }
     
     print(action)
     actionManager.publish(action)
+    let data = dummyLockData()
+    data.isLocked = lockButtonActive
+    lockView.customData = data
+    lockView.reload()
     lockButtonActive = !lockButtonActive
   }
 }

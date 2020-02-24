@@ -18,6 +18,15 @@ class LockView : AbstractRemoteView {
     }
   }
   
+  var lockState : String {
+    get {
+      if customData.isLocked {
+        return "locked"
+      }
+      
+      return "unlocked"
+    }
+  }
   // MARK: - Setup
   convenience init() {
     self.init(data: dummyLockData())
@@ -40,17 +49,28 @@ class LockView : AbstractRemoteView {
     lockButton.translatesAutoresizingMaskIntoConstraints = false
     addSubview(lockButton)
     NSLayoutConstraint.activate([
-      lockButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-      lockButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+      lockButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.3),
       lockButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.3),
-      lockButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor)
+      lockButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
+      lockButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
     ])
   }
   
   lazy var lockButton : UIButton = {
-    let button = makeButton(systemName: "lock", title: "lock")
-    button.imageView?.backgroundColor = UIColor.red
+  
+    let button = makeButton(systemName: "lock", title: self.lockState)
+    button.backgroundColor = .brown
+    button.imageView?.backgroundColor = .red
     return button
   }()
   
+  func reload() -> Void {
+    if customData.isLocked {
+      lockButton.backgroundColor = .red
+      //lockButton.imageView?.backgroundColor = .red
+    } else {
+      lockButton.backgroundColor = .green
+    }
+    lockButton.setTitle(lockState, for: .normal)
+  }
 }
