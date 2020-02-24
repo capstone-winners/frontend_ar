@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4939A126240460DF00561BFD /* LockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4939A125240460DF00561BFD /* LockView.swift */; };
 		4957CE6323EE61EA0004E528 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE6223EE61EA0004E528 /* DebugView.swift */; };
 		4957CE6523EE87BD0004E528 /* IotDataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE6423EE87BD0004E528 /* IotDataModelTests.swift */; };
 		4957CE6723EF1E280004E528 /* ActionDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE6623EF1E280004E528 /* ActionDataModel.swift */; };
@@ -73,6 +74,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4939A125240460DF00561BFD /* LockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockView.swift; sourceTree = "<group>"; };
 		4957CE6223EE61EA0004E528 /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
 		4957CE6423EE87BD0004E528 /* IotDataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IotDataModelTests.swift; sourceTree = "<group>"; };
 		4957CE6623EF1E280004E528 /* ActionDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionDataModel.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				499C514F23E236F000FF9CBB /* ClimateView.swift */,
 				49FBA98023E8A40A001BA3F1 /* LightView.swift */,
 				4957CE7A23EFD8A30004E528 /* MusicView.swift */,
+				4939A125240460DF00561BFD /* LockView.swift */,
 			);
 			path = RemoteViews;
 			sourceTree = "<group>";
@@ -412,6 +415,7 @@
 				4957CE6B23EF38660004E528 /* ActionManager.swift in Sources */,
 				49FBA98323E8A915001BA3F1 /* IoTDataModel.swift in Sources */,
 				499C514723E0F48D00FF9CBB /* RemoteViewController.swift in Sources */,
+				4939A126240460DF00561BFD /* LockView.swift in Sources */,
 				499C515023E236F000FF9CBB /* ClimateView.swift in Sources */,
 				E9EEC39323EF4DAF005CE6DA /* ViewControllerNoAR.swift in Sources */,
 				499C514123D2BB3700FF9CBB /* QRAnchor.swift in Sources */,

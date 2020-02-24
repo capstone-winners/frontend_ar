@@ -16,6 +16,7 @@ class RemoteViewController: UIViewController {
   var actionManager : ActionManager = ActionManager()
   let throttler : Throttler? = Throttler(ms: Constants.colorIntervalUpdateMs)
   let colorPickerController = ColorController()
+  var lockButtonActive = true
   
   // MARK: - Downcast Content Views
   var remoteView: RemoteView {
@@ -45,7 +46,11 @@ class RemoteViewController: UIViewController {
     case is ClimateView:
       print("did appear: climate view")
     case is MusicView:
+      print("did appear: music view")
       setupMusicView()
+    case is LockView:
+      print("did appear: lock view")
+      setupLockView()
     default:
       print("wut the fuk u tryna do m8?")
     }
@@ -154,6 +159,21 @@ class RemoteViewController: UIViewController {
     musicView.skipForwardButton.addTarget(self, action: #selector(musicViewButtons(_:)), for: .touchUpInside)
   }
   
+  func setupLockView() {
+    NSLayoutConstraint.activate([
+      contentView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      contentView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+      contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      //contentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+    ])
+    
+    guard let lockView = contentView as? LockView else {
+      return
+    }
+    
+    lockView.lockButton.addTarget(self, action: #selector(lockButtonToggled), for: .touchUpInside)
+  }
+  
   // MARK: - Launchers
   @objc func launchClimateView() {
     safeDeviceInfoLabel("Climate")
@@ -194,7 +214,7 @@ class RemoteViewController: UIViewController {
   
   @objc func launchLockView() {
     safeDeviceInfoLabel("Lock")
-    //viewFadeIn(currentView: remoteView, newView: ClimateView())
+    viewFadeIn(currentView: remoteView, newView: LockView())
   }
   
   @objc func launchMusicView() {
@@ -303,6 +323,28 @@ extension RemoteViewController {
     let colorAction = createSetColorAction(deviceType: state?.deviceType ?? DeviceType.light, deviceId: state?.deviceId ?? Constants.unknownLightId, color: color)
     print(colorAction)
     actionManager.publish(colorAction)
+  }
+  
+  @objc func lockButtonToggled() {
+    guard let lockView = contentView as? LockView else {
+      return
+    }
+    
+    let devicetype = state?.deviceType ?? DeviceType.lock
+    let deviceid = state?.deviceId ?? Constants.unknownLightId
+    var action : Action
+    
+    if lockButtonActive {
+      lockView.lockButton.imageView?.backgroundColor = .green
+      action = createSetLocked(deviceType: devicetype, deviceId: deviceid, locked: false)
+    } else {
+      lockView.lockButton.imageView?.backgroundColor = .red
+      action = createSetLocked(deviceType: devicetype, deviceId: deviceid, locked: true)
+    }
+    
+    print(action)
+    actionManager.publish(action)
+    lockButtonActive = !lockButtonActive
   }
 }
 
