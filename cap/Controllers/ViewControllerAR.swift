@@ -53,7 +53,7 @@ class ViewControllerAR: ViewController {
     arSceneView.session.pause()
   }
   
-  override func SetupSceneView() {
+  override func setupSceneView() {
     sceneView = ARSCNView()
     
     guard let arSceneView = sceneView as? ARSCNView else {

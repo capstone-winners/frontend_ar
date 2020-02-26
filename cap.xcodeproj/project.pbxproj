@@ -152,7 +152,6 @@
 			isa = PBXGroup;
 			children = (
 				4957CE6223EE61EA0004E528 /* DebugView.swift */,
-				4957CE7323EF766C0004E528 /* ColorController.swift */,
 				492EDA1E240656DF0004E729 /* PreviewView.swift */,
 				49FBA97C23E4B77A001BA3F1 /* RemoteViews */,
 			);
@@ -167,6 +166,7 @@
 				E9EEC39223EF4DAF005CE6DA /* ViewControllerNoAR.swift */,
 				492EDA20240659DC0004E729 /* PreviewViewController.swift */,
 				499C514623E0F48D00FF9CBB /* RemoteViewController.swift */,
+				4957CE7323EF766C0004E528 /* ColorController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

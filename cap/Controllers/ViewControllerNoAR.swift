@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewControllerNoAR: ViewController {
-  override func SetupSceneView() {
+  override func setupSceneView() {
     sceneView = UIView()
     view.addSubview(sceneView)
     

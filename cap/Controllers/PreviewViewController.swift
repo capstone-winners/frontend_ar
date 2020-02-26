@@ -46,7 +46,6 @@ class PreviewViewController: UIViewController {
       return
     }
 
-    print(state?.icon)
     preview.previewIcon.image = UIImage(systemName: state?.icon ?? Constants.defaultIcon)?.withRenderingMode(.alwaysTemplate)
     preview.previewLabel.text = state?.deviceId
     
@@ -79,7 +78,6 @@ class PreviewViewController: UIViewController {
       self.view.alpha = 0.0
     }, completion: {finished in
       if finished {
-        print("removed state \(finished)")
         self.viewDidDisappear(false)
         self.state = nil
       }

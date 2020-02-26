@@ -28,28 +28,29 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
   override func loadView() {
     super.loadView()
     
-    SetupSceneView()
-    SetupDebugView()
-    
     // Prevent the screen from being dimmed after a while as users will likely
     // have long periods of interaction without touching the screen or buttons.
     UIApplication.shared.isIdleTimerDisabled = true
     
+    
+    // Setup other views
+    setupSceneView()
+    setupDebugView()
+    setupPreviewView()
+    
+
     //Create TapGesture Recognizer
     tripleTapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureMakeFullScreen(gesture:)))
     tripleTapGesture.numberOfTapsRequired = 3
     sceneView.addGestureRecognizer(tripleTapGesture)
-    
-    previewViewController.view.translatesAutoresizingMaskIntoConstraints = false
-    addChildController(previewViewController) // Add the preview controller
-    configurePreviewView()
+
   }
   
-  func SetupSceneView() {
+  func setupSceneView() {
     fatalError("SetupSceneView has not been implemented")
   }
   
-  func SetupDebugView() {
+  func setupDebugView() {
     view.addSubview(debugView)
     debugView.isUserInteractionEnabled = true
     
@@ -60,32 +61,27 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
       debugView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
     ])
     
+    // Clear the saved QR codes
     debugView.clearButton.addTarget(self, action: #selector(clearCodes), for: .touchUpInside)
+    
+    // Helper Buttons that will trigger a preview launch.
     debugView.climateButton.addTarget(self, action: #selector(launchPreviewView(_:)), for: .touchUpInside)
     debugView.lightButton.addTarget(self, action: #selector(launchPreviewView(_:)), for: .touchUpInside)
     debugView.musicButton.addTarget(self, action: #selector(launchPreviewView(_:)), for: .touchUpInside)
     debugView.lockButton.addTarget(self, action: #selector(launchPreviewView(_:)), for: .touchUpInside)
   }
   
-  func configurePreviewView() {
+  func setupPreviewView() {
+    previewViewController.delegate = self
+    previewViewController.view.alpha = 0.0 // Start this off as invisible.
+    previewViewController.view.translatesAutoresizingMaskIntoConstraints = false
+    addChildController(previewViewController) // Add the preview controller
+    
     NSLayoutConstraint.activate([
       previewViewController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
       previewViewController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
       previewViewController.view.heightAnchor.constraint(equalToConstant: 60),
       previewViewController.view.topAnchor.constraint(equalTo: debugView.bottomAnchor)
-    ])
-    
-    // Start this off as invisible. 
-    previewViewController.view.alpha = 0.0
-    previewViewController.delegate = self
-  }
-  
-  func configureRemoteView() {
-    NSLayoutConstraint.activate([
-      remoteViewController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      remoteViewController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-      remoteViewController.view.heightAnchor.constraint(equalToConstant: 60),
-      remoteViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60)
     ])
   }
   
@@ -130,7 +126,6 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
     } else {
       print("Remote view is being presented already!")
     }
-    
   }
   
   public func presentationControllerDidDismiss(_ presentationController: UIPresentationController)
