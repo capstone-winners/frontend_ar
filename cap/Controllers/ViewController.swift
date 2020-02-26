@@ -61,6 +61,10 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
     ])
     
     debugView.clearButton.addTarget(self, action: #selector(clearCodes), for: .touchUpInside)
+    debugView.climateButton.addTarget(self, action: #selector(launchPreviewView(_:)), for: .touchUpInside)
+    debugView.lightButton.addTarget(self, action: #selector(launchPreviewView(_:)), for: .touchUpInside)
+    debugView.musicButton.addTarget(self, action: #selector(launchPreviewView(_:)), for: .touchUpInside)
+    debugView.lockButton.addTarget(self, action: #selector(launchPreviewView(_:)), for: .touchUpInside)
   }
   
   func configurePreviewView() {
@@ -70,6 +74,10 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
       previewViewController.view.heightAnchor.constraint(equalToConstant: 60),
       previewViewController.view.topAnchor.constraint(equalTo: debugView.bottomAnchor)
     ])
+    
+    // Start this off as invisible. 
+    previewViewController.view.alpha = 0.0
+    previewViewController.delegate = self
   }
   
   func configureRemoteView() {
@@ -92,6 +100,25 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
   @objc func tapGestureMakeFullScreen(gesture: UITapGestureRecognizer) {
      self.launchRemoteView(jsonString: nil)
    }
+  
+  @objc func launchPreviewView(_ sender: UIButton) {
+    switch sender {
+    case debugView.climateButton:
+      launchPreviewView(jsonString: dummyClimateData().toJSONString())
+    case debugView.lightButton:
+      launchPreviewView(jsonString: dummyLightData().toJSONString())
+    case debugView.musicButton:
+      launchPreviewView(jsonString: dummyMusicData().toJSONString())
+    case debugView.lockButton:
+      launchPreviewView(jsonString: dummyLockData().toJSONString())
+    default:
+      return
+    }
+  }
+  
+  func launchPreviewView(jsonString: String?) {
+    previewViewController.updateView(state: iotDecoder.decode(jsonString: jsonString))
+  }
   
   func launchRemoteView(jsonString: String?){
     remoteViewController.updateView(state: iotDecoder.decode(jsonString: jsonString))

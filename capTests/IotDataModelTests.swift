@@ -92,6 +92,11 @@ class IotDataManagerTests: XCTestCase {
     print("\n\n")
     print("Music:")
     print(dummyMusicData().toJSONString())
+    
+    let climate = dummyClimateData()
+    print(climate.icon)
+    let climateDecoded = manager.decode(jsonString: dummyClimateData().toJSONString())!
+    print(climateDecoded.icon)
   }
 }
 

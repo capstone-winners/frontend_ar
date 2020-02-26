@@ -32,17 +32,29 @@ class DebugView : UIView {
     
     addSubview(topStackView)
     NSLayoutConstraint.activate([
-      topStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-      topStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
       topStackView.topAnchor.constraint(equalTo: topAnchor),
-      topStackView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.95),
+      topStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+      topStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+      topStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
       
     ])
-  }
+    
+    let buttonStackView = UIStackView(arrangedSubviews:[climateButton, lightButton, musicButton, lockButton])
+    buttonStackView.distribution = .equalCentering
+    buttonStackView.axis = .horizontal
+    buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+    buttonStackView.alignment = .center
+    topStackView.backgroundColor = .clear
+    
   
-  var clearButton : UIButton = {
-    return makeButton(systemName: "trash.fill", title: "Clear Codes")
-  }()
+    addSubview(buttonStackView)
+    NSLayoutConstraint.activate([
+      buttonStackView.topAnchor.constraint(equalTo: topStackView.bottomAnchor, constant: 20),
+      buttonStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+      buttonStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+      buttonStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
+    ])
+  }
   
   var debugLabel : UILabel = {
     let label = UILabel()
@@ -57,4 +69,21 @@ class DebugView : UIView {
     
     return label
   }()
+  
+  var clearButton : UIButton = {
+    return makeButton(systemName: "trash.fill", title: "Clear Codes")
+  }()
+  var climateButton : UIButton = {
+    return makeButton(systemName: "cloud", title: "Climate")
+  }()
+  var lightButton : UIButton = {
+    return makeButton(systemName: "lightbulb", title: "Light")
+  }()
+  var musicButton : UIButton = {
+    return makeButton(systemName: "music.note", title: "Music")
+  }()
+  var lockButton : UIButton = {
+    return makeButton(systemName: "lock", title: "Lock")
+  }()
+  
 }

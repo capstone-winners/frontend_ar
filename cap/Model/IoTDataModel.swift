@@ -113,6 +113,7 @@ class ClimateData: DeviceData {
     
     let superDecoder = try values.superDecoder()
     try super.init(from: superDecoder)
+    self.icon = "cloud"
   }
   
   override func encode(to encoder: Encoder) throws {

@@ -17,6 +17,8 @@ class Constants {
   
   static let colorIntervalUpdateMs = 1000
   
+  static let defaultIcon = "desktopcomputer"
+  
   // MARK: BAD things we want to get ride of eventually...
   static let hardcodedLightUrl = "http://192.168.1.4:3000/action/light/vibe-check"
   static let unknownLightId = "vibe-check"

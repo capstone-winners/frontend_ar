@@ -38,6 +38,7 @@ class PreviewView : UIView {
       topStackView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.95),
       
     ])
+    
   }
   
   var previewIcon : UIImageView = {

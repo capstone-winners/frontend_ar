@@ -32,7 +32,8 @@ class ActionManager {
   }
   
   static func actionToUrlString(_ action: Action) -> String {
-    return "\(Constants.baseUrl)/action/\(action.deviceType.rawValue)/\(action.deviceId)"
+    let urlString = "\(Constants.baseUrl)/action/\(action.deviceType.rawValue)/\(action.deviceId)"
+    return urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! // Need to santizie spaces to %20 for urls.
   }
 }
 

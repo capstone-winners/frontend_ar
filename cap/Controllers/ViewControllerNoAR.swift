@@ -9,7 +9,6 @@
 import UIKit
 
 class ViewControllerNoAR: ViewController {
-  
   override func SetupSceneView() {
     sceneView = UIView()
     view.addSubview(sceneView)
@@ -24,6 +23,5 @@ class ViewControllerNoAR: ViewController {
       sceneView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       sceneView.rightAnchor.constraint(equalTo: view.rightAnchor)])
   }
-  
   
 }

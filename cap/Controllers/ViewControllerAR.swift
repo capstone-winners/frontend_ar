@@ -157,7 +157,8 @@ extension ViewControllerAR : ARSCNViewDelegate {
         
         self.debugView.debugLabel.sizeToFit()
         self.debugView.debugLabel.alpha = 1.0
-        self.launchRemoteView(jsonString: qrAnchor.observation.payloadStringValue)
+        //self.launchRemoteView(jsonString: qrAnchor.observation.payloadStringValue)
+        self.launchPreviewView(jsonString: qrAnchor.observation.payloadStringValue)
       }
     }
   }
