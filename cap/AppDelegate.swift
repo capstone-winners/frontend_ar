@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     #if targetEnvironment(simulator)
       let viewController = ViewControllerNoAR()
     #else
-      let viewController = ViewController()
+      let viewController = ViewControllerAR()
     #endif
     
     window?.rootViewController = viewController

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		492EDA1F240656DF0004E729 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EDA1E240656DF0004E729 /* PreviewView.swift */; };
+		492EDA21240659DC0004E729 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EDA20240659DC0004E729 /* PreviewViewController.swift */; };
+		492EDA23240662E80004E729 /* ViewControllerAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EDA22240662E80004E729 /* ViewControllerAR.swift */; };
 		4939A126240460DF00561BFD /* LockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4939A125240460DF00561BFD /* LockView.swift */; };
 		4957CE6323EE61EA0004E528 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE6223EE61EA0004E528 /* DebugView.swift */; };
 		4957CE6523EE87BD0004E528 /* IotDataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CE6423EE87BD0004E528 /* IotDataModelTests.swift */; };
@@ -74,6 +77,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		492EDA1E240656DF0004E729 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PreviewView.swift; path = cap/Views/PreviewView.swift; sourceTree = SOURCE_ROOT; };
+		492EDA20240659DC0004E729 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
+		492EDA22240662E80004E729 /* ViewControllerAR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerAR.swift; sourceTree = "<group>"; };
 		4939A125240460DF00561BFD /* LockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockView.swift; sourceTree = "<group>"; };
 		4957CE6223EE61EA0004E528 /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
 		4957CE6423EE87BD0004E528 /* IotDataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IotDataModelTests.swift; sourceTree = "<group>"; };
@@ -147,6 +153,7 @@
 			children = (
 				4957CE6223EE61EA0004E528 /* DebugView.swift */,
 				4957CE7323EF766C0004E528 /* ColorController.swift */,
+				492EDA1E240656DF0004E729 /* PreviewView.swift */,
 				49FBA97C23E4B77A001BA3F1 /* RemoteViews */,
 			);
 			path = Views;
@@ -155,8 +162,10 @@
 		4957CE7623EFD6ED0004E528 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				E9EEC39223EF4DAF005CE6DA /* ViewControllerNoAR.swift */,
 				4992C25023D04BB4002C712F /* ViewController.swift */,
+				492EDA22240662E80004E729 /* ViewControllerAR.swift */,
+				E9EEC39223EF4DAF005CE6DA /* ViewControllerNoAR.swift */,
+				492EDA20240659DC0004E729 /* PreviewViewController.swift */,
 				499C514623E0F48D00FF9CBB /* RemoteViewController.swift */,
 			);
 			path = Controllers;
@@ -410,6 +419,7 @@
 				4957CE6923EF28D30004E528 /* ActionUtilities.swift in Sources */,
 				4992C25123D04BB4002C712F /* ViewController.swift in Sources */,
 				49C4964E240066BA00AE4094 /* Throttler.swift in Sources */,
+				492EDA23240662E80004E729 /* ViewControllerAR.swift in Sources */,
 				49FBA98123E8A40A001BA3F1 /* LightView.swift in Sources */,
 				4957CE6723EF1E280004E528 /* ActionDataModel.swift in Sources */,
 				4957CE6B23EF38660004E528 /* ActionManager.swift in Sources */,
@@ -420,6 +430,7 @@
 				E9EEC39323EF4DAF005CE6DA /* ViewControllerNoAR.swift in Sources */,
 				499C514123D2BB3700FF9CBB /* QRAnchor.swift in Sources */,
 				499C514523DB48E400FF9CBB /* RemoteView.swift in Sources */,
+				492EDA1F240656DF0004E729 /* PreviewView.swift in Sources */,
 				4992C27D23D0BF40002C712F /* QRPlane.swift in Sources */,
 				499C513D23D0ED6500FF9CBB /* Plane.swift in Sources */,
 				49FBA97F23E4B80E001BA3F1 /* AbstractRemoteView.swift in Sources */,
@@ -432,6 +443,7 @@
 				499C513F23D0EF8800FF9CBB /* QRAnchorDetector.swift in Sources */,
 				4957CE7B23EFD8A30004E528 /* MusicView.swift in Sources */,
 				49FBA98823E9CC4C001BA3F1 /* IoTDataManager.swift in Sources */,
+				492EDA21240659DC0004E729 /* PreviewViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

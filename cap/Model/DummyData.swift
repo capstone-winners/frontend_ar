@@ -18,7 +18,11 @@ class DummyIotDataManager : IotDataManager {
     return self.decode(jsonString: anchor!.label)
   }
   
-  override func decode(jsonString: String) -> DeviceData? {
+  override func decode(jsonString: String?) -> DeviceData? {
+    guard jsonString != nil else {
+      return nil
+    }
+    
     print(jsonString)
     switch jsonString {
     case "climate":

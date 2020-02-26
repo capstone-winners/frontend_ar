@@ -19,13 +19,18 @@ class QRDetector {
   var latestFrame: ARFrame?
   var iotDataManager : IotDataManager = IotDataManager()
   
-  var sceneView: ARSCNView!
+  var parentView: ViewController!
+  var sceneView: ARSCNView {
+    get {
+      return parentView.sceneView as! ARSCNView
+    }
+  }
   
-  func startQrCodeDetection(view sceneView: ARSCNView) {
+  func startQrCodeDetection(parent parent: ViewController) {
     print("starting detection")
     
     // View
-    self.sceneView = sceneView
+    self.parentView = parent
     
     // Create a Barcode Detection Request
     let request = VNDetectBarcodesRequest(completionHandler: self.requestHandler)
@@ -65,10 +70,16 @@ class QRDetector {
   func requestHandler(request: VNRequest, error: Error?) {
     // Get the first result out of the results, if there are any
     if let results = request.results, let result = results.first as? VNBarcodeObservation {
-      guard result.payloadStringValue != nil else {return}
+      guard result.payloadStringValue != nil else {self.processingQr = false
+        parentView.updateDebugLabel(message: "Nil qr")
+        return}
       
-      let id = iotDataManager.getUdid(result.payloadStringValue!)
-      guard id != nil else { print("Rejecting invalid qr code!"); return}
+      //let id = iotDataManager.getUdid(result.payloadStringValue!)
+      let data = iotDataManager.decode(jsonString: result.payloadStringValue!)
+      guard data != nil else { print("Rejecting invalid qr code!")
+        parentView.updateDebugLabel(message: "Invalid qr code: \(String(describing: result.payloadStringValue))")
+        self.processingQr = false
+        return}
       
       // Get the bounding box for the bar code and find the center
       var rect = result.boundingBox

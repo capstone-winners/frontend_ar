@@ -25,7 +25,7 @@ class IotDataManager {
    Decodes the given json string to the appropriate concrete type.
    Returns `nil` if given an invalid json.
    */
-  func decode(jsonString: String) -> DeviceData? {
+  func decode(jsonString: String?) -> DeviceData? {
     
 //    if jsonString == Constants.currentQrJson {
 //      #warning("remove this!")
@@ -34,13 +34,15 @@ class IotDataManager {
 //    } else {
 //      print("data: \(jsonString)....")
 //    }
-    
-    guard let dtype = getType(jsonDict: jsonString) else {
+    guard jsonString != nil else {
+      return nil
+    }
+    guard let dtype = getType(jsonDict: jsonString!) else {
       print("IotDataManager: Bad type in decode attempt!")
       return nil
     }
     
-    if let jsonData = jsonString.data(using: .utf8)
+    if let jsonData = jsonString!.data(using: .utf8)
     {
       let decoder = JSONDecoder()
       do {

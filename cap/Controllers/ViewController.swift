@@ -13,70 +13,63 @@ import Vision
 
 class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate {
   
-  let sceneView: ARSCNView = ARSCNView()
+  var sceneView: UIView!
   let debugView: DebugView = DebugView()
   
+  let previewViewController = PreviewViewController()
   let remoteViewController = RemoteViewController()
-  let qrDetector: QRDetector = QRDetector()
   
-  //#warning("replace this with the real version")
-  //var iotDecoder : IotDataManager = DummyIotDataManager()
   let iotDecoder = IotDataManager()
   
-  var shouldProcessFramesForQr : Bool = true
   var isRemoteViewActive : Bool = false
+  
+  var tripleTapGesture : UITapGestureRecognizer!
   
   override func loadView() {
     super.loadView()
     
-    SetupArView()
+    SetupSceneView()
     SetupDebugView()
     
     // Prevent the screen from being dimmed after a while as users will likely
     // have long periods of interaction without touching the screen or buttons.
     UIApplication.shared.isIdleTimerDisabled = true
     
-    // Start QR Detection
-    self.qrDetector.startQrCodeDetection(view: sceneView)
-    
     //Create TapGesture Recognizer
-    let tripleTapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureMakeFullScreen(gesture:)))
+    tripleTapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureMakeFullScreen(gesture:)))
     tripleTapGesture.numberOfTapsRequired = 3
     sceneView.addGestureRecognizer(tripleTapGesture)
     
-    let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(rec:)))
-    singleTapGesture.shouldRequireFailure(of: tripleTapGesture)
-    sceneView.addGestureRecognizer(singleTapGesture)
+    previewViewController.view.translatesAutoresizingMaskIntoConstraints = false
+    addChildController(previewViewController) // Add the preview controller
+    configurePreviewView()
+  }
+  
+  func SetupSceneView() {
+    fatalError("SetupSceneView has not been implemented")
+  }
+  
+  func SetupDebugView() {
+    view.addSubview(debugView)
+    debugView.isUserInteractionEnabled = true
     
-    //addController(remoteViewController)
-    //configureRemoteView()
+    NSLayoutConstraint.activate([
+      debugView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      debugView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+      debugView.heightAnchor.constraint(equalToConstant: 100),
+      debugView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
+    ])
+    
+    debugView.clearButton.addTarget(self, action: #selector(clearCodes), for: .touchUpInside)
   }
   
-  //Method called when tap
-  @objc func handleSingleTap(rec: UITapGestureRecognizer){
-    if rec.state == .ended {
-      let location: CGPoint = rec.location(in: sceneView)
-      let hits = self.sceneView.hitTest(location, options: nil)
-      if !hits.isEmpty{
-        let tappedNode = hits.first?.node
-        let bounceAction = SCNAction.sequence([
-          SCNAction.move(by: SCNVector3(0,Constants.bounceDistance,0), duration: Constants.bounceTiming),
-          SCNAction.move(by: SCNVector3(0,-2*Constants.bounceDistance,0), duration: Constants.bounceTiming),
-          SCNAction.move(by: SCNVector3(0,Constants.bounceDistance,0), duration: Constants.bounceTiming),
-        ])
-        tappedNode!.runAction(bounceAction)
-        guard let parent = tappedNode?.parent as? QRPlane else {
-          print("Parent is not a QRPlane!")
-          return
-        }
-        
-        self.launchRemoteView(anchor: parent.qrAnchor)
-      }
-    }
-  }
-  
-  @objc func tapGestureMakeFullScreen(gesture: UITapGestureRecognizer) {
-    self.launchRemoteView(anchor: nil)
+  func configurePreviewView() {
+    NSLayoutConstraint.activate([
+      previewViewController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      previewViewController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+      previewViewController.view.heightAnchor.constraint(equalToConstant: 60),
+      previewViewController.view.topAnchor.constraint(equalTo: debugView.bottomAnchor)
+    ])
   }
   
   func configureRemoteView() {
@@ -88,26 +81,7 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
     ])
   }
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    
-    // Create a session configuration
-    let configuration = ARWorldTrackingConfiguration()
-    //configuration.planeDetection = [.horizontal, .vertical]
-    
-    // Run the view's session
-    sceneView.session.run(configuration)
-  }
-  
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    
-    // Pause the view's session
-    sceneView.session.pause()
-  }
-  
   @objc func clearCodes() {
-    qrDetector.clear()
     debugView.debugLabel.text = "Saved codes cleared!"
     
     UIView.animate(withDuration: 0, delay: 5.0, options: [], animations: {
@@ -115,10 +89,13 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
     }, completion: nil)
   }
   
-  func launchRemoteView(anchor: QRAnchor?){
-    remoteViewController.updateView(state: iotDecoder.decode(anchor: anchor))
+  @objc func tapGestureMakeFullScreen(gesture: UITapGestureRecognizer) {
+     self.launchRemoteView(jsonString: nil)
+   }
+  
+  func launchRemoteView(jsonString: String?){
+    remoteViewController.updateView(state: iotDecoder.decode(jsonString: jsonString))
     remoteViewController.presentationController?.delegate = self
-    shouldProcessFramesForQr = false
     
     if !isRemoteViewActive {
       isRemoteViewActive = true
@@ -136,142 +113,15 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
     // (I found that overriding dismiss in the child and calling
     // presentationController.delegate?.presentationControllerDidDismiss
     // works well).
-    shouldProcessFramesForQr = true
     isRemoteViewActive = false
   }
-  
-  
-}
 
-// MARK: - ARSCNViewDelegate
-extension ViewController : ARSCNViewDelegate {
-  /*
-   // Override to create and configure nodes for anchors added to the view's session.
-   func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-   let node = SCNNode()
-   
-   return node
+  func updateDebugLabel(message: String) {
+     DispatchQueue.main.async {
+       self.debugView.debugLabel.text = message
+       
+       self.debugView.debugLabel.sizeToFit()
+       self.debugView.debugLabel.alpha = 1.0
+     }
    }
-   */
-  
-  func SetupArView() {
-    // Set the view's delegate
-    sceneView.delegate = self
-    
-    // Set the session delegate
-    sceneView.session.delegate = self
-    
-    // Show statistics such as fps and timing information
-    sceneView.showsStatistics = true
-    view.addSubview(sceneView)
-    
-    sceneView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      sceneView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      sceneView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      sceneView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-      sceneView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-    ])
-  }
-  
-  func SetupDebugView() {
-    view.addSubview(debugView)
-    debugView.isUserInteractionEnabled = true
-    
-    NSLayoutConstraint.activate([
-      debugView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      debugView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-      debugView.heightAnchor.constraint(equalToConstant: 100),
-      debugView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
-    ])
-    
-    debugView.clearButton.addTarget(self, action: #selector(clearCodes), for: .touchUpInside)
-  }
-  
-  /// - Tag: PlaceARContent
-  func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-    if let planeAnchor = anchor as? ARPlaneAnchor {
-      // Place content only for anchors found by plane detection.
-      let plane = Plane(anchor: planeAnchor, in: sceneView)
-      node.addChildNode(plane)
-    } else if let qrAnchor = anchor as? QRAnchor {
-      // Place content only for anchors found by QR Detection.
-      let plane = QRPlane(anchor: qrAnchor, in: sceneView)
-      //sceneView.scene.rootNode.addChildNode(plane)
-      node.addChildNode(plane)
-      DispatchQueue.main.async {
-        let deviceData = self.iotDecoder.decode(anchor: qrAnchor)
-        self.debugView.debugLabel.text = "Last detected: " + (deviceData?.deviceId ?? qrAnchor.label)
-        
-        self.debugView.debugLabel.sizeToFit()
-        self.debugView.debugLabel.alpha = 1.0
-        self.launchRemoteView(anchor: qrAnchor)
-      }
-    }
-  }
-  
-  /// - Tag: UpdateARContent
-  func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-    // Update only anchors and nodes set up by `renderer(_:didAdd:for:)`.
-    guard let planeAnchor = anchor as? ARPlaneAnchor,
-      let plane = node.childNodes.first as? Plane
-      else {
-        //print("anchor as? ARAnchor: " + String(anchor is QRAnchor))
-        return }
-    
-    updatePlaneAnchor(planeAnchor, plane)
-  }
-  
-  func updatePlaneAnchor(_ planeAnchor : ARPlaneAnchor, _ plane : Plane) {
-    // Update ARSCNPlaneGeometry to the anchor's new estimated shape.
-    if let planeGeometry = plane.meshNode.geometry as? ARSCNPlaneGeometry {
-      planeGeometry.update(from: planeAnchor.geometry)
-    }
-    
-    // Update extent visualization to the anchor's new bounding rectangle.
-    if let extentGeometry = plane.extentNode.geometry as? SCNPlane {
-      extentGeometry.width = CGFloat(planeAnchor.extent.x)
-      extentGeometry.height = CGFloat(planeAnchor.extent.z)
-      plane.extentNode.simdPosition = planeAnchor.center
-    }
-    
-    // Update the plane's classification and the text position
-    if #available(iOS 12.0, *),
-      let classificationNode = plane.classificationNode,
-      let classificationGeometry = classificationNode.geometry as? SCNText {
-      let currentClassification = planeAnchor.classification.description
-      if let oldClassification = classificationGeometry.string as? String, oldClassification != currentClassification {
-        classificationGeometry.string = currentClassification
-        classificationNode.centerAlign()
-      }
-    }
-  }
 }
-
-// MARK: - ARSessionDelegate
-extension ViewController : ARSessionDelegate {
-  func session(_ session: ARSession, didUpdate frame: ARFrame) {
-    if(shouldProcessFramesForQr) {
-      // Pass frame to the QRDetector to figure out if we need to do anything with the frame.
-      qrDetector.processFrame(frame)
-    }
-  }
-  
-  func session(_ session: ARSession, didFailWithError error: Error) {
-    // Present an error message to the user
-    
-  }
-  
-  func sessionWasInterrupted(_ session: ARSession) {
-    // Inform the user that the session has been interrupted, for example, by presenting an overlay
-    
-  }
-  
-  func sessionInterruptionEnded(_ session: ARSession) {
-    // Reset tracking and/or remove existing anchors if consistent tracking is required
-    
-  }
-}
-
-
-
