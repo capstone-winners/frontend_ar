@@ -21,7 +21,13 @@ class ActionManagerTests: XCTestCase {
   
   func testLightAction() {
     let colorAction = createSetColorAction(deviceType: DeviceType.light, deviceId: Constants.unknownLightId, color: .red)
+    print(colorAction.toJSONString())
     actionTestHelperSucceed(description: "color action", action: colorAction)
+  }
+  
+  func testMusicACtions() {
+    print(createSkipAction(deviceType: DeviceType.music, deviceId: "device_id_1", forward: false).toJSONString())
+    print(createPlayAction(deviceType: DeviceType.music, deviceId: "device_id_1", play: true).toJSONString())
   }
   
   
