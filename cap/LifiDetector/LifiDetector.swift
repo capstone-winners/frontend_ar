@@ -11,6 +11,7 @@ import ARKit
 
 class LifiDetector {
   
+  var wrapper: OpenCVWrapper = OpenCVWrapper()
   weak var parentView: ViewController!
   
   func startLifiDetection(parent: ViewController) {
@@ -24,8 +25,9 @@ class LifiDetector {
   }
   
   func processFrame(_ frame: ARFrame) {
-    DispatchQueue.global(qos: .userInitiated).async {
-    }
+//    DispatchQueue.global(qos: .userInitiated).async {
+//    }
+    wrapper.detect(UIImage(pixelBuffer: frame.capturedImage)!)
   }
   
   func requestHandler(request: VNRequest, error: Error?) {

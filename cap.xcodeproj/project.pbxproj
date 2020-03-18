@@ -691,6 +691,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = cap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -717,6 +718,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = cap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

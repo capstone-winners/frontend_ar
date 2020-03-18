@@ -29,25 +29,6 @@
 
 using std::vector;
 
-// Color Ranges
-// define the lower and upper boundaries of the "green"
-// ball in the HSV color space. NB the hue range in
-// opencv is 180, normally it is 360
-array<int, 3> green_lower = {50, 50, 50};
-array<int, 3> green_upper = {70, 255, 255};
-vector<ColorRange> green_range {make_tuple(green_lower, green_upper)};
-
-array<int, 3>red_lower = {0, 50, 20};
-array<int, 3> red_upper = {5, 255, 255};
-array<int, 3> red_lower2 = {170, 50, 20};
-array<int, 3> red_upper2 = {180, 255, 255};
-vector<ColorRange> red_range {make_tuple(red_lower, red_upper), make_tuple(red_lower2, red_upper2)};
-
-array<int, 3> blue_lower = {110, 50, 50};
-array<int, 3> blue_upper = {130, 255, 255};
-vector<ColorRange> blue_range {make_tuple(blue_lower, blue_upper)};
-
-
 class TargetDetector {
 public:
   TargetDetector();

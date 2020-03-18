@@ -12,7 +12,7 @@
 
 #import <opencv2/opencv.hpp>
 #import "OpenCVWrapper.h"
-#import "ColorDetector.hpp"
+#import "TargetDetector.hpp"
 #endif
 
 using namespace std;
@@ -26,6 +26,7 @@ using namespace cv;
 
 + (Mat)_grayFrom:(Mat)source;
 + (Mat)_matFrom:(UIImage *)source;
++ (Mat) _matFromImageBuffer:(CVImageBufferRef) buffer;
 + (UIImage *)_imageFrom:(Mat)source;
 #endif
 
@@ -33,6 +34,7 @@ using namespace cv;
 
 @interface OpenCVWrapper () {
   int callCount;
+  TargetDetector detector;
 }
 @end
 
@@ -49,10 +51,14 @@ using namespace cv;
 }
 
 - (UIImage *)toGray:(UIImage *)source {
-  ColorDetector detector = ColorDetector("hello", {});
-  cout << "OpenCV: " << detector.getName() << endl;
+  cout << "OpenCV: " << endl;
   cout << "\tcall count: " << callCount << endl;
   callCount = callCount + 1;
+  return [OpenCVWrapper _imageFrom:[OpenCVWrapper _grayFrom:[OpenCVWrapper _matFrom:source]]];
+}
+
+- (UIImage *)detect:(UIImage *)source {
+  detector.Detect([OpenCVWrapper _matFrom:source]);
   return [OpenCVWrapper _imageFrom:[OpenCVWrapper _grayFrom:[OpenCVWrapper _matFrom:source]]];
 }
 
@@ -86,6 +92,25 @@ using namespace cv;
   
   return result;
 }
+
++ (cv::Mat) _matFromImageBuffer: (CVImageBufferRef) buffer {
+  
+  cv::Mat mat ;
+  
+  CVPixelBufferLockBaseAddress(buffer, 0);
+  
+  void *address = CVPixelBufferGetBaseAddress(buffer);
+  int width = (int) CVPixelBufferGetWidth(buffer);
+  int height = (int) CVPixelBufferGetHeight(buffer);
+  
+  mat   = cv::Mat(height, width, CV_8UC4, address, 0);
+  //cv::cvtColor(mat, _mat, CV_BGRA2BGR);
+  
+  CVPixelBufferUnlockBaseAddress(buffer, 0);
+  
+  return mat;
+}
+
 
 + (UIImage *)_imageFrom:(Mat)source {
   cout << "-> imageFrom\n";

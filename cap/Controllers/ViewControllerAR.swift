@@ -13,9 +13,9 @@ import Vision
 
 class ViewControllerAR: ViewController {
   
-  var wrapper: OpenCVWrapper = OpenCVWrapper()
   var imageView: UIImageView = UIImageView()
   
+  let lifiDetector: LifiDetector = LifiDetector()
   let qrDetector: QRDetector = QRDetector()
   
   var shouldProcessFramesForQr : Bool = true
@@ -91,9 +91,6 @@ class ViewControllerAR: ViewController {
       imageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
     ])
     var image = UIImage(named:"red_smoke")
-    image = wrapper.toGray(image!)
-    image = wrapper.toGray(image!)
-    image = wrapper.toGray(image!)
     imageView.image = image
     imageView.backgroundColor = .green
   }
@@ -226,6 +223,7 @@ extension ViewControllerAR : ARSessionDelegate {
     if(shouldProcessFramesForQr) {
       // Pass frame to the QRDetector to figure out if we need to do anything with the frame.
       qrDetector.processFrame(frame)
+      lifiDetector.processFrame(frame)
     }
   }
   

@@ -11,9 +11,9 @@
 using namespace cv;
 
 TargetDetector::TargetDetector() :
-greenTracker("green", green_range),
-redTracker("red", red_range),
-blueTracker("blue", blue_range),
+greenTracker("green", greenRange),
+redTracker("red", redRange),
+blueTracker("blue", blueRange),
 detectors({greenTracker, redTracker, blueTracker})
 {
   using namespace std::placeholders; // to get _1, and _2
