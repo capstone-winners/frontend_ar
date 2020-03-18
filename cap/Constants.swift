@@ -10,7 +10,7 @@ import Foundation
 
 class Constants {
   // MARK: Things we're probably going to keep
-  static let baseUrl = "http://192.168.1.4:3000"
+  static let baseUrl = "http://192.168.99.161:3000"
 
   static let bounceDistance = 0.5
   static let bounceTiming = 0.25

@@ -13,6 +13,8 @@ import Vision
 
 class ViewControllerAR: ViewController {
   
+  var imageView: UIImageView = UIImageView()
+  
   let qrDetector: QRDetector = QRDetector()
   
   var shouldProcessFramesForQr : Bool = true
@@ -38,6 +40,7 @@ class ViewControllerAR: ViewController {
     // Create a session configuration
     let configuration = ARWorldTrackingConfiguration()
     //configuration.planeDetection = [.horizontal, .vertical]
+    //print(ARWorldTrackingConfiguration.supportedVideoFormats)
     
     // Run the view's session
     arSceneView.session.run(configuration)
@@ -77,6 +80,19 @@ class ViewControllerAR: ViewController {
       sceneView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
       sceneView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
     ])
+    
+    view.addSubview(imageView)
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+      imageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+    ])
+    var image = UIImage(named:"red_smoke")
+    image = OpenCVWrapper.toGray(image!)
+    imageView.image = image
+    imageView.backgroundColor = .green
   }
   
   //Method called when tap

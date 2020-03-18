@@ -10,7 +10,7 @@ import UIKit
 
 class PreviewViewController: UIViewController {
   
-  var delegate: ViewController?
+  weak var delegate: ViewController?
   var state : DeviceData?
   var singleTap : UITapGestureRecognizer!
   var fadeOutTask : DispatchWorkItem?

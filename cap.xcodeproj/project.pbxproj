@@ -36,6 +36,14 @@
 		499C514523DB48E400FF9CBB /* RemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514423DB48E300FF9CBB /* RemoteView.swift */; };
 		499C514723E0F48D00FF9CBB /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514623E0F48D00FF9CBB /* RemoteViewController.swift */; };
 		499C515023E236F000FF9CBB /* ClimateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C514F23E236F000FF9CBB /* ClimateView.swift */; };
+		49BA559E2420167300B8D9A7 /* LifiDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BA559D2420167300B8D9A7 /* LifiDetector.swift */; };
+		49BA55A12421318F00B8D9A7 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BA55A02421318E00B8D9A7 /* opencv2.framework */; };
+		49BA55A82421347200B8D9A7 /* OpenCVWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 49BA55A72421347200B8D9A7 /* OpenCVWrapper.mm */; };
+		49BA55AD2421457D00B8D9A7 /* ColorDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49BA55AB2421457D00B8D9A7 /* ColorDetector.cpp */; };
+		49BA55B0242183DE00B8D9A7 /* TargetDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49BA55AE242183DE00B8D9A7 /* TargetDetector.cpp */; };
+		49BA55B324218DEF00B8D9A7 /* TargetHistory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49BA55B124218DEF00B8D9A7 /* TargetHistory.cpp */; };
+		49BA55B624218FE400B8D9A7 /* HistoryInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49BA55B424218FE400B8D9A7 /* HistoryInterpreter.cpp */; };
+		49BA55B92421A09300B8D9A7 /* CvHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49BA55B72421A09300B8D9A7 /* CvHelper.cpp */; };
 		49C4964C2400497600AE4094 /* ActionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C4964B2400497600AE4094 /* ActionManagerTests.swift */; };
 		49C4964E240066BA00AE4094 /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C4964D240066BA00AE4094 /* Throttler.swift */; };
 		49FBA97F23E4B80E001BA3F1 /* AbstractRemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBA97E23E4B80E001BA3F1 /* AbstractRemoteView.swift */; };
@@ -112,6 +120,22 @@
 		499C514623E0F48D00FF9CBB /* RemoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
 		499C514F23E236F000FF9CBB /* ClimateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimateView.swift; sourceTree = "<group>"; };
 		499C518B23E4159300FF9CBB /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = "../../../Library/Autosave Information/MyPlayground.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		49BA559D2420167300B8D9A7 /* LifiDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifiDetector.swift; sourceTree = "<group>"; };
+		49BA55A02421318E00B8D9A7 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = libs/opencv2.framework; sourceTree = "<group>"; };
+		49BA55A52421347100B8D9A7 /* cap-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "cap-Bridging-Header.h"; sourceTree = "<group>"; };
+		49BA55A62421347100B8D9A7 /* OpenCVWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVWrapper.h; sourceTree = "<group>"; };
+		49BA55A72421347200B8D9A7 /* OpenCVWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVWrapper.mm; sourceTree = "<group>"; };
+		49BA55AB2421457D00B8D9A7 /* ColorDetector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ColorDetector.cpp; sourceTree = "<group>"; };
+		49BA55AC2421457D00B8D9A7 /* ColorDetector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ColorDetector.hpp; sourceTree = "<group>"; };
+		49BA55AE242183DE00B8D9A7 /* TargetDetector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TargetDetector.cpp; sourceTree = "<group>"; };
+		49BA55AF242183DE00B8D9A7 /* TargetDetector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TargetDetector.hpp; sourceTree = "<group>"; };
+		49BA55B124218DEF00B8D9A7 /* TargetHistory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TargetHistory.cpp; sourceTree = "<group>"; };
+		49BA55B224218DEF00B8D9A7 /* TargetHistory.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TargetHistory.hpp; sourceTree = "<group>"; };
+		49BA55B424218FE400B8D9A7 /* HistoryInterpreter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = HistoryInterpreter.cpp; sourceTree = "<group>"; };
+		49BA55B524218FE400B8D9A7 /* HistoryInterpreter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = HistoryInterpreter.hpp; sourceTree = "<group>"; };
+		49BA55B72421A09300B8D9A7 /* CvHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CvHelper.cpp; sourceTree = "<group>"; };
+		49BA55B82421A09300B8D9A7 /* CvHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CvHelper.hpp; sourceTree = "<group>"; };
+		49BA55BA2421BAD000B8D9A7 /* DetectorConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetectorConstants.h; sourceTree = "<group>"; };
 		49C4964B2400497600AE4094 /* ActionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionManagerTests.swift; sourceTree = "<group>"; };
 		49C4964D240066BA00AE4094 /* Throttler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
 		49FBA97E23E4B80E001BA3F1 /* AbstractRemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractRemoteView.swift; sourceTree = "<group>"; };
@@ -127,6 +151,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49BA55A12421318F00B8D9A7 /* opencv2.framework in Frameworks */,
 				4957CE7223EF693F0004E528 /* FlexColorPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -186,6 +211,7 @@
 				4992C26223D04BB7002C712F /* capTests */,
 				4992C26D23D04BB8002C712F /* capUITests */,
 				4992C24A23D04BB4002C712F /* Products */,
+				49BA559F2421318E00B8D9A7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -205,6 +231,7 @@
 				4992C24E23D04BB4002C712F /* art.scnassets */,
 				4992C24C23D04BB4002C712F /* AppDelegate.swift */,
 				4957CE6C23EF506E0004E528 /* Constants.swift */,
+				49BA55AA242140C600B8D9A7 /* LifiDetector */,
 				49FBA97D23E4B7AE001BA3F1 /* AR */,
 				4957CE7623EFD6ED0004E528 /* Controllers */,
 				4957CE7523EFD6C80004E528 /* Views */,
@@ -237,6 +264,44 @@
 				4992C27023D04BB8002C712F /* Info.plist */,
 			);
 			path = capUITests;
+			sourceTree = "<group>";
+		};
+		49BA559F2421318E00B8D9A7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				49BA55A02421318E00B8D9A7 /* opencv2.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		49BA55A92421392A00B8D9A7 /* OpenCVDetector */ = {
+			isa = PBXGroup;
+			children = (
+				49BA55BA2421BAD000B8D9A7 /* DetectorConstants.h */,
+				49BA55B82421A09300B8D9A7 /* CvHelper.hpp */,
+				49BA55B72421A09300B8D9A7 /* CvHelper.cpp */,
+				49BA55AF242183DE00B8D9A7 /* TargetDetector.hpp */,
+				49BA55AE242183DE00B8D9A7 /* TargetDetector.cpp */,
+				49BA55AC2421457D00B8D9A7 /* ColorDetector.hpp */,
+				49BA55AB2421457D00B8D9A7 /* ColorDetector.cpp */,
+				49BA55B224218DEF00B8D9A7 /* TargetHistory.hpp */,
+				49BA55B124218DEF00B8D9A7 /* TargetHistory.cpp */,
+				49BA55B524218FE400B8D9A7 /* HistoryInterpreter.hpp */,
+				49BA55B424218FE400B8D9A7 /* HistoryInterpreter.cpp */,
+			);
+			path = OpenCVDetector;
+			sourceTree = "<group>";
+		};
+		49BA55AA242140C600B8D9A7 /* LifiDetector */ = {
+			isa = PBXGroup;
+			children = (
+				49BA55A52421347100B8D9A7 /* cap-Bridging-Header.h */,
+				49BA559D2420167300B8D9A7 /* LifiDetector.swift */,
+				49BA55A62421347100B8D9A7 /* OpenCVWrapper.h */,
+				49BA55A72421347200B8D9A7 /* OpenCVWrapper.mm */,
+				49BA55A92421392A00B8D9A7 /* OpenCVDetector */,
+			);
+			path = LifiDetector;
 			sourceTree = "<group>";
 		};
 		49FBA97C23E4B77A001BA3F1 /* RemoteViews */ = {
@@ -349,6 +414,7 @@
 				TargetAttributes = {
 					4992C24823D04BB4002C712F = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 					4992C25E23D04BB7002C712F = {
 						CreatedOnToolsVersion = 11.3.1;
@@ -418,7 +484,10 @@
 			files = (
 				4957CE6923EF28D30004E528 /* ActionUtilities.swift in Sources */,
 				4992C25123D04BB4002C712F /* ViewController.swift in Sources */,
+				49BA55A82421347200B8D9A7 /* OpenCVWrapper.mm in Sources */,
 				49C4964E240066BA00AE4094 /* Throttler.swift in Sources */,
+				49BA55B0242183DE00B8D9A7 /* TargetDetector.cpp in Sources */,
+				49BA55AD2421457D00B8D9A7 /* ColorDetector.cpp in Sources */,
 				492EDA23240662E80004E729 /* ViewControllerAR.swift in Sources */,
 				49FBA98123E8A40A001BA3F1 /* LightView.swift in Sources */,
 				4957CE6723EF1E280004E528 /* ActionDataModel.swift in Sources */,
@@ -426,6 +495,7 @@
 				49FBA98323E8A915001BA3F1 /* IoTDataModel.swift in Sources */,
 				499C514723E0F48D00FF9CBB /* RemoteViewController.swift in Sources */,
 				4939A126240460DF00561BFD /* LockView.swift in Sources */,
+				49BA559E2420167300B8D9A7 /* LifiDetector.swift in Sources */,
 				499C515023E236F000FF9CBB /* ClimateView.swift in Sources */,
 				E9EEC39323EF4DAF005CE6DA /* ViewControllerNoAR.swift in Sources */,
 				499C514123D2BB3700FF9CBB /* QRAnchor.swift in Sources */,
@@ -433,6 +503,7 @@
 				492EDA1F240656DF0004E729 /* PreviewView.swift in Sources */,
 				4992C27D23D0BF40002C712F /* QRPlane.swift in Sources */,
 				499C513D23D0ED6500FF9CBB /* Plane.swift in Sources */,
+				49BA55B624218FE400B8D9A7 /* HistoryInterpreter.cpp in Sources */,
 				49FBA97F23E4B80E001BA3F1 /* AbstractRemoteView.swift in Sources */,
 				49FBA98523E91C58001BA3F1 /* DummyData.swift in Sources */,
 				4957CE7423EF766C0004E528 /* ColorController.swift in Sources */,
@@ -442,8 +513,10 @@
 				4992C24D23D04BB4002C712F /* AppDelegate.swift in Sources */,
 				499C513F23D0EF8800FF9CBB /* QRAnchorDetector.swift in Sources */,
 				4957CE7B23EFD8A30004E528 /* MusicView.swift in Sources */,
+				49BA55B92421A09300B8D9A7 /* CvHelper.cpp in Sources */,
 				49FBA98823E9CC4C001BA3F1 /* IoTDataManager.swift in Sources */,
 				492EDA21240659DC0004E729 /* PreviewViewController.swift in Sources */,
+				49BA55B324218DEF00B8D9A7 /* TargetHistory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -611,8 +684,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6C7WSDTC88;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs",
+				);
 				INFOPLIST_FILE = cap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -620,6 +698,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.capstone.cap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "cap/LifiDetector/cap-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -630,8 +710,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6C7WSDTC88;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs",
+				);
 				INFOPLIST_FILE = cap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -639,6 +724,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.capstone.cap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "cap/LifiDetector/cap-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

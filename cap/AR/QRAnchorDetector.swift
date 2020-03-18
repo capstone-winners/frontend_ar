@@ -19,14 +19,14 @@ class QRDetector {
   var latestFrame: ARFrame?
   var iotDataManager : IotDataManager = IotDataManager()
   
-  var parentView: ViewController!
+  weak var parentView: ViewController!
   var sceneView: ARSCNView {
     get {
       return parentView.sceneView as! ARSCNView
     }
   }
   
-  func startQrCodeDetection(parent parent: ViewController) {
+  func startQrCodeDetection(parent: ViewController) {
     print("starting detection")
     
     // View
