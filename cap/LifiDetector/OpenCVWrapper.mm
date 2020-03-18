@@ -27,21 +27,32 @@ using namespace cv;
 + (Mat)_grayFrom:(Mat)source;
 + (Mat)_matFrom:(UIImage *)source;
 + (UIImage *)_imageFrom:(Mat)source;
-
 #endif
 
 @end
+
+@interface OpenCVWrapper () {
+  int callCount;
+}
+@end
+
 
 #pragma mark - OpenCVWrapper
 
 @implementation OpenCVWrapper
 
 #pragma mark Public
+-(id)init {
+   self = [super init];
+   callCount = 0;
+   return self;
+}
 
-+ (UIImage *)toGray:(UIImage *)source {
-  cout << "OpenCV: ";
+- (UIImage *)toGray:(UIImage *)source {
   ColorDetector detector = ColorDetector("hello", {});
-  cout << detector.getName();
+  cout << "OpenCV: " << detector.getName() << endl;
+  cout << "\tcall count: " << callCount << endl;
+  callCount = callCount + 1;
   return [OpenCVWrapper _imageFrom:[OpenCVWrapper _grayFrom:[OpenCVWrapper _matFrom:source]]];
 }
 

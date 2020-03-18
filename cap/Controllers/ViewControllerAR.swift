@@ -13,6 +13,7 @@ import Vision
 
 class ViewControllerAR: ViewController {
   
+  var wrapper: OpenCVWrapper = OpenCVWrapper()
   var imageView: UIImageView = UIImageView()
   
   let qrDetector: QRDetector = QRDetector()
@@ -90,7 +91,9 @@ class ViewControllerAR: ViewController {
       imageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
     ])
     var image = UIImage(named:"red_smoke")
-    image = OpenCVWrapper.toGray(image!)
+    image = wrapper.toGray(image!)
+    image = wrapper.toGray(image!)
+    image = wrapper.toGray(image!)
     imageView.image = image
     imageView.backgroundColor = .green
   }

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface OpenCVWrapper : NSObject
 
-+ (UIImage *)toGray:(UIImage *)source;
+- (UIImage *)toGray:(UIImage *)source;
 
 @end
 
