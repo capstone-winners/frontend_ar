@@ -266,6 +266,31 @@
 			path = capUITests;
 			sourceTree = "<group>";
 		};
+		49B4D6C9242508E10033CFCC /* include */ = {
+			isa = PBXGroup;
+			children = (
+				49BA55BA2421BAD000B8D9A7 /* DetectorConstants.h */,
+				49BA55B82421A09300B8D9A7 /* CvHelper.hpp */,
+				49BA55AF242183DE00B8D9A7 /* TargetDetector.hpp */,
+				49BA55AC2421457D00B8D9A7 /* ColorDetector.hpp */,
+				49BA55B224218DEF00B8D9A7 /* TargetHistory.hpp */,
+				49BA55B524218FE400B8D9A7 /* HistoryInterpreter.hpp */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		49B4D6CA242508EC0033CFCC /* src */ = {
+			isa = PBXGroup;
+			children = (
+				49BA55B72421A09300B8D9A7 /* CvHelper.cpp */,
+				49BA55AE242183DE00B8D9A7 /* TargetDetector.cpp */,
+				49BA55AB2421457D00B8D9A7 /* ColorDetector.cpp */,
+				49BA55B124218DEF00B8D9A7 /* TargetHistory.cpp */,
+				49BA55B424218FE400B8D9A7 /* HistoryInterpreter.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		49BA559F2421318E00B8D9A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -277,17 +302,8 @@
 		49BA55A92421392A00B8D9A7 /* OpenCVDetector */ = {
 			isa = PBXGroup;
 			children = (
-				49BA55BA2421BAD000B8D9A7 /* DetectorConstants.h */,
-				49BA55B82421A09300B8D9A7 /* CvHelper.hpp */,
-				49BA55B72421A09300B8D9A7 /* CvHelper.cpp */,
-				49BA55AF242183DE00B8D9A7 /* TargetDetector.hpp */,
-				49BA55AE242183DE00B8D9A7 /* TargetDetector.cpp */,
-				49BA55AC2421457D00B8D9A7 /* ColorDetector.hpp */,
-				49BA55AB2421457D00B8D9A7 /* ColorDetector.cpp */,
-				49BA55B224218DEF00B8D9A7 /* TargetHistory.hpp */,
-				49BA55B124218DEF00B8D9A7 /* TargetHistory.cpp */,
-				49BA55B524218FE400B8D9A7 /* HistoryInterpreter.hpp */,
-				49BA55B424218FE400B8D9A7 /* HistoryInterpreter.cpp */,
+				49B4D6C9242508E10033CFCC /* include */,
+				49B4D6CA242508EC0033CFCC /* src */,
 			);
 			path = OpenCVDetector;
 			sourceTree = "<group>";

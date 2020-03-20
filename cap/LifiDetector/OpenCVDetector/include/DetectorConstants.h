@@ -22,7 +22,7 @@ using ColorRange = tuple<std::array<int, 3>, std::array<int, 3>>;
 enum DetectedState {SENTINEL, HIGH, LOW, MISSING};
 
 constexpr int FRAME_SIZE = 9; // 1 Sentinel, 8 Payload
-constexpr int RX_FREQ = 60;
+constexpr int RX_FREQ = 120;
 constexpr int TX_FREQ = 30;
 constexpr int BUFFER_SIZE = RX_FREQ/TX_FREQ;
 

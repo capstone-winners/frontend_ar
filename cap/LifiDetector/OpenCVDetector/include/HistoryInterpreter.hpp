@@ -16,7 +16,8 @@
 
 #include "DetectorConstants.h"
 
-using namespace std;
+using std::string;
+using std::vector;
 
 class HistoryInterpreter {
 public:
@@ -27,10 +28,20 @@ public:
   void Process(const DetectedState entry);
   vector<int> PopOutput();
   
+  State GetState() const;
+  
+  string GetName() const;
+  
+  int GetMaxBufferSize() const;
+  
+  vector<int> GetOutput() const;
+  
+  vector<DetectedState> GetBuffer() const;
+  
 private:
   string name;
-  State state = WARMUP;
-  int maxBufferSize = 4;
+  HistoryInterpreter::State state = HistoryInterpreter::WARMUP;
+  int maxBufferSize = BUFFER_SIZE;
   vector<DetectedState> buffer = {};
   vector<int> output = {};
   std::function<void(HistoryInterpreter*)> frameCompleteCallback;

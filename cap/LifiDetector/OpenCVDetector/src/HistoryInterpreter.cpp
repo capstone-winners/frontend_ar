@@ -8,6 +8,9 @@
 
 #include "HistoryInterpreter.hpp"
 
+#include <algorithm>    // std::count
+#include <iostream>
+
 HistoryInterpreter::HistoryInterpreter(const string name, std::function<void(HistoryInterpreter*)> frameCompleteCallback) :
   name(name),
   frameCompleteCallback(frameCompleteCallback) {
@@ -38,6 +41,20 @@ void HistoryInterpreter::HandleWarmup(const DetectedState entry) {
   if(entry == SENTINEL) {
     this->state = DETECTED;
   }
+}
+
+HistoryInterpreter::State HistoryInterpreter::GetState()  const { return this->state; }
+
+string HistoryInterpreter::GetName() const { return this->name; };
+
+int HistoryInterpreter::GetMaxBufferSize() const {return this->maxBufferSize; }
+
+vector<int> HistoryInterpreter::GetOutput() const {
+  return this->output;
+}
+
+vector<DetectedState> HistoryInterpreter::GetBuffer() const {
+  return this->buffer;
 }
 
 void HistoryInterpreter::HandleDetected(const DetectedState entry){
@@ -78,6 +95,9 @@ void HistoryInterpreter::HandleBufferComplete(const DetectedState entry) {
     return;
   }
   
+  // Buffer is completed. Reset it.
+  this->buffer.clear();
+  
   if (numSentinel > numLow && numSentinel > numHigh) {
     // We detected more sentinal values than anything else. Move to DETECTED.
     // Handle completed frame.
@@ -87,7 +107,4 @@ void HistoryInterpreter::HandleBufferComplete(const DetectedState entry) {
     // This contained a data frame. Store this in the output.
     this->output.push_back(int(numHigh > numLow));
   }
-  
-  // Buffer is completed. Reset it.
-  this->buffer.clear();
 }

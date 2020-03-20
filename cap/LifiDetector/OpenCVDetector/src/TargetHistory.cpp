@@ -6,6 +6,7 @@
 //  Copyright © 2020 Andrew Tu. All rights reserved.
 //
 #include "TargetHistory.hpp"
+#include <iostream>
 
 TargetHistory::TargetHistory()
 {
@@ -40,7 +41,7 @@ void TargetHistory::AddToHistory(const DetectedState state, const Box box) {
     if(iou > this->iouThreshold) {
       this->history[minIndex] = this->UpdateHistoryEntry(minEntry, state, box);
     } else {
-      printf("failed iou threshold!!! %f", iou);
+      printf("failed iou threshold!!! %f\n", iou);
       iouFailedCallback(minBox, box);
     }
   }
@@ -94,6 +95,12 @@ Entry TargetHistory::UpdateHistoryEntry(Entry old, DetectedState state, Box box)
     old.interpreter
   };
   
+  /*std::cout << "Buffer: ";
+  for(const auto i : old.interpreter.GetBuffer()) {
+    std:: cout << i;
+  }
+  std::cout << std::endl;*/
+  
   return newEntry;
 }
 
@@ -102,6 +109,7 @@ void TargetHistory::RecordNoDetections() {
     // If this entry wasn't updated with this frame number, the entry was missing.
     // Record the frame as missing.
     if (entry.lastFrame != this->frameNumber) {
+      std::cout << BoxToString(entry.lastPos) << " missing frame!" << std::endl;
       entry.lastFrame = this->frameNumber;
       entry.interpreter.Process(MISSING);
     }
