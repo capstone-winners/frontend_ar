@@ -25,12 +25,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 project (OPENCV_LIFI_DETECTOR)
+set(Qt5_DIR "/usr/local/Cellar/qt/5.13.1/lib/cmake/Qt5/")
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${Qt5_DIR})
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
+message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
 
-#set("OpenCV_DIR" "../../../libs/opencv-4.2.0/cmake")
-set("OpenCV_DIR" "/usr/local/Cellar/opencv/4.2.0_3")
-find_package(OpenCV 4.2 REQUIRED )
+find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
+include(opencv)
 
 # Bring the headers into the project
 include_directories(include)

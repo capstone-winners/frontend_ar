@@ -69,6 +69,9 @@ void TargetHistory::AddIouFailureHandler(std::function<void(const Box oldBox, co
   this->iouFailedCallback = iouFailedCallback;
 }
 
+std::vector<Entry> TargetHistory::GetHistory() {
+  return this->history;
+}
 
 Entry TargetHistory::CreateHistoryEntry(DetectedState state, Box box) {
   using namespace std::placeholders; // for `_1`

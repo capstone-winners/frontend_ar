@@ -7,41 +7,39 @@
 //
 
 #include "ColorDetector.hpp"
+#include <opencv2/opencv.hpp>
+#include "opencv2/highgui/highgui.hpp"
 
 using namespace cv;
+
+const string ShapeTypeToString(int enumValue)
+{
+  return ShapeTypeStrings[enumValue];
+}
 
 ColorDetector::ColorDetector(const string name, const vector<ColorRange> color_range) {
   this->name = name;
   this->colorRanges = color_range;
 }
 
-string ColorDetector::getName() {
+string ColorDetector::GetName() {
   return this->name;
 }
 
-std::tuple<ShapeType, Rect> ColorDetector::detect(Mat frame) {
-  
-  // Simple HSV color space tracking
-  // resize the frame, blur it, and convert it to the HSV color space
-  Mat blurred;
-  GaussianBlur(frame, blurred, Size(11, 11), 0);
-
-  Mat hsv;
-  cvtColor(blurred, hsv, COLOR_BGR2HSV);
-  
+std::tuple<ShapeType, Rect> ColorDetector::Detect(const Mat frame) {
   // Create a mask based on the colors of this tracker
-  generateMask(hsv);
+  this->GenerateMask(frame);
 
   // find contours in the mask and initialize the current
   // (x, y) center of the ball
   vector<Contour> cnts;
-  findContours(frame_mask, cnts, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+  findContours(this->frame_mask, cnts, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
   
   // only proceed if at least one contour was found
   if (cnts.size() > 0) {
     
     auto isTarget = [this](const Contour a) {
-      return get<0>(this->detectShape(a)) == TARGET;
+      return get<0>(this->DetectShape(a)) == TARGET;
     };
     
     auto cmpContour = [](const Contour cntA, const Contour cntB) {return contourArea(cntA) > contourArea(cntB);};
@@ -52,39 +50,52 @@ std::tuple<ShapeType, Rect> ColorDetector::detect(Mat frame) {
     
     auto itr = find_if(cnts.begin(), cnts.end(), isTarget);
     if(itr == cnts.end()) {
-      cout << "[ColorDetector]: Contour not found!";
+      printf("[ColorDetector]: Contour not found!");
       return make_tuple(UNKOWN, Rect());
     }
     
-    return detectShape(*itr);
+    return DetectShape(*itr);
   }
   
   return make_tuple(UNKOWN, Rect());
 }
 
-void ColorDetector::generateMask(Mat frame) {
+void ColorDetector::GenerateMask(const Mat frame) {
+  
+  // Simple HSV color space tracking
+  // resize the frame, blur it, and convert it to the HSV color space
+  Mat blurred;
+  GaussianBlur(frame, blurred, Size(11, 11), 0);
+
+  Mat hsv;
+  cvtColor(blurred, hsv, COLOR_BGR2HSV);
+
   // construct a mask for the color then perform
   // a series of dilations and erosions to remove any small
   // blobs left in the mask
+  Mat mask = cv::Mat::zeros(frame.size(), CV_8UC1);
   
-  Mat mask;
+  // imshow("frame", frame);
   for (const ColorRange& range : colorRanges) {
     const array<int, 3> lower = get<0>(range);
     const array<int, 3> upper = get<1>(range);
     
     Mat temp;
-    inRange(frame, lower, upper, temp);
+    inRange(hsv, lower, upper, temp);
     mask = mask | temp;
+
+    // imshow("c", mask);
+    // waitKey(3000);
   }
   
   erode(mask, mask, 2);
   dilate(mask, mask, 2);
 
-  frame_mask = mask;
+  this->frame_mask = mask;
 }
 
 
-std::tuple<ShapeType, Rect> ColorDetector::detectShape(Contour c) {
+std::tuple<ShapeType, Rect> ColorDetector::DetectShape(Contour c) {
   // initialize the shape name and approximate the contour
   ShapeType shape = UNKOWN;
   const double peri = arcLength(c, true);

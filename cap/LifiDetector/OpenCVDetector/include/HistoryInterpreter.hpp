@@ -19,6 +19,9 @@
 using std::string;
 using std::vector;
 
+static const std::array<string, 3> HistoryInterpreterStateString = {"WARMUP", "DETECTED", "PROCESSING"};
+const string HistoryInterpreterStateToString(int enumValue);
+
 class HistoryInterpreter {
 public:
   enum State {WARMUP, DETECTED, PROCESSING};

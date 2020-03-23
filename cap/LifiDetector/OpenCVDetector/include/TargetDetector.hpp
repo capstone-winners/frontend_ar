@@ -33,7 +33,7 @@ class TargetDetector {
 public:
   TargetDetector();
   
-  void Detect(cv::Mat frame);
+  cv::Mat Detect(const cv::Mat frame);
   
 private:
   ColorDetector greenTracker; 
@@ -44,7 +44,7 @@ private:
   const int framesPerMessage = FRAME_SIZE * BUFFER_SIZE;
   int frameCount = 0;
   int lastDetected = 0;
-  int detectedFrame = false;
+  bool detectedFrame = false;
   vector<int> binMessage = {};
   TargetHistory history = TargetHistory();
   
@@ -52,6 +52,10 @@ private:
   void FrameCompleteCallback(HistoryInterpreter* interp);
   void FailedIouCallback(const Box oldBox, const Box newBox);
   
+  // Drawing Functions to update a markup frame.
+  void AddMessageToFrame(cv::Mat markup_frame);
+  void AddFailedIouToFrame(cv::Mat markup_frame);
+  void AddTargetHistoryDetailToFrame(cv::Mat markup_frame);
 };
 
 #endif /* TargetDetector_hpp */

@@ -11,6 +11,7 @@
 
 #include <array>
 #include <string>
+#include <opencv2/opencv.hpp>
 
 using Box = std::array<int, 4>;
 
@@ -21,5 +22,7 @@ Box ConvertBoxRep(const Box box);
 double CalculateIou(const Box boxA, const Box boxB);
 
 std::string BoxToString(const Box box);
+
+std::string printType(cv::Mat frame);
 
 #endif /* CvHelper_hpp */

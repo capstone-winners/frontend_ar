@@ -11,6 +11,10 @@
 #include <algorithm>    // std::count
 #include <iostream>
 
+const string HistoryInterpreterStateToString(int enumValue) {
+  return HistoryInterpreterStateString[enumValue];
+}
+
 HistoryInterpreter::HistoryInterpreter(const string name, std::function<void(HistoryInterpreter*)> frameCompleteCallback) :
   name(name),
   frameCompleteCallback(frameCompleteCallback) {

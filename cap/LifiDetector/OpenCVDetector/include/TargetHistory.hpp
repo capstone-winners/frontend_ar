@@ -33,6 +33,7 @@ class TargetHistory {
   void AdvanceFrameCount();
   void AddFrameCompleteHandler(std::function<void(HistoryInterpreter*)> frameCompleteCallback);
   void AddIouFailureHandler(std::function<void(const Box oldBox, const Box newBox)> iouFailedCallback);
+  std::vector<Entry> GetHistory();
   
   private:
   std::vector<Entry> history{};

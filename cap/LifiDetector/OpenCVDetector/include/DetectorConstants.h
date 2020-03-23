@@ -12,6 +12,7 @@
 #include <array>
 #include <vector>
 #include <tuple>
+#include <opencv2/opencv.hpp>
 
 using std::array;
 using std::vector;
@@ -25,6 +26,13 @@ constexpr int FRAME_SIZE = 9; // 1 Sentinel, 8 Payload
 constexpr int RX_FREQ = 120;
 constexpr int TX_FREQ = 30;
 constexpr int BUFFER_SIZE = RX_FREQ/TX_FREQ;
+
+// COLORS
+const cv::Scalar BLACK(0, 0, 0);
+const cv::Scalar WHITE(255, 255, 255);
+const cv::Scalar BLUE(255, 0, 0);
+const cv::Scalar GREEN(0, 255, 0);
+const cv::Scalar RED(0, 0, 255);
 
 // Color Ranges
 // define the lower and upper boundaries of the "green"
