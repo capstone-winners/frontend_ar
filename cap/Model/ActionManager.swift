@@ -49,6 +49,7 @@ extension ActionManager {
     request.httpBody = jsonData
     request.setValue("application/json", forHTTPHeaderField: "Accept")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue(Constants.token, forHTTPHeaderField: "Authorization")
     
     let task = session.dataTask(with: request, completionHandler: postCompletionHandlerFunc)
     task.resume()
