@@ -10,11 +10,13 @@
 
 using namespace cv;
 
+bool DRAW_MARKUP = true;
+
 TargetDetector::TargetDetector() :
-  greenTracker("green", greenRange),
-  redTracker("red", redRange),
-  blueTracker("blue", blueRange),
-  detectors({greenTracker, redTracker, blueTracker})
+greenTracker("green", greenRange),
+redTracker("red", redRange),
+blueTracker("blue", blueRange),
+detectors({greenTracker, redTracker, blueTracker})
 {
   using namespace std::placeholders; // to get _1, and _2
   this->history.AddFrameCompleteHandler(std::bind(&TargetDetector::FrameCompleteCallback, this, _1));
@@ -22,29 +24,79 @@ TargetDetector::TargetDetector() :
 }
 
 cv::Mat TargetDetector::Detect(const Mat frame) {
-  Mat markup_frame=frame.clone();
+  // Mat blurred;
+  // GaussianBlur(frame, blurred, Size(kernel_size, kernel_size), 0);
   
-  for (ColorDetector& detector : this->detectors) {
-    const auto ret = detector.Detect(frame);
-    ShapeType detected = std::get<0>(ret);
-    cv::Rect box = std::get<1>(ret);
-    this->AddToHistory(detector.GetName(), detected, box);
+  Mat hsv;
+  cvtColor(frame, hsv, COLOR_BGR2HSV);
+  //cvtColor(blurred, hsv, COLOR_BGR2HSV);
+  
+  return DetectFromHsv(hsv, frame);
+}
+
+cv::Mat TargetDetector::DetectFromHsv(const Mat hsv, const Mat frame) {
+  // Simple HSV color space tracking
+  // resize the frame, blur it, and convert it to the HSV color space
+  
+  Mat markup_frame;
+  if (DRAW_MARKUP) {
+    markup_frame=frame.clone();
   }
+  
+  // Run this frame through every detector. Only keep the largest box
+  // from the detections. (Assumes that there is only a SINGLE target
+  // in a frame).
+  vector<DetectorResponse> responses(this->detectors.size());
+  std::transform(this->detectors.begin(), this->detectors.end(),
+                 responses.begin(),
+                 [hsv](ColorDetector detector) {
+    return detector.DetectFromHsv(hsv);
+  });
+  DetectorResponse max_response =
+  *std::max_element(responses.begin(),responses.end(),
+                    [](DetectorResponse A, DetectorResponse B) {
+    return A.box.area() < B.box.area();});
+  
+  if(max_response.shape == UNKNOWN) {
+    printf("Missing frame!!!\n");
+  } else {
+//    printf("[%d]Response: %s\n", this->frameCount, max_response.name.c_str());
+//    printf("\tpos: (%d,%d,%d,%d)\n", max_response.box.x, max_response.box.y,
+//           max_response.box.width, max_response.box.height);
+  }
+  
+  // Add the largest response.
+  this->AddToHistory(max_response.name, max_response.shape, max_response.box);
   this->history.AdvanceFrameCount();
   
   this->frameCount += 1;
   if ((this->frameCount - this->lastDetected) % (this->framesPerMessage * 3) == 0) {
-    printf("resetting frame_count\n\t%d\n\t%d\n", this->frameCount, this->lastDetected);
+    printf("[TargetDetector] resetting frame_count\n");
+    printf("\tFrameCount: %d\n", this->frameCount);
+    printf("\tLastDetected: %d\n", this->lastDetected);
     this->detectedFrame = false;
+    
+    this->PrintLargestHistoryEntry();
   }
   
   // Draw things on the frame.
-  this->AddMessageToFrame(markup_frame);
-  this->AddFailedIouToFrame(markup_frame);
-  this->AddTargetHistoryDetailToFrame(markup_frame);
-
-  return markup_frame;
+  if(DRAW_MARKUP) {
+    if(max_response.shape == TARGET) {
+      this->AddMaxResponse(markup_frame, max_response);
+    }
+    this->AddMessageToFrame(markup_frame);
+    this->AddFailedIouToFrame(markup_frame);
+    this->AddTargetHistoryDetailToFrame(markup_frame);
+    
+    return markup_frame;
+  }
+  
+  return cv::Mat::zeros({16, 16}, CV_8UC3);
 }
+
+void TargetDetector::SetFrameCompleteCallback(std::function<void(std::vector<int>)> func) {
+  this->external_func = func;
+};
 
 void TargetDetector::AddToHistory(string detectorName, ShapeType detected, Rect box) {
   if (detected == TARGET) {
@@ -58,6 +110,8 @@ void TargetDetector::AddToHistory(string detectorName, ShapeType detected, Rect 
     }else if (detectorName == "blue") {
       this->history.AddToHistory(SENTINEL, arrBox);
     }
+  } else {
+    //printf("%s\n", ShapeTypeToString(detected).c_str());
   }
 }
 
@@ -65,6 +119,10 @@ void TargetDetector::FrameCompleteCallback(HistoryInterpreter* interp) {
   this->detectedFrame = true;
   this->lastDetected = this->frameCount;
   this->binMessage = interp->PopOutput();
+  
+  if(this->external_func) {
+    this->external_func(binMessage);
+  }
 }
 
 void TargetDetector::FailedIouCallback(const Box oldBox, const Box newBox) {
@@ -76,8 +134,32 @@ string VectorToString(std::vector<T> v) {
   for(const T& t: v) {
     s += (std::to_string(t) + " ");
   }
-
+  
   return s;
+}
+
+void TargetDetector::AddMaxResponse(cv::Mat markup_frame, DetectorResponse response) {
+  try {
+    Scalar color;
+    if(response.name == "red") {
+      color = RED;
+    } else if(response.name == "blue") {
+      color = BLUE;
+    } else if(response.name == "green") {
+      color = GREEN;
+    } else {
+      color = WHITE;
+    }
+    
+    drawContours(markup_frame, vector<Contour>(1, response.contour), -1, color);
+    const Rect box = response.box;
+    const string msg = ShapeTypeToString(response.shape) + " [" + response.name + "]";
+    putText(markup_frame, msg,
+            Point(box.x + box.width, box.y),
+            FONT_HERSHEY_SIMPLEX, .5, WHITE, 1);
+  } catch (cv::Exception e) {
+    printf("[TargetDetector]: Error drawing max response!\n");
+  }
 }
 
 void TargetDetector::AddMessageToFrame(cv::Mat markup_frame) {
@@ -93,35 +175,64 @@ void TargetDetector::AddMessageToFrame(cv::Mat markup_frame) {
 }
 
 void TargetDetector::AddFailedIouToFrame(cv::Mat markup_frame) {
-
+  
 }
 
 void TargetDetector::AddTargetHistoryDetailToFrame(cv::Mat markup_frame) {
   const int estimated_font_size = 22;
   const double font_scale = .3;
-
+  
   for (const Entry& entry : this->history.GetHistory()) {
     const HistoryInterpreter& hi = entry.interpreter;
     if (hi.GetBuffer().size() ==  0 && hi.GetOutput().size() == 0) {
-      continue;
+      //continue;
     }
-                                                                           
+    
     const std::vector<string> msgs = {
       "pos: " + BoxToString(entry.lastPos),
       "state: " + HistoryInterpreterStateToString(hi.GetState()),
       "buffer: " + VectorToString(hi.GetBuffer()),
       "output: " + VectorToString(hi.GetOutput())};
-                                                                           
+    
     int index = 0;
     for (const std::string& msg : msgs) {
       const int tr_x = std::get<0>(entry.lastPos) + std::get<2>(entry.lastPos);
-      const int tr_y = std::get<1>(entry.lastPos) + int(index * 2 * estimated_font_size * font_scale);
-                                                                         
-      putText(markup_frame, msg, {tr_x, tr_y}, FONT_HERSHEY_SIMPLEX, 
-      font_scale, WHITE, 1);
+      const int tr_y = std::get<1>(entry.lastPos)
+      + int(2 * estimated_font_size * font_scale)
+      + int(index * 2 * estimated_font_size * font_scale);
+      
+      putText(markup_frame, msg, {tr_x, tr_y}, FONT_HERSHEY_SIMPLEX,
+              font_scale, WHITE, 1);
       index++;
     }
     
   }
+}
 
+void TargetDetector::PrintLargestHistoryEntry() {
+  auto hist =this->history.GetHistory();
+  if(hist.empty()) {
+    printf("Empty history!\n");
+    return;
+  }
+  Entry max_itr = *std::max_element(hist.begin(), hist.end(),
+                                    [](Entry A, Entry B) {
+    int areaA =(A.lastPos[2] * A.lastPos[3]);
+    int areaB =(B.lastPos[2] * B.lastPos[3]);
+    return areaA < areaB;});
+  
+  const HistoryInterpreter& hi = max_itr.interpreter;
+  const std::vector<string> msgs = {
+    "pos: " + BoxToString(max_itr.lastPos),
+    "state: " + HistoryInterpreterStateToString(hi.GetState()),
+    "buffer: " + VectorToString(hi.GetBuffer()),
+    "output: " + VectorToString(hi.GetOutput())};
+  
+  printf("**************\n");
+  printf("Max Response\n");
+  printf("**************\n");
+  for (const std::string& msg : msgs) {
+    printf("\t%s\n", msg.c_str());
+  }
+  printf("**************\n\n");
 }

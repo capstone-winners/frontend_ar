@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include <opencv2/opencv.hpp>
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -10,7 +11,7 @@ using namespace cv;
 using namespace std;
 
 Mat ImgWithTarget(Scalar color) {
-  Mat img(500, 500, CV_8UC3, Scalar(0, 0, 0));
+  Mat img(1280, 720, CV_8UC3, Scalar(0, 0, 0));
   cv::rectangle(img, cv::Point2f( 30, 30 ), cv::Point2f(100, 100), color, -1);
 
   return img;
@@ -38,12 +39,20 @@ int main(int argc, char **argv)
   };
 
   TargetDetector detector;
-  for(int ii = 0; ii < 10; ++ii) {
+  auto start = chrono::steady_clock::now();
+  int num_iterations = 100;
+  for(int ii = 0; ii < num_iterations; ++ii) {
     for(Mat img : seq) {
-      imshow("img", detector.Detect(img));
-      waitKey(500);
+      detector.Detect(img);
+      //imshow("img", detector.Detect(img));
+      //waitKey(500);
     }
   }
+  auto end = chrono::steady_clock::now();
+  const int num_frames = num_iterations*seq.size();
+  const int seconds = chrono::duration_cast<chrono::seconds>(end - start).count();
+
+  printf("Duration: %d \tFrames: %d\tFPS: %f", seconds, num_frames, double(num_frames)/seconds);
   
   return 0;
 }

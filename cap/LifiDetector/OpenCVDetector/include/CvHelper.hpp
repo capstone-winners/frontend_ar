@@ -8,7 +8,8 @@
 
 #ifndef CvHelper_hpp
 #define CvHelper_hpp
-
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
 #include <array>
 #include <string>
 #include <opencv2/opencv.hpp>

@@ -58,7 +58,7 @@ class ViewController: UIViewController, UIAdaptivePresentationControllerDelegate
       debugView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
       debugView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
       debugView.heightAnchor.constraint(equalToConstant: 100),
-      debugView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
+      debugView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -150)
     ])
     
     // Clear the saved QR codes

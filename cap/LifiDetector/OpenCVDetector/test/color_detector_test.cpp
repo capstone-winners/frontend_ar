@@ -65,9 +65,9 @@ TEST_F(TestColorDetector, DetectSquare) {
  * Make sure the frame complete callback is triggere.
  */
 TEST_F(TestColorDetector, NoSquare) {
-  TestHelper(test_obj_blue, empty, UNKOWN);
-  TestHelper(test_obj_green, empty, UNKOWN);
-  TestHelper(test_obj_red, empty, UNKOWN);
+  TestHelper(test_obj_blue, empty, UNKNOWN);
+  TestHelper(test_obj_green, empty, UNKNOWN);
+  TestHelper(test_obj_red, empty, UNKNOWN);
 }
 
 }  // namespace

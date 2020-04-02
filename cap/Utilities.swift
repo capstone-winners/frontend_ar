@@ -143,7 +143,7 @@ func getStringField(labeled label: String, withData data: String) -> UIStackView
 func makeButton(systemName icon: String, title: String?) -> UIButton {
   let image = UIImage(systemName: icon)?.withRenderingMode(.alwaysTemplate)
   let button = UIButton(type: .custom, backgroundColor: nil, image: image, imageTintColor: .white)
-
+  
   if title != nil{
     button.setTitle(title!, for: .normal)
   }
@@ -168,10 +168,48 @@ extension UIImage {
     var cgImage: CGImage?
     VTCreateCGImageFromCVPixelBuffer(pixelBuffer, options: nil, imageOut: &cgImage)
     
-//    guard let cgImage = cgImage else {
-//      return nil
-//    }
+    //    guard let cgImage = cgImage else {
+    //      return nil
+    //    }
     
     self.init(cgImage: cgImage!)
+  }
+  
+  func scaleImage(scale: CGFloat) -> UIImage? {
+    return self.scaleImage(toSize: CGSize(width: self.size.width*scale, height: self.size.height*scale))
+  }
+  
+  func scaleImage(toSize newSize: CGSize) -> UIImage? {
+//    var newImage: UIImage?
+//    let newRect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height).integral
+//    UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
+//    if let context = UIGraphicsGetCurrentContext(), let cgImage = self.cgImage {
+//      context.interpolationQuality = .high
+//      let flipVertical = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: newSize.height)
+//      context.concatenate(flipVertical)
+//      context.draw(cgImage, in: newRect)
+//      if let img = context.makeImage() {
+//        newImage = UIImage(cgImage: img)
+//      }
+//      UIGraphicsEndImageContext()
+//    }
+//    return newImage
+    
+    return autoreleasepool { () -> UIImage in
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        self.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage!
+    }
+    
+//    return autoreleasepool { ()-> UIImage in
+//      let renderer = UIGraphicsImageRenderer(size: newSize)
+//      return renderer.image { (context) in
+//          self.draw(in: CGRect(origin: .zero, size: size))
+//      }
+//    }
   }
 }

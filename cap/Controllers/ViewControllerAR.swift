@@ -25,6 +25,8 @@ class ViewControllerAR: ViewController {
     
     // Start QR Detection
     self.qrDetector.startQrCodeDetection(parent: self)
+    self.lifiDetector.startLifiDetection(parent: self)
+    self.lifiDetector.imageView = imageView
     
     let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(rec:)))
     singleTapGesture.shouldRequireFailure(of: tripleTapGesture)
@@ -87,12 +89,14 @@ class ViewControllerAR: ViewController {
     NSLayoutConstraint.activate([
       imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
       imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+      //imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+      imageView.heightAnchor.constraint(equalTo: view.heightAnchor),
       imageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
     ])
-    var image = UIImage(named:"red_smoke")
-    imageView.image = image
     imageView.backgroundColor = .green
+    imageView.alpha = 0.0;
+    
+    //debugView.alpha = 0.0;
   }
   
   //Method called when tap
@@ -222,7 +226,7 @@ extension ViewControllerAR : ARSessionDelegate {
   func session(_ session: ARSession, didUpdate frame: ARFrame) {
     if(shouldProcessFramesForQr) {
       // Pass frame to the QRDetector to figure out if we need to do anything with the frame.
-      qrDetector.processFrame(frame)
+      // qrDetector.processFrame(frame)
       lifiDetector.processFrame(frame)
     }
   }

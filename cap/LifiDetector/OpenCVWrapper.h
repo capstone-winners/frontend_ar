@@ -11,9 +11,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OpenCVWrapper : NSObject
-
-- (UIImage *)toGray:(UIImage *)source;
 - (UIImage *)detect:(UIImage *)source;
+
+typedef void (^frameCompleteCallbackType)(NSMutableArray*); //Declare the block type
+@property frameCompleteCallbackType frameCompleteCallback; //Declare the block property using the block type
 
 @end
 

@@ -71,7 +71,7 @@ void HistoryInterpreter::HandleDetected(const DetectedState entry){
 void HistoryInterpreter::HandleProcessing(const DetectedState entry){
   
   if(entry == MISSING){
-    printf("[History interpretor %s]: missing entry", this->name.c_str());
+    printf("[History interpretor %s]: missing entry\n", this->name.c_str());
   }
   
   this->buffer.push_back(entry);
@@ -89,8 +89,8 @@ void HistoryInterpreter::HandleBufferComplete(const DetectedState entry) {
   
   if (numMissing > numLow + numHigh + numSentinel) {
     // We missed a lot of frames. Lets start over.
-    printf("[History interpretor %s]: missing a lot of frames. resetting...", this->name.c_str());
-    printf("\t%d/%d missing", numMissing, this->maxBufferSize);
+    printf("[History interpretor %s]: missing a lot of frames. resetting...\n", this->name.c_str());
+    printf("\t%d/%d missing\n", numMissing, this->maxBufferSize);
     
     this->state = WARMUP;
     this->output.clear();

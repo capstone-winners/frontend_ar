@@ -19,7 +19,7 @@
 #include "CvHelper.hpp"
 
 struct Entry {
-  std::array<int, 4> lastPos;
+  Box lastPos;
   int lastFrame;
   int lastActiveFrame;
   HistoryInterpreter interpreter;
@@ -38,7 +38,7 @@ class TargetHistory {
   private:
   std::vector<Entry> history{};
   int maxCorrespondingDistance = 25;
-  double iouThreshold = 0.7;
+  double iouThreshold = 0.5;
   int frameNumber = 0;
   int maxFramesToLive = 30;
   std::function<void(HistoryInterpreter*)> frameCompleteCallback;

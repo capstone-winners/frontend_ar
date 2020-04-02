@@ -112,7 +112,7 @@ void TargetHistory::RecordNoDetections() {
     // If this entry wasn't updated with this frame number, the entry was missing.
     // Record the frame as missing.
     if (entry.lastFrame != this->frameNumber) {
-      std::cout << BoxToString(entry.lastPos) << " missing frame!" << std::endl;
+      //std::cout << BoxToString(entry.lastPos) << " missing frame!" << std::endl;
       entry.lastFrame = this->frameNumber;
       entry.interpreter.Process(MISSING);
     }
